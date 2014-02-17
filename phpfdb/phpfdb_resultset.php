@@ -1,6 +1,7 @@
 <?php
 class PHPFDB_resultset{
 
+	public $db;
 	public $data;
 	public $cursor = 0;
 	public $query;
@@ -10,7 +11,8 @@ class PHPFDB_resultset{
 	public $planning_duration;
 	public $execution_duration;
 	
-	public function __construct($query){
+	public function __construct($db, $query){
+		$this->db = $db;
 		$this->query = $query;
 	}
 	
@@ -63,6 +65,18 @@ class PHPFDB_resultset{
 		$html .= "</tr>";
 		$html .= "</table>";
 		return($html);		
+	}
+	
+	public function storePlan(){
+		$cache_table = new PHPFDB_Relation($this->db, $this->db->tables["cache"], "cache");
+		$cache_table->loadMetadata();
+		$cache_table->bulkLoad();
+		
+		$values_to_add = Array();
+		$values_to_add['hash'] = md5($this->query);
+		$values_to_add['original_query'] = $this->query;
+		$cache_table->addRow($values_to_add);
+		
 	}
 	
 }

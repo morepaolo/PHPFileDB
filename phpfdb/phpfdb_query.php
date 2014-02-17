@@ -24,9 +24,6 @@ class PHPFDB_query{
 		print_r($P);
 		echo "</pre>";
 		*/
-		echo "<pre>";
-		print_r($this->raw_execution_plan);
-		echo "</pre>";
 		$this->raw_execution_plan = $P->yystack[1]->minor->actions;
 	}
 }

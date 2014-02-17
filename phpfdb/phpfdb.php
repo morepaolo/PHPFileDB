@@ -12,6 +12,7 @@ class PHPFDB{
 		include ("PHPFDB_relation.php");
 		include ("PHPFDB_resultset.php");
 		$this->db_folder = $db_folder;
+		$this->tables["cache"] = "cache";
 		$this->tables["tables"] = "tables";
 		$tables = new PHPFDB_relation($this, "tables", "tables");
 		$tables->loadMetadata();
@@ -71,7 +72,7 @@ class PHPFDB{
 	}
 	
 	public function query($sql){
-		$result = new PHPFDB_resultset($sql);
+		$result = new PHPFDB_resultset($this, $sql);
 		$start_planning = microtime(true);
 		$parsequery = new PHPFDB_Query($sql);
 		$end_planning = microtime(true);
@@ -237,7 +238,7 @@ class PHPFDB{
 		$result->execution_duration = $end_execution-$end_planning;
 		return($result);
 	}
-		
+	
 	public function genRandomString($length) {
 		$characters = "0123456789abcdefghijklmnopqrstuvwxyz";
 		$string = "";    

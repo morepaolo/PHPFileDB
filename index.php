@@ -201,6 +201,13 @@
 	echo "Finite a parte queste 3 indicate<br />";
 	echo "IN PROGRESS: Order by, Ho finito la parte di grammatica, mi manca la parte di query planner<br />";
 	
+	echo "TESTING QUERY PLANNER CACHING<br />";
+	$result->storePlan();
+	
+	$sql = "select * from cache";
+	$result = $db->query($sql);	
+	$dump = $result->HTMLDump();
+	echo $dump;
 	/*
 	echo "<pre>";
 	print_r($result->plan);
