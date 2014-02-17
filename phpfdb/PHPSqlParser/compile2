@@ -1,0 +1,5 @@
+cc -o lemon lemon.c
+java -cp JLexPHP.jar JLexPHP.Main sql.lex
+./lemon -lPHP sql2.y
+rm sql2.out
+rm sql2.h

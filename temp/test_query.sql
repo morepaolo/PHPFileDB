@@ -1,0 +1,1 @@
+select * from impiegati order by name limit 4 OFFSET 2

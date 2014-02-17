@@ -1,0 +1,4 @@
+id	INT	5	NULL	0	1	1
+name	VARCHAR	20	NULL	0	0	0
+lastname	VARCHAR	20	NULL	0	0	0
+dept_id	INT	5	NULL	0	0	0

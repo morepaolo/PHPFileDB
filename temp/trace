@@ -1,0 +1,130 @@
+Input SELECT
+Shift 169
+Stack: SELECT
+Input ASTERISK
+Reduce [set_quantifier ::=].
+Shift 14
+Stack: SELECT set_quantifier
+Shift 561
+Stack: SELECT set_quantifier ASTERISK
+Input FROM
+Reduce [select_list ::= ASTERISK].
+Shift 78
+Stack: SELECT set_quantifier select_list
+Shift 81
+Stack: SELECT set_quantifier select_list FROM
+Input NAME
+Shift 403
+Stack: SELECT set_quantifier select_list FROM NAME
+Input ORDER
+Reduce [regular_identifier ::= NAME].
+Shift 408
+Stack: SELECT set_quantifier select_list FROM regular_identifier
+Reduce [actual_identifier ::= regular_identifier].
+Shift 407
+Stack: SELECT set_quantifier select_list FROM actual_identifier
+Reduce [identifier ::= actual_identifier].
+Shift 411
+Stack: SELECT set_quantifier select_list FROM identifier
+Reduce [qualified_identifier ::= identifier].
+Shift 410
+Stack: SELECT set_quantifier select_list FROM qualified_identifier
+Reduce [qualified_name ::= qualified_identifier].
+Shift 415
+Stack: SELECT set_quantifier select_list FROM qualified_name
+Reduce [table_name ::= qualified_name].
+Shift 106
+Stack: SELECT set_quantifier select_list FROM table_name
+Reduce [table_reference ::= table_name].
+Shift 126
+Stack: SELECT set_quantifier select_list FROM table_reference
+Reduce [from_clause ::= FROM table_reference].
+Shift 181
+Stack: SELECT set_quantifier select_list from_clause
+Reduce [where_clause ::=].
+Shift 182
+Stack: SELECT set_quantifier select_list from_clause where_clause
+Reduce [group_by_clause ::=].
+Shift 183
+Stack: SELECT set_quantifier select_list from_clause where_clause group_by_clause
+Reduce [having_clause ::=].
+Shift 184
+Stack: SELECT set_quantifier select_list from_clause where_clause group_by_clause having_clause
+Shift 324
+Stack: SELECT set_quantifier select_list from_clause where_clause group_by_clause having_clause ORDER
+Input BY
+Shift 17
+Stack: SELECT set_quantifier select_list from_clause where_clause group_by_clause having_clause ORDER BY
+Input NAME
+Shift 403
+Stack: SELECT set_quantifier select_list from_clause where_clause group_by_clause having_clause ORDER BY NAME
+Input LIMIT
+Reduce [regular_identifier ::= NAME].
+Shift 408
+Stack: SELECT set_quantifier select_list from_clause where_clause group_by_clause having_clause ORDER BY regular_identifier
+Reduce [actual_identifier ::= regular_identifier].
+Shift 407
+Stack: SELECT set_quantifier select_list from_clause where_clause group_by_clause having_clause ORDER BY actual_identifier
+Reduce [identifier ::= actual_identifier].
+Shift 252
+Stack: SELECT set_quantifier select_list from_clause where_clause group_by_clause having_clause ORDER BY identifier
+Reduce [column_name ::= identifier].
+Shift 428
+Stack: SELECT set_quantifier select_list from_clause where_clause group_by_clause having_clause ORDER BY column_name
+Reduce [column_reference ::= column_name].
+Shift 421
+Stack: SELECT set_quantifier select_list from_clause where_clause group_by_clause having_clause ORDER BY column_reference
+Reduce [value_expression_primary ::= column_reference].
+Shift 419
+Stack: SELECT set_quantifier select_list from_clause where_clause group_by_clause having_clause ORDER BY value_expression_primary
+Reduce [numeric_primary ::= value_expression_primary].
+Shift 417
+Stack: SELECT set_quantifier select_list from_clause where_clause group_by_clause having_clause ORDER BY numeric_primary
+Reduce [factor ::= numeric_primary].
+Shift 465
+Stack: SELECT set_quantifier select_list from_clause where_clause group_by_clause having_clause ORDER BY factor
+Reduce [term ::= factor].
+Shift 225
+Stack: SELECT set_quantifier select_list from_clause where_clause group_by_clause having_clause ORDER BY term
+Reduce [numeric_value_expression ::= term].
+Shift 170
+Stack: SELECT set_quantifier select_list from_clause where_clause group_by_clause having_clause ORDER BY numeric_value_expression
+Reduce [value_expression ::= numeric_value_expression].
+Shift 174
+Stack: SELECT set_quantifier select_list from_clause where_clause group_by_clause having_clause ORDER BY value_expression
+Reduce [ordering ::=].
+Shift 554
+Stack: SELECT set_quantifier select_list from_clause where_clause group_by_clause having_clause ORDER BY value_expression ordering
+Reduce [orderby_expression ::= value_expression ordering].
+Shift 557
+Stack: SELECT set_quantifier select_list from_clause where_clause group_by_clause having_clause ORDER BY orderby_expression
+Reduce [orderby_expression_list ::= orderby_expression].
+Shift 325
+Stack: SELECT set_quantifier select_list from_clause where_clause group_by_clause having_clause ORDER BY orderby_expression_list
+Reduce [orderby_clause ::= ORDER BY orderby_expression_list].
+Shift 552
+Stack: SELECT set_quantifier select_list from_clause where_clause group_by_clause having_clause orderby_clause
+Reduce [table_expression ::= from_clause where_clause group_by_clause having_clause orderby_clause].
+Shift 180
+Stack: SELECT set_quantifier select_list table_expression
+Shift 321
+Stack: SELECT set_quantifier select_list table_expression LIMIT
+Input INTNUM
+Shift 231
+Stack: SELECT set_quantifier select_list table_expression LIMIT INTNUM
+Input OFFSET
+Shift 322
+Stack: SELECT set_quantifier select_list table_expression LIMIT INTNUM OFFSET
+Input INTNUM
+Shift 545
+Stack: SELECT set_quantifier select_list table_expression LIMIT INTNUM OFFSET INTNUM
+Input $
+Reduce [limit_clause ::= LIMIT INTNUM OFFSET INTNUM].
+Shift 544
+Stack: SELECT set_quantifier select_list table_expression limit_clause
+Reduce [query_specification ::= SELECT set_quantifier select_list table_expression limit_clause].
+Shift 398
+Stack: query_specification
+Reduce [query ::= query_specification].
+Accept!
+Popping $

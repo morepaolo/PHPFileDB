@@ -1,0 +1,2 @@
+id_dept	INT	5	NULL	0	1	1
+deptname	VARCHAR	20	NULL	0	0	0

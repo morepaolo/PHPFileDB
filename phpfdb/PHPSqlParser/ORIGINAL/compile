@@ -1,0 +1,4 @@
+java -cp JLexPHP.jar JLexPHP.Main sql.lex
+./lemon -lPHP sql.y
+rm sql.out
+rm sql.h
