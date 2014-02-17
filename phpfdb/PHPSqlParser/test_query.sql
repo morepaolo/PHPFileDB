@@ -1,1 +1,1 @@
-select atan(-2) from pagamenti  order by id DESC limit 2 Offset 5
+create table cache(hash char(20), original_query varchar(5000), plan blob)

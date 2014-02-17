@@ -215,3 +215,42 @@ class PHPFDB_varchar extends PHPFDB_basic_type{
 			return(strlen($value)+2);
 	}
 }
+
+class PHPFDB_blob extends PHPFDB_basic_type{
+	
+	public $string_type = "BLOB";
+	
+	public function serialize($value){
+		if(is_null($value)){
+			$isnull=1;
+			$serialized_string="";
+			$string_length="";
+		} else {
+			$isnull=0;
+			$serialized_string = $value;
+			$string_length = pack('C', strlen($serialized_string));
+		}
+		$serialized_isnull=	pack('C', $isnull);
+		return($serialized_isnull.$string_length.$serialized_string);
+	}
+	
+	public function unserialize($data_file_handler){	
+		$temp = unpack('C', fread($data_file_handler, 1));
+		$unserialized_isnull=$temp[1];
+		if($unserialized_isnull==1){
+			return(NULL);
+		}else {
+			$temp =  unpack('C', fread($data_file_handler, 1));
+			$real_string_length=$temp[1];
+			$byte_string = fread($data_file_handler, $real_string_length);
+			return($byte_string);
+		}
+	}
+	
+	public function getLength($value){
+		if(is_null($value))
+			return(1);
+		else
+			return(strlen($value)+2);
+	}
+}

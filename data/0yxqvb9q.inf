@@ -1,3 +1,0 @@
-id	INT	5	NULL	0	1	1
-id_impiegato	INT	5	NULL	0	0	0
-importo	FLOAT	9	NULL	0	0	0

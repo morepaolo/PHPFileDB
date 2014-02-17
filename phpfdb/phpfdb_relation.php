@@ -50,6 +50,11 @@ class PHPFDB_relation{
 						$column->table = $this->tablename;
 						$temp_cols[] = $column; 
 						break;
+					case "BLOB":
+						$column = new PHPFDB_blob(trim($temp[0]), intval(trim($temp[2])), trim($temp[3]), intval(trim($temp[4])), intval(trim($temp[6])));
+						$column->table = $this->tablename;
+						$temp_cols[] = $column; 
+						break;
 				}
 			}
 			$this->cols = $temp_cols;

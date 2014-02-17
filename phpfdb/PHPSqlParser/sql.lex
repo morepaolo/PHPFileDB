@@ -20,6 +20,7 @@ include 'jlex.php';
 <YYINITIAL>AUTHORIZATION	{ return $this->createToken("TK_".strtoupper($this->yytext())); }
 <YYINITIAL>AUTO_INCREMENT	{ return $this->createToken("TK_".strtoupper($this->yytext())); }
 <YYINITIAL>BETWEEN		{ return $this->createToken("TK_".strtoupper($this->yytext())); }
+<YYINITIAL>BLOB			{ return $this->createToken("TK_".strtoupper($this->yytext())); }
 <YYINITIAL>BY			{ return $this->createToken("TK_".strtoupper($this->yytext())); }
 <YYINITIAL>CHAR(ACTER)?		{ return $this->createToken("TK_CHARACTER"); }
 <YYINITIAL>CHECK		{ return $this->createToken("TK_".strtoupper($this->yytext())); }

@@ -82,6 +82,7 @@ character_set_specification ::= DEADTOKEN.
 data_type(A) ::= character_string_type(B). {A=B;}
 data_type(A) ::= character_string_type CHARACTER SET character_set_specification(B). {A=B;}
 data_type(A) ::= national_character_string_type(B). {A=B;}
+data_type(A) ::= binary_large_object_type(B). {A=B;}
 data_type(A) ::= bit_string_type(B). {A=B;}
 data_type(A) ::= numeric_type(B). {A=B;}
 data_type(A) ::= datetime_type(B). {A=B;}
@@ -111,6 +112,8 @@ national_character_string_type ::= NATIONAL CHAR VARYING.
 national_character_string_type ::= NATIONAL CHAR VARYING LPAR length RPAR.
 national_character_string_type ::= NCHAR VARYING.
 national_character_string_type ::= NCHAR VARYING LPAR length RPAR.
+
+binary_large_object_type(A) ::= BLOB. {A = new PHPFDB_blob(NULL);}
 
 bit_string_type ::= BIT.
 bit_string_type ::= BIT LPAR length RPAR.

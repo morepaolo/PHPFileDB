@@ -1,187 +1,193 @@
-Input SELECT
-Shift 169
-Stack: SELECT
-Input ATAN
-Reduce [set_quantifier ::=].
-Shift 14
-Stack: SELECT set_quantifier
-Shift 271
-Stack: SELECT set_quantifier ATAN
-Input LPAR
-Shift 25
-Stack: SELECT set_quantifier ATAN LPAR
-Input MINUS_SIGN
-Shift 414
-Stack: SELECT set_quantifier ATAN LPAR MINUS_SIGN
-Input INTNUM
-Reduce [sign ::= MINUS_SIGN].
-Shift 65
-Stack: SELECT set_quantifier ATAN LPAR sign
-Shift 404
-Stack: SELECT set_quantifier ATAN LPAR sign INTNUM
-Input RPAR
-Reduce [unsigned_numeric_literal ::= INTNUM].
-Shift 425
-Stack: SELECT set_quantifier ATAN LPAR sign unsigned_numeric_literal
-Reduce [unsigned_literal ::= unsigned_numeric_literal].
-Shift 424
-Stack: SELECT set_quantifier ATAN LPAR sign unsigned_literal
-Reduce [unsigned_value_specification ::= unsigned_literal].
-Shift 420
-Stack: SELECT set_quantifier ATAN LPAR sign unsigned_value_specification
-Reduce [value_expression_primary ::= unsigned_value_specification].
-Shift 419
-Stack: SELECT set_quantifier ATAN LPAR sign value_expression_primary
-Reduce [numeric_primary ::= value_expression_primary].
-Shift 418
-Stack: SELECT set_quantifier ATAN LPAR sign numeric_primary
-Reduce [factor ::= sign numeric_primary].
-Shift 465
-Stack: SELECT set_quantifier ATAN LPAR factor
-Reduce [term ::= factor].
-Shift 225
-Stack: SELECT set_quantifier ATAN LPAR term
-Reduce [numeric_value_expression ::= term].
-Shift 129
-Stack: SELECT set_quantifier ATAN LPAR numeric_value_expression
-Shift 470
-Stack: SELECT set_quantifier ATAN LPAR numeric_value_expression RPAR
-Input FROM
-Reduce [math_numeric_value_expression ::= ATAN LPAR numeric_value_expression RPAR].
-Shift 464
-Stack: SELECT set_quantifier math_numeric_value_expression
-Reduce [numeric_value_expression ::= math_numeric_value_expression].
-Shift 170
-Stack: SELECT set_quantifier numeric_value_expression
-Reduce [value_expression ::= numeric_value_expression].
-Shift 108
-Stack: SELECT set_quantifier value_expression
-Reduce [derived_column ::= value_expression].
-Shift 548
-Stack: SELECT set_quantifier derived_column
-Reduce [select_sublist ::= derived_column].
-Shift 562
-Stack: SELECT set_quantifier select_sublist
-Reduce [select_list ::= select_sublist].
-Shift 78
-Stack: SELECT set_quantifier select_list
-Shift 81
-Stack: SELECT set_quantifier select_list FROM
+Input CREATE
+Shift 330
+Stack: CREATE
+Input TABLE
+Shift 89
+Stack: CREATE TABLE
 Input NAME
 Shift 403
-Stack: SELECT set_quantifier select_list FROM NAME
-Input ORDER
+Stack: CREATE TABLE NAME
+Input LPAR
 Reduce [regular_identifier ::= NAME].
 Shift 408
-Stack: SELECT set_quantifier select_list FROM regular_identifier
+Stack: CREATE TABLE regular_identifier
 Reduce [actual_identifier ::= regular_identifier].
 Shift 407
-Stack: SELECT set_quantifier select_list FROM actual_identifier
+Stack: CREATE TABLE actual_identifier
 Reduce [identifier ::= actual_identifier].
 Shift 411
-Stack: SELECT set_quantifier select_list FROM identifier
+Stack: CREATE TABLE identifier
 Reduce [qualified_identifier ::= identifier].
 Shift 410
-Stack: SELECT set_quantifier select_list FROM qualified_identifier
+Stack: CREATE TABLE qualified_identifier
 Reduce [qualified_name ::= qualified_identifier].
 Shift 415
-Stack: SELECT set_quantifier select_list FROM qualified_name
+Stack: CREATE TABLE qualified_name
 Reduce [table_name ::= qualified_name].
-Shift 106
-Stack: SELECT set_quantifier select_list FROM table_name
-Reduce [table_reference ::= table_name].
-Shift 126
-Stack: SELECT set_quantifier select_list FROM table_reference
-Reduce [from_clause ::= FROM table_reference].
-Shift 181
-Stack: SELECT set_quantifier select_list from_clause
-Reduce [where_clause ::=].
-Shift 182
-Stack: SELECT set_quantifier select_list from_clause where_clause
-Reduce [group_by_clause ::=].
-Shift 183
-Stack: SELECT set_quantifier select_list from_clause where_clause group_by_clause
-Reduce [having_clause ::=].
-Shift 184
-Stack: SELECT set_quantifier select_list from_clause where_clause group_by_clause having_clause
-Shift 324
-Stack: SELECT set_quantifier select_list from_clause where_clause group_by_clause having_clause ORDER
-Input BY
-Shift 17
-Stack: SELECT set_quantifier select_list from_clause where_clause group_by_clause having_clause ORDER BY
+Shift 331
+Stack: CREATE TABLE table_name
+Shift 90
+Stack: CREATE TABLE table_name LPAR
 Input NAME
 Shift 403
-Stack: SELECT set_quantifier select_list from_clause where_clause group_by_clause having_clause ORDER BY NAME
-Input DESC
+Stack: CREATE TABLE table_name LPAR NAME
+Input CHARACTER
 Reduce [regular_identifier ::= NAME].
 Shift 408
-Stack: SELECT set_quantifier select_list from_clause where_clause group_by_clause having_clause ORDER BY regular_identifier
+Stack: CREATE TABLE table_name LPAR regular_identifier
 Reduce [actual_identifier ::= regular_identifier].
 Shift 407
-Stack: SELECT set_quantifier select_list from_clause where_clause group_by_clause having_clause ORDER BY actual_identifier
+Stack: CREATE TABLE table_name LPAR actual_identifier
 Reduce [identifier ::= actual_identifier].
-Shift 252
-Stack: SELECT set_quantifier select_list from_clause where_clause group_by_clause having_clause ORDER BY identifier
+Shift 429
+Stack: CREATE TABLE table_name LPAR identifier
 Reduce [column_name ::= identifier].
-Shift 428
-Stack: SELECT set_quantifier select_list from_clause where_clause group_by_clause having_clause ORDER BY column_name
-Reduce [column_reference ::= column_name].
-Shift 421
-Stack: SELECT set_quantifier select_list from_clause where_clause group_by_clause having_clause ORDER BY column_reference
-Reduce [value_expression_primary ::= column_reference].
-Shift 419
-Stack: SELECT set_quantifier select_list from_clause where_clause group_by_clause having_clause ORDER BY value_expression_primary
-Reduce [numeric_primary ::= value_expression_primary].
-Shift 417
-Stack: SELECT set_quantifier select_list from_clause where_clause group_by_clause having_clause ORDER BY numeric_primary
-Reduce [factor ::= numeric_primary].
-Shift 465
-Stack: SELECT set_quantifier select_list from_clause where_clause group_by_clause having_clause ORDER BY factor
-Reduce [term ::= factor].
-Shift 225
-Stack: SELECT set_quantifier select_list from_clause where_clause group_by_clause having_clause ORDER BY term
-Reduce [numeric_value_expression ::= term].
-Shift 170
-Stack: SELECT set_quantifier select_list from_clause where_clause group_by_clause having_clause ORDER BY numeric_value_expression
-Reduce [value_expression ::= numeric_value_expression].
-Shift 174
-Stack: SELECT set_quantifier select_list from_clause where_clause group_by_clause having_clause ORDER BY value_expression
-Shift 556
-Stack: SELECT set_quantifier select_list from_clause where_clause group_by_clause having_clause ORDER BY value_expression DESC
-Input LIMIT
-Reduce [ordering ::= DESC].
-Shift 554
-Stack: SELECT set_quantifier select_list from_clause where_clause group_by_clause having_clause ORDER BY value_expression ordering
-Reduce [orderby_expression ::= value_expression ordering].
-Shift 557
-Stack: SELECT set_quantifier select_list from_clause where_clause group_by_clause having_clause ORDER BY orderby_expression
-Reduce [orderby_expression_list ::= orderby_expression].
-Shift 325
-Stack: SELECT set_quantifier select_list from_clause where_clause group_by_clause having_clause ORDER BY orderby_expression_list
-Reduce [orderby_clause ::= ORDER BY orderby_expression_list].
-Shift 552
-Stack: SELECT set_quantifier select_list from_clause where_clause group_by_clause having_clause orderby_clause
-Reduce [table_expression ::= from_clause where_clause group_by_clause having_clause orderby_clause].
-Shift 180
-Stack: SELECT set_quantifier select_list table_expression
-Shift 321
-Stack: SELECT set_quantifier select_list table_expression LIMIT
+Shift 85
+Stack: CREATE TABLE table_name LPAR column_name
+Shift 238
+Stack: CREATE TABLE table_name LPAR column_name CHARACTER
+Input LPAR
+Shift 192
+Stack: CREATE TABLE table_name LPAR column_name CHARACTER LPAR
 Input INTNUM
-Shift 231
-Stack: SELECT set_quantifier select_list table_expression LIMIT INTNUM
-Input OFFSET
-Shift 322
-Stack: SELECT set_quantifier select_list table_expression LIMIT INTNUM OFFSET
+Shift 623
+Stack: CREATE TABLE table_name LPAR column_name CHARACTER LPAR INTNUM
+Input RPAR
+Reduce [length ::= INTNUM].
+Shift 345
+Stack: CREATE TABLE table_name LPAR column_name CHARACTER LPAR length
+Shift 622
+Stack: CREATE TABLE table_name LPAR column_name CHARACTER LPAR length RPAR
+Input COMMA
+Reduce [character_string_type ::= CHARACTER LPAR length RPAR].
+Shift 343
+Stack: CREATE TABLE table_name LPAR column_name character_string_type
+Reduce [data_type ::= character_string_type].
+Shift 185
+Stack: CREATE TABLE table_name LPAR column_name data_type
+Reduce [default_clause ::=].
+Shift 118
+Stack: CREATE TABLE table_name LPAR column_name data_type default_clause
+Reduce [column_constraints ::=].
+Shift 122
+Stack: CREATE TABLE table_name LPAR column_name data_type default_clause column_constraints
+Reduce [column_definition ::= column_name data_type default_clause column_constraints].
+Shift 568
+Stack: CREATE TABLE table_name LPAR column_definition
+Reduce [table_element ::= column_definition].
+Shift 566
+Stack: CREATE TABLE table_name LPAR table_element
+Reduce [table_element_list ::= table_element].
+Shift 232
+Stack: CREATE TABLE table_name LPAR table_element_list
+Shift 96
+Stack: CREATE TABLE table_name LPAR table_element_list COMMA
+Input NAME
+Shift 403
+Stack: CREATE TABLE table_name LPAR table_element_list COMMA NAME
+Input VARCHAR
+Reduce [regular_identifier ::= NAME].
+Shift 408
+Stack: CREATE TABLE table_name LPAR table_element_list COMMA regular_identifier
+Reduce [actual_identifier ::= regular_identifier].
+Shift 407
+Stack: CREATE TABLE table_name LPAR table_element_list COMMA actual_identifier
+Reduce [identifier ::= actual_identifier].
+Shift 429
+Stack: CREATE TABLE table_name LPAR table_element_list COMMA identifier
+Reduce [column_name ::= identifier].
+Shift 85
+Stack: CREATE TABLE table_name LPAR table_element_list COMMA column_name
+Shift 351
+Stack: CREATE TABLE table_name LPAR table_element_list COMMA column_name VARCHAR
+Input LPAR
+Shift 195
+Stack: CREATE TABLE table_name LPAR table_element_list COMMA column_name VARCHAR LPAR
 Input INTNUM
-Shift 545
-Stack: SELECT set_quantifier select_list table_expression LIMIT INTNUM OFFSET INTNUM
+Shift 623
+Stack: CREATE TABLE table_name LPAR table_element_list COMMA column_name VARCHAR LPAR INTNUM
+Input RPAR
+Reduce [length ::= INTNUM].
+Shift 352
+Stack: CREATE TABLE table_name LPAR table_element_list COMMA column_name VARCHAR LPAR length
+Shift 626
+Stack: CREATE TABLE table_name LPAR table_element_list COMMA column_name VARCHAR LPAR length RPAR
+Input COMMA
+Reduce [character_string_type ::= VARCHAR LPAR length RPAR].
+Shift 343
+Stack: CREATE TABLE table_name LPAR table_element_list COMMA column_name character_string_type
+Reduce [data_type ::= character_string_type].
+Shift 185
+Stack: CREATE TABLE table_name LPAR table_element_list COMMA column_name data_type
+Reduce [default_clause ::=].
+Shift 118
+Stack: CREATE TABLE table_name LPAR table_element_list COMMA column_name data_type default_clause
+Reduce [column_constraints ::=].
+Shift 122
+Stack: CREATE TABLE table_name LPAR table_element_list COMMA column_name data_type default_clause column_constraints
+Reduce [column_definition ::= column_name data_type default_clause column_constraints].
+Shift 568
+Stack: CREATE TABLE table_name LPAR table_element_list COMMA column_definition
+Reduce [table_element ::= column_definition].
+Shift 567
+Stack: CREATE TABLE table_name LPAR table_element_list COMMA table_element
+Reduce [table_element_list ::= table_element_list COMMA table_element].
+Shift 232
+Stack: CREATE TABLE table_name LPAR table_element_list
+Shift 96
+Stack: CREATE TABLE table_name LPAR table_element_list COMMA
+Input NAME
+Shift 403
+Stack: CREATE TABLE table_name LPAR table_element_list COMMA NAME
+Input BLOB
+Reduce [regular_identifier ::= NAME].
+Shift 408
+Stack: CREATE TABLE table_name LPAR table_element_list COMMA regular_identifier
+Reduce [actual_identifier ::= regular_identifier].
+Shift 407
+Stack: CREATE TABLE table_name LPAR table_element_list COMMA actual_identifier
+Reduce [identifier ::= actual_identifier].
+Shift 429
+Stack: CREATE TABLE table_name LPAR table_element_list COMMA identifier
+Reduce [column_name ::= identifier].
+Shift 85
+Stack: CREATE TABLE table_name LPAR table_element_list COMMA column_name
+Shift 633
+Stack: CREATE TABLE table_name LPAR table_element_list COMMA column_name BLOB
+Input RPAR
+Reduce [binary_large_object_type ::= BLOB].
+Shift 617
+Stack: CREATE TABLE table_name LPAR table_element_list COMMA column_name binary_large_object_type
+Reduce [data_type ::= binary_large_object_type].
+Shift 185
+Stack: CREATE TABLE table_name LPAR table_element_list COMMA column_name data_type
+Reduce [default_clause ::=].
+Shift 118
+Stack: CREATE TABLE table_name LPAR table_element_list COMMA column_name data_type default_clause
+Reduce [column_constraints ::=].
+Shift 122
+Stack: CREATE TABLE table_name LPAR table_element_list COMMA column_name data_type default_clause column_constraints
+Reduce [column_definition ::= column_name data_type default_clause column_constraints].
+Shift 568
+Stack: CREATE TABLE table_name LPAR table_element_list COMMA column_definition
+Reduce [table_element ::= column_definition].
+Shift 567
+Stack: CREATE TABLE table_name LPAR table_element_list COMMA table_element
+Reduce [table_element_list ::= table_element_list COMMA table_element].
+Shift 232
+Stack: CREATE TABLE table_name LPAR table_element_list
+Shift 674
+Stack: CREATE TABLE table_name LPAR table_element_list RPAR
 Input $
-Reduce [limit_clause ::= LIMIT INTNUM OFFSET INTNUM].
-Shift 544
-Stack: SELECT set_quantifier select_list table_expression limit_clause
-Reduce [query_specification ::= SELECT set_quantifier select_list table_expression limit_clause].
-Shift 398
-Stack: query_specification
-Reduce [query ::= query_specification].
+Reduce [table_definition ::= CREATE TABLE table_name LPAR table_element_list RPAR].
+Shift 565
+Stack: table_definition
+Reduce [sql_schema_definition_statement ::= table_definition].
+Shift 563
+Stack: sql_schema_definition_statement
+Reduce [sql_schema_statement ::= sql_schema_definition_statement].
+Shift 400
+Stack: sql_schema_statement
+Reduce [query ::= sql_schema_statement].
 Accept!
 Popping $

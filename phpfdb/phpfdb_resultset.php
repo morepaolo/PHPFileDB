@@ -75,6 +75,7 @@ class PHPFDB_resultset{
 		$values_to_add = Array();
 		$values_to_add['hash'] = md5($this->query);
 		$values_to_add['original_query'] = $this->query;
+		$values_to_add['plan'] = "OKTEST";
 		$cache_table->addRow($values_to_add);
 		
 	}
