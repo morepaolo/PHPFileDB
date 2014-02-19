@@ -6,11 +6,11 @@ class PHPFDB{
 	
 	public function __construct($db_folder=NULL){
 		//echo "Initializing DB...";
-		include ("PHPFDB_query.php");
-		include ("PHPFDB_types.php");
-		include ("PHPFDB_row.php");
-		include ("PHPFDB_relation.php");
-		include ("PHPFDB_resultset.php");
+		include ("phpfdb_query.php");
+		include ("phpfdb_types.php");
+		include ("phpfdb_row.php");
+		include ("phpfdb_relation.php");
+		include ("phpfdb_resultset.php");
 		$this->db_folder = $db_folder;
 		$this->tables["cache"] = "cache";
 		$this->tables["tables"] = "tables";

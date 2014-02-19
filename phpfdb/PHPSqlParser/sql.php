@@ -3099,172 +3099,181 @@ private function yy_reduce(
         break;
       case 229:
 #line 495 "sql.y"
-{$yygotominor->columns_projection = NULL;$yygotominor->set_functions=NULL;}
+{$yygotominor = new stdClass();$yygotominor->columns_projection = NULL;$yygotominor->set_functions=NULL;}
 #line 2948 "sql.php"
         break;
       case 230:
 #line 496 "sql.y"
 {
+		$yygotominor = new stdClass();
 		$yygotominor->columns_projection = Array();
 		$yygotominor->columns_projection[] = $this->yystack[$this->yyidx + 0]->minor;
 
 	}
-#line 2957 "sql.php"
+#line 2958 "sql.php"
         break;
       case 231:
-#line 501 "sql.y"
+#line 502 "sql.y"
 {
 		$this->yystack[$this->yyidx + -2]->minor->columns_projection[] = $this->yystack[$this->yyidx + 0]->minor;
 		$yygotominor=$this->yystack[$this->yyidx + -2]->minor;
 	}
-#line 2965 "sql.php"
+#line 2966 "sql.php"
         break;
       case 235:
-#line 510 "sql.y"
+#line 511 "sql.y"
 {$yygotominor=$this->yystack[$this->yyidx + -1]->minor; $yygotominor->alias=$this->yystack[$this->yyidx + 0]->minor;}
-#line 2970 "sql.php"
+#line 2971 "sql.php"
         break;
       case 238:
-#line 515 "sql.y"
+#line 516 "sql.y"
 {
+		$yygotominor = new stdClass();
 		$yygotominor->actions = $this->yystack[$this->yyidx + -4]->minor->actions;
 		if(isset($this->yystack[$this->yyidx + -2]->minor)&&isset($this->yystack[$this->yyidx + -2]->minor->grouping_columns))
 			$yygotominor->grouping_columns = $this->yystack[$this->yyidx + -2]->minor->grouping_columns;
 		if(isset($this->yystack[$this->yyidx + -3]->minor)&&isset($this->yystack[$this->yyidx + -3]->minor->filter))
 			$yygotominor->filter = $this->yystack[$this->yyidx + -3]->minor->filter;
 	}
-#line 2981 "sql.php"
+#line 2983 "sql.php"
         break;
       case 240:
-#line 524 "sql.y"
-{$yygotominor->offset=0;$yygotominor->rows=$this->yystack[$this->yyidx + 0]->minor->value;}
-#line 2986 "sql.php"
+#line 526 "sql.y"
+{$yygotominor = new stdClass();$yygotominor->offset=0;$yygotominor->rows=$this->yystack[$this->yyidx + 0]->minor->value;}
+#line 2988 "sql.php"
         break;
       case 241:
-#line 525 "sql.y"
-{$yygotominor->offset=$this->yystack[$this->yyidx + 0]->minor->value;$yygotominor->rows=$this->yystack[$this->yyidx + -2]->minor->value;}
-#line 2991 "sql.php"
+#line 527 "sql.y"
+{$yygotominor = new stdClass();$yygotominor->offset=$this->yystack[$this->yyidx + 0]->minor->value;$yygotominor->rows=$this->yystack[$this->yyidx + -2]->minor->value;}
+#line 2993 "sql.php"
         break;
       case 242:
-#line 526 "sql.y"
-{$yygotominor->offset=$this->yystack[$this->yyidx + -2]->minor->value;$yygotominor->rows=$this->yystack[$this->yyidx + 0]->minor->value;}
-#line 2996 "sql.php"
+#line 528 "sql.y"
+{$yygotominor = new stdClass();$yygotominor->offset=$this->yystack[$this->yyidx + -2]->minor->value;$yygotominor->rows=$this->yystack[$this->yyidx + 0]->minor->value;}
+#line 2998 "sql.php"
         break;
       case 251:
-#line 538 "sql.y"
+#line 540 "sql.y"
 {
+		$yygotominor = new stdClass();
 		$yygotominor->actions=$this->yystack[$this->yyidx + 0]->minor->actions;
 	}
-#line 3003 "sql.php"
+#line 3006 "sql.php"
         break;
       case 253:
-#line 543 "sql.y"
-{$yygotominor->actions[]=new qpAction_loadTable($this->yystack[$this->yyidx + 0]->minor->value);}
-#line 3008 "sql.php"
+#line 546 "sql.y"
+{$yygotominor = new stdClass();$yygotominor->actions[]=new qpAction_loadTable($this->yystack[$this->yyidx + 0]->minor->value);}
+#line 3011 "sql.php"
         break;
       case 254:
-#line 544 "sql.y"
-{$yygotominor->actions[]=new qpAction_loadTable($this->yystack[$this->yyidx + -1]->minor->value, $this->yystack[$this->yyidx + 0]->minor->value);}
-#line 3013 "sql.php"
+#line 547 "sql.y"
+{$yygotominor = new stdClass();$yygotominor->actions[]=new qpAction_loadTable($this->yystack[$this->yyidx + -1]->minor->value, $this->yystack[$this->yyidx + 0]->minor->value);}
+#line 3016 "sql.php"
         break;
       case 268:
-#line 566 "sql.y"
+#line 569 "sql.y"
 {
+	$yygotominor = new stdClass();
 	$yygotominor->join_type = $this->yystack[$this->yyidx + -3]->minor;
 	$b_last_relation = $this->yystack[$this->yyidx + -5]->minor->actions[count($this->yystack[$this->yyidx + -5]->minor->actions)-1];
 	$e_last_relation = $this->yystack[$this->yyidx + -1]->minor->actions[count($this->yystack[$this->yyidx + -1]->minor->actions)-1];
 	$yygotominor->actions = array_merge($this->yystack[$this->yyidx + -5]->minor->actions, $this->yystack[$this->yyidx + -1]->minor->actions);
 	$yygotominor->actions[] = new qpAction_joinRelationsLeft($b_last_relation->relation_id, $e_last_relation->relation_id, $this->yystack[$this->yyidx + 0]->minor->filter);
 }
-#line 3024 "sql.php"
+#line 3028 "sql.php"
         break;
       case 280:
-#line 588 "sql.y"
-{$yygotominor->filter=$this->yystack[$this->yyidx + 0]->minor;}
-#line 3029 "sql.php"
+#line 592 "sql.y"
+{$yygotominor = new stdClass();$yygotominor->filter=$this->yystack[$this->yyidx + 0]->minor;}
+#line 3033 "sql.php"
         break;
       case 286:
-#line 598 "sql.y"
+#line 602 "sql.y"
 {
+	$yygotominor = new stdClass();
 	$yygotominor->filter=$this->yystack[$this->yyidx + 0]->minor;
 }
-#line 3036 "sql.php"
-        break;
-      case 287:
-#line 602 "sql.y"
-{$yygotominor->grouping_columns = NULL;}
 #line 3041 "sql.php"
         break;
-      case 288:
-#line 603 "sql.y"
-{$yygotominor->grouping_columns = $this->yystack[$this->yyidx + 0]->minor;}
+      case 287:
+#line 607 "sql.y"
+{$yygotominor = new stdClass();$yygotominor->grouping_columns = NULL;}
 #line 3046 "sql.php"
         break;
-      case 289:
-#line 605 "sql.y"
-{$yygotominor = Array(); $yygotominor[]=$this->yystack[$this->yyidx + 0]->minor;}
+      case 288:
+#line 608 "sql.y"
+{$yygotominor = new stdClass();$yygotominor->grouping_columns = $this->yystack[$this->yyidx + 0]->minor;}
 #line 3051 "sql.php"
         break;
-      case 290:
-#line 606 "sql.y"
-{$this->yystack[$this->yyidx + -2]->minor[]=$this->yystack[$this->yyidx + 0]->minor;$yygotominor=$this->yystack[$this->yyidx + -2]->minor;}
+      case 289:
+#line 610 "sql.y"
+{$yygotominor = Array(); $yygotominor[]=$this->yystack[$this->yyidx + 0]->minor;}
 #line 3056 "sql.php"
+        break;
+      case 290:
+#line 611 "sql.y"
+{$this->yystack[$this->yyidx + -2]->minor[]=$this->yystack[$this->yyidx + 0]->minor;$yygotominor=$this->yystack[$this->yyidx + -2]->minor;}
+#line 3061 "sql.php"
         break;
       case 305:
       case 353:
-#line 651 "sql.y"
+#line 656 "sql.y"
 {
 		$this->yystack[$this->yyidx + -2]->minor[] = $this->yystack[$this->yyidx + 0]->minor;
 		$yygotominor = $this->yystack[$this->yyidx + -2]->minor;
 	}
-#line 3065 "sql.php"
+#line 3070 "sql.php"
         break;
       case 316:
-#line 672 "sql.y"
+#line 677 "sql.y"
 {
 		$yygotominor = new filter_IsNullColumn($this->yystack[$this->yyidx + -2]->minor);
 	}
-#line 3072 "sql.php"
+#line 3077 "sql.php"
         break;
       case 317:
-#line 675 "sql.y"
+#line 680 "sql.y"
 {
 		$yygotominor = new filter_IsNotNullColumn($this->yystack[$this->yyidx + -3]->minor);
 	}
-#line 3079 "sql.php"
+#line 3084 "sql.php"
         break;
       case 330:
-#line 721 "sql.y"
+#line 726 "sql.y"
 {
+		$yygotominor = new stdClass();
 		$yygotominor->actions=$this->yystack[$this->yyidx + 0]->minor;
 	}
-#line 3086 "sql.php"
+#line 3092 "sql.php"
         break;
       case 331:
-#line 768 "sql.y"
+#line 774 "sql.y"
 {
+		$yygotominor = new stdClass();
 		$yygotominor->action = new qpAction_createTable($this->yystack[$this->yyidx + -3]->minor->value, $this->yystack[$this->yyidx + -1]->minor);
 	}
-#line 3093 "sql.php"
+#line 3100 "sql.php"
         break;
       case 336:
-#line 937 "sql.y"
+#line 944 "sql.y"
 {
+		$yygotominor = new stdClass();
 		$yygotominor->actions = Array();
 		foreach($this->yystack[$this->yyidx + -1]->minor as $c){
 			$yygotominor->actions[] = new qpAction_dropTable($c->value);
 		}
 	}
-#line 3103 "sql.php"
+#line 3111 "sql.php"
         break;
       case 340:
-#line 948 "sql.y"
+#line 956 "sql.y"
 {$this->yystack[$this->yyidx + -2]->minor[] = $this->yystack[$this->yyidx + 0]->minor; $yygotominor=$this->yystack[$this->yyidx + -2]->minor;}
-#line 3108 "sql.php"
+#line 3116 "sql.php"
         break;
       case 345:
-#line 1036 "sql.y"
+#line 1044 "sql.y"
 {
+		$yygotominor = new stdClass();
 		$yygotominor->actions = Array();
 		if(is_null($this->yystack[$this->yyidx + 0]->minor)){
 			$yygotominor->actions[] = new qpAction_bulkDelete($this->yystack[$this->yyidx + -1]->minor->value);
@@ -3275,45 +3284,47 @@ private function yy_reduce(
 			$yygotominor->actions[] = new qpAction_addressedDelete($last_relation_id);
 		}
 	}
-#line 3123 "sql.php"
+#line 3132 "sql.php"
         break;
       case 346:
-#line 1048 "sql.y"
+#line 1057 "sql.y"
 {
 		$yygotominor = NULL;
 	}
-#line 3130 "sql.php"
+#line 3139 "sql.php"
         break;
       case 348:
-#line 1055 "sql.y"
+#line 1064 "sql.y"
 {
+		$yygotominor = new stdClass();
 		$yygotominor->actions[] = new qpAction_insertRow($this->yystack[$this->yyidx + -1]->minor->value, $this->yystack[$this->yyidx + 0]->minor);
 	}
-#line 3137 "sql.php"
+#line 3147 "sql.php"
         break;
       case 349:
-#line 1059 "sql.y"
+#line 1069 "sql.y"
 {
 		$yygotominor = Array();
 		foreach($this->yystack[$this->yyidx + -2]->minor as $key => $column_name){
 			$yygotominor[$column_name] = $this->yystack[$this->yyidx + 0]->minor[$key];
 		}
 	}
-#line 3147 "sql.php"
-        break;
-      case 350:
-#line 1065 "sql.y"
-{print_r($this->yystack[$this->yyidx + 0]->minor);}
-#line 3152 "sql.php"
-        break;
-      case 355:
-#line 1086 "sql.y"
-{$yygotominor->column=$this->yystack[$this->yyidx + -2]->minor;$yygotominor->new_value=$this->yystack[$this->yyidx + 0]->minor;}
 #line 3157 "sql.php"
         break;
+      case 350:
+#line 1075 "sql.y"
+{print_r($this->yystack[$this->yyidx + 0]->minor);}
+#line 3162 "sql.php"
+        break;
+      case 355:
+#line 1096 "sql.y"
+{$yygotominor = new stdClass();$yygotominor->column=$this->yystack[$this->yyidx + -2]->minor;$yygotominor->new_value=$this->yystack[$this->yyidx + 0]->minor;}
+#line 3167 "sql.php"
+        break;
       case 360:
-#line 1094 "sql.y"
+#line 1104 "sql.y"
 {
+		$yygotominor = new stdClass();
 		$yygotominor->actions = Array();
 		$yygotominor->actions[]=new qpAction_loadTable($this->yystack[$this->yyidx + -3]->minor->value);
 		$last_relation_id = $yygotominor->actions[count($yygotominor->actions)-1]->relation_id;
@@ -3323,149 +3334,149 @@ private function yy_reduce(
 		}
 		$yygotominor->actions[]=new qpAction_updateValues($last_relation_id, $this->yystack[$this->yyidx + -1]->minor);
 	}
-#line 3171 "sql.php"
+#line 3182 "sql.php"
         break;
       case 363:
-#line 1155 "sql.y"
+#line 1166 "sql.y"
 {$yygotominor = new filter_UnaryMathFunction("abs");$yygotominor->expression=$this->yystack[$this->yyidx + -1]->minor;}
-#line 3176 "sql.php"
+#line 3187 "sql.php"
         break;
       case 364:
-#line 1156 "sql.y"
+#line 1167 "sql.y"
 {$yygotominor = new filter_UnaryMathFunction("acos");$yygotominor->expression=$this->yystack[$this->yyidx + -1]->minor;}
-#line 3181 "sql.php"
+#line 3192 "sql.php"
         break;
       case 365:
-#line 1157 "sql.y"
+#line 1168 "sql.y"
 {$yygotominor = new filter_UnaryMathFunction("asin");$yygotominor->expression=$this->yystack[$this->yyidx + -1]->minor;}
-#line 3186 "sql.php"
+#line 3197 "sql.php"
         break;
       case 366:
-#line 1158 "sql.y"
+#line 1169 "sql.y"
 {$yygotominor = new filter_UnaryMathFunction("atan");$yygotominor->expression=$this->yystack[$this->yyidx + -1]->minor;}
-#line 3191 "sql.php"
+#line 3202 "sql.php"
         break;
       case 367:
       case 368:
-#line 1159 "sql.y"
+#line 1170 "sql.y"
 {$yygotominor = new filter_BinaryMathFunction("atan2");$yygotominor->expression1=$this->yystack[$this->yyidx + -3]->minor;$yygotominor->expression2=$this->yystack[$this->yyidx + -1]->minor;}
-#line 3197 "sql.php"
+#line 3208 "sql.php"
         break;
       case 369:
-#line 1161 "sql.y"
+#line 1172 "sql.y"
 {$yygotominor = new filter_UnaryMathFunction("ceil");$yygotominor->expression=$this->yystack[$this->yyidx + -1]->minor;}
-#line 3202 "sql.php"
+#line 3213 "sql.php"
         break;
       case 370:
-#line 1162 "sql.y"
+#line 1173 "sql.y"
 {$yygotominor = new filter_UnaryMathFunction("cos");$yygotominor->expression=$this->yystack[$this->yyidx + -1]->minor;}
-#line 3207 "sql.php"
+#line 3218 "sql.php"
         break;
       case 371:
-#line 1163 "sql.y"
+#line 1174 "sql.y"
 {$yygotominor = new filter_UnaryMathFunction("cot");$yygotominor->expression=$this->yystack[$this->yyidx + -1]->minor;}
-#line 3212 "sql.php"
+#line 3223 "sql.php"
         break;
       case 372:
-#line 1164 "sql.y"
+#line 1175 "sql.y"
 {$yygotominor = new filter_UnaryMathFunction("crc32");$yygotominor->expression=$this->yystack[$this->yyidx + -1]->minor;}
-#line 3217 "sql.php"
+#line 3228 "sql.php"
         break;
       case 373:
-#line 1165 "sql.y"
+#line 1176 "sql.y"
 {$yygotominor = new filter_UnaryMathFunction("degrees");$yygotominor->expression=$this->yystack[$this->yyidx + -1]->minor;}
-#line 3222 "sql.php"
+#line 3233 "sql.php"
         break;
       case 374:
-#line 1166 "sql.y"
+#line 1177 "sql.y"
 {$yygotominor = new filter_UnaryMathFunction("exp");$yygotominor->expression=$this->yystack[$this->yyidx + -1]->minor;}
-#line 3227 "sql.php"
+#line 3238 "sql.php"
         break;
       case 375:
-#line 1167 "sql.y"
+#line 1178 "sql.y"
 {$yygotominor = new filter_UnaryMathFunction("floor");$yygotominor->expression=$this->yystack[$this->yyidx + -1]->minor;}
-#line 3232 "sql.php"
+#line 3243 "sql.php"
         break;
       case 376:
-#line 1168 "sql.y"
+#line 1179 "sql.y"
 {$yygotominor = new filter_BinaryMathFunction("format");$yygotominor->expression1=$this->yystack[$this->yyidx + -3]->minor;$yygotominor->expression2=$this->yystack[$this->yyidx + -1]->minor;}
-#line 3237 "sql.php"
+#line 3248 "sql.php"
         break;
       case 377:
       case 378:
-#line 1169 "sql.y"
+#line 1180 "sql.y"
 {$yygotominor = new filter_UnaryMathFunction("ln");$yygotominor->expression=$this->yystack[$this->yyidx + -1]->minor;}
-#line 3243 "sql.php"
+#line 3254 "sql.php"
         break;
       case 379:
-#line 1171 "sql.y"
+#line 1182 "sql.y"
 {$yygotominor = new filter_BinaryMathFunction("log");$yygotominor->expression1=$this->yystack[$this->yyidx + -3]->minor;$yygotominor->expression2=$this->yystack[$this->yyidx + -1]->minor;}
-#line 3248 "sql.php"
+#line 3259 "sql.php"
         break;
       case 380:
-#line 1172 "sql.y"
+#line 1183 "sql.y"
 {$val2 = new filter_StaticIntnum(2);$yygotominor = new filter_BinaryMathFunction("log");$yygotominor->expression1=$val2;$yygotominor->expression2=$this->yystack[$this->yyidx + -1]->minor;}
-#line 3253 "sql.php"
+#line 3264 "sql.php"
         break;
       case 381:
-#line 1173 "sql.y"
+#line 1184 "sql.y"
 {$val10 = new filter_StaticIntnum(10);$yygotominor = new filter_BinaryMathFunction("log");$yygotominor->expression1=$val10;$yygotominor->expression2=$this->yystack[$this->yyidx + -1]->minor;}
-#line 3258 "sql.php"
+#line 3269 "sql.php"
         break;
       case 382:
-#line 1174 "sql.y"
+#line 1185 "sql.y"
 {$yygotominor = new filter_BinaryMathFunction("mod");$yygotominor->expression1=$this->yystack[$this->yyidx + -3]->minor;$yygotominor->expression2=$this->yystack[$this->yyidx + -1]->minor;}
-#line 3263 "sql.php"
+#line 3274 "sql.php"
         break;
       case 383:
-#line 1175 "sql.y"
+#line 1186 "sql.y"
 {$yygotominor = new filter_UnaryMathFunction("pi");$yygotominor->expression=new filter_EmptyExpression();}
-#line 3268 "sql.php"
+#line 3279 "sql.php"
         break;
       case 384:
-#line 1176 "sql.y"
+#line 1187 "sql.y"
 {$yygotominor = new filter_BinaryMathFunction("pow");$yygotominor->expression1=$this->yystack[$this->yyidx + -3]->minor;$yygotominor->expression2=$this->yystack[$this->yyidx + -1]->minor;}
-#line 3273 "sql.php"
+#line 3284 "sql.php"
         break;
       case 385:
-#line 1177 "sql.y"
+#line 1188 "sql.y"
 {$yygotominor = new filter_UnaryMathFunction("radians");$yygotominor->expression=$this->yystack[$this->yyidx + -1]->minor;}
-#line 3278 "sql.php"
+#line 3289 "sql.php"
         break;
       case 386:
-#line 1178 "sql.y"
+#line 1189 "sql.y"
 {$yygotominor = new filter_UnaryMathFunction("round");$yygotominor->expression=$this->yystack[$this->yyidx + -1]->minor;}
-#line 3283 "sql.php"
+#line 3294 "sql.php"
         break;
       case 387:
-#line 1179 "sql.y"
+#line 1190 "sql.y"
 {$yygotominor = new filter_BinaryMathFunction("round");$yygotominor->expression1=$this->yystack[$this->yyidx + -3]->minor;$yygotominor->expression2=$this->yystack[$this->yyidx + -1]->minor;}
-#line 3288 "sql.php"
+#line 3299 "sql.php"
         break;
       case 388:
-#line 1180 "sql.y"
+#line 1191 "sql.y"
 {$yygotominor = new filter_UnaryMathFunction("sign");$yygotominor->expression=$this->yystack[$this->yyidx + -1]->minor;}
-#line 3293 "sql.php"
+#line 3304 "sql.php"
         break;
       case 389:
-#line 1181 "sql.y"
+#line 1192 "sql.y"
 {$yygotominor = new filter_UnaryMathFunction("sin");$yygotominor->expression=$this->yystack[$this->yyidx + -1]->minor;}
-#line 3298 "sql.php"
+#line 3309 "sql.php"
         break;
       case 390:
-#line 1182 "sql.y"
+#line 1193 "sql.y"
 {$yygotominor = new filter_UnaryMathFunction("sqrt");$yygotominor->expression=$this->yystack[$this->yyidx + -1]->minor;}
-#line 3303 "sql.php"
+#line 3314 "sql.php"
         break;
       case 391:
-#line 1183 "sql.y"
+#line 1194 "sql.y"
 {$yygotominor = new filter_UnaryMathFunction("tan");$yygotominor->expression=$this->yystack[$this->yyidx + -1]->minor;}
-#line 3308 "sql.php"
+#line 3319 "sql.php"
         break;
       case 392:
-#line 1184 "sql.y"
+#line 1195 "sql.y"
 {$yygotominor = new filter_BinaryMathFunction("truncate");$yygotominor->expression1=$this->yystack[$this->yyidx + -3]->minor;$yygotominor->expression2=$this->yystack[$this->yyidx + -1]->minor;}
-#line 3313 "sql.php"
+#line 3324 "sql.php"
         break;
   };
   $yygoto = self::$yyRuleInfo[2*$yyruleno];
@@ -3519,7 +3530,7 @@ private function yy_accept(
 
       //echo "PARSING COMPLETE!!";
    
-#line 3368 "sql.php"
+#line 3379 "sql.php"
 }
 
 /* The main parser program.

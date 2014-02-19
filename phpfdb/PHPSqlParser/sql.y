@@ -492,8 +492,9 @@ query_specification(A) ::= SELECT set_quantifier(B) select_list(C) table_express
 		A=D;
 	}
 
-select_list(A) ::= ASTERISK. {A->columns_projection = NULL;A->set_functions=NULL;}
+select_list(A) ::= ASTERISK. {A = new stdClass();A->columns_projection = NULL;A->set_functions=NULL;}
 select_list(A) ::= select_sublist(B). {
+		A = new stdClass();
 		A->columns_projection = Array();
 		A->columns_projection[] = B;
 
@@ -513,6 +514,7 @@ as_clause(A) ::= column_name(B). {A=B->value;}
 as_clause(A) ::= AS column_name(B). {A=B->value;}
 
 table_expression(A) ::= from_clause(B) where_clause(C) group_by_clause(D) having_clause orderby_clause. {
+		A = new stdClass();
 		A->actions = B->actions;
 		if(isset(D)&&isset(D->grouping_columns))
 			A->grouping_columns = D->grouping_columns;
@@ -521,9 +523,9 @@ table_expression(A) ::= from_clause(B) where_clause(C) group_by_clause(D) having
 	}
 
 limit_clause ::= .
-limit_clause(A) ::= LIMIT INTNUM(B). {A->offset=0;A->rows=B->value;}
-limit_clause(A) ::= LIMIT INTNUM(B) OFFSET INTNUM(C). {A->offset=C->value;A->rows=B->value;}
-limit_clause(A) ::= LIMIT INTNUM(B) COMMA INTNUM(C). {A->offset=B->value;A->rows=C->value;}
+limit_clause(A) ::= LIMIT INTNUM(B). {A = new stdClass();A->offset=0;A->rows=B->value;}
+limit_clause(A) ::= LIMIT INTNUM(B) OFFSET INTNUM(C). {A = new stdClass();A->offset=C->value;A->rows=B->value;}
+limit_clause(A) ::= LIMIT INTNUM(B) COMMA INTNUM(C). {A = new stdClass();A->offset=B->value;A->rows=C->value;}
 
 orderby_clause ::= .
 orderby_clause ::= ORDER BY orderby_expression_list.
@@ -536,12 +538,13 @@ ordering ::= DESC.
 
 
 from_clause(A) ::= FROM table_reference(B). {
+		A = new stdClass();
 		A->actions=B->actions;
 	}
 from_clause ::= table_reference COMMA table_reference.
 
-table_reference(A) ::= table_name(B). {A->actions[]=new qpAction_loadTable(B->value);}
-table_reference(A) ::= table_name(B) correlation_specification(C). {A->actions[]=new qpAction_loadTable(B->value, C->value);}
+table_reference(A) ::= table_name(B). {A = new stdClass();A->actions[]=new qpAction_loadTable(B->value);}
+table_reference(A) ::= table_name(B) correlation_specification(C). {A = new stdClass();A->actions[]=new qpAction_loadTable(B->value, C->value);}
 table_reference ::= derived_table correlation_specification.
 table_reference(A) ::= joined_table(B).{A=B;}
 
@@ -564,6 +567,7 @@ joined_table ::= LPAR joined_table RPAR.
 cross_join ::= table_reference CROSS JOIN table_reference.
 
 qualified_join(A) ::= table_reference(B) natural_join join_type(D) JOIN table_reference(E) join_specification(F). {
+	A = new stdClass();
 	A->join_type = D;
 	$b_last_relation = B->actions[count(B->actions)-1];
 	$e_last_relation = E->actions[count(E->actions)-1];
@@ -585,7 +589,7 @@ outer_join_type(A) ::= RIGHT(B). {A=B->value;}
 outer_join_type(A) ::= FULL(B). {A=B->value;}
 
 join_specification ::= .
-join_specification(A) ::= join_condition(B). {A->filter=B;}
+join_specification(A) ::= join_condition(B). {A = new stdClass();A->filter=B;}
 join_specification ::= named_columns_join.
 
 join_condition(A) ::= ON search_condition(B). {A=B;}
@@ -596,11 +600,12 @@ join_column_list ::= column_name_list.
 
 where_clause ::= .
 where_clause(A) ::= WHERE search_condition(B). {
+	A = new stdClass();
 	A->filter=B;
 }
 
-group_by_clause(A) ::= . {A->grouping_columns = NULL;}
-group_by_clause(A) ::= GROUP BY grouping_column_reference_list(B). {A->grouping_columns = B;}
+group_by_clause(A) ::= . {A = new stdClass();A->grouping_columns = NULL;}
+group_by_clause(A) ::= GROUP BY grouping_column_reference_list(B). {A = new stdClass();A->grouping_columns = B;}
 
 grouping_column_reference_list(A) ::= grouping_column_reference(B). {A = Array(); A[]=B;}
 grouping_column_reference_list(A) ::= grouping_column_reference_list(B) COMMA grouping_column_reference(C). {B[]=C;A=B;}
@@ -719,6 +724,7 @@ sql_schema_statement(A) ::= sql_schema_definition_statement(B). {A=B;}
 sql_schema_statement(A) ::= sql_schema_manipulation_statement(B). {A=B;}
 
 sql_schema_definition_statement(A) ::= table_definition(B). {
+		A = new stdClass();
 		A->actions=B;
 	}
 /*
@@ -766,6 +772,7 @@ sql_schema_definition_statement(A) ::= table_definition(B). {
 
 
 table_definition(A) ::= CREATE TABLE table_name(B) LPAR table_element_list(C) RPAR. {
+		A = new stdClass();
 		A->action = new qpAction_createTable(B->value, C);
 	}
 
@@ -935,6 +942,7 @@ drop_behaviour ::= RESTRICT.
 */
 
 drop_table_statement(A) ::= DROP TABLE drop_if_exists tables_list(C) drop_behaviour. {
+		A = new stdClass();
 		A->actions = Array();
 		foreach(C as $c){
 			A->actions[] = new qpAction_dropTable($c->value);
@@ -1034,6 +1042,7 @@ delete_statement_positioned ::= DELETE FROM table_name WHERE CURRENT OF cursor_n
 */
 
 delete_statement_searched(A) ::= DELETE FROM table_name(B) delete_statement_where_search(C). {
+		A = new stdClass();
 		A->actions = Array();
 		if(is_null(C)){
 			A->actions[] = new qpAction_bulkDelete(B->value);
@@ -1053,6 +1062,7 @@ delete_statement_where_search(A) ::= WHERE search_condition(B). {A=B;}
 
 
 insert_statement(A) ::= INSERT INTO table_name(B) insert_columns_and_source(C). {
+		A = new stdClass();
 		A->actions[] = new qpAction_insertRow(B->value, C);
 	}
 
@@ -1083,7 +1093,7 @@ set_clause_list(A) ::= set_clause(B). {
 		A[] = B;
 	}
 
-set_clause(A) ::= object_column(B) OP_EQ update_source(C). {A->column=B;A->new_value=C;}
+set_clause(A) ::= object_column(B) OP_EQ update_source(C). {A = new stdClass();A->column=B;A->new_value=C;}
 
 object_column(A) ::= column_name(B). {A = new filter_ColumnReference(B->value);}
 
@@ -1092,6 +1102,7 @@ update_source ::= NULL.
 update_source ::= DEFAULT.
 
 update_statement_searched(A) ::= UPDATE table_name(B) SET set_clause_list(C) update_statement_where_search(D). {
+		A = new stdClass();
 		A->actions = Array();
 		A->actions[]=new qpAction_loadTable(B->value);
 		$last_relation_id = A->actions[count(A->actions)-1]->relation_id;
