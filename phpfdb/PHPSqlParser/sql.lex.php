@@ -2593,7 +2593,7 @@ array(
 						case -13:
 							break;
 						case 13:
-							{ return $this->createToken("TK_".strtoupper($this->yytext()));}
+							{ return $this->createToken("TK_SEMI");}
 						case -14:
 							break;
 						case 14:

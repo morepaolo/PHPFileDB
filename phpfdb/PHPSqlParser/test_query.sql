@@ -1,1 +1,2 @@
-create table cache(hash char(20), original_query varchar(5000), plan blob)
+select * from utenti order by name asc;select * from dipartimenti;
+

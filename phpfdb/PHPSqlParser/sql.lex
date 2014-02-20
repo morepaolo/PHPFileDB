@@ -142,7 +142,7 @@ include 'jlex.php';
 <YYINITIAL>[)]			{ return $this->createToken("TK_RPAR");}
 <YYINITIAL>"+"			{ return $this->createToken("TK_PLUS_SIGN");}
 <YYINITIAL>"-"			{ return $this->createToken("TK_MINUS_SIGN");}
-<YYINITIAL>[;]			{ return $this->createToken("TK_".strtoupper($this->yytext()));}
+<YYINITIAL>[;]			{ return $this->createToken("TK_SEMI");}
 <YYINITIAL>"="			{ return $this->createToken("TK_OP_EQ");}
 <YYINITIAL>"<>"			{ return $this->createToken("TK_OP_GTLT");}
 <YYINITIAL>"<"			{ return $this->createToken("TK_OP_LT");}

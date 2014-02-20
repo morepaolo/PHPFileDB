@@ -526,4 +526,27 @@ class PHPFDB_relation{
 			$new_rows[] = $this->rows[$i];
 		$this->rows = $new_rows;
 	}
+	
+	public function sort($order_expressions){
+		usort($this->rows, $this->createCompareFunction($order_expressions));
+	}
+	
+	public function createCompareFunction($order_expressions){
+		return function ($a, $b) use ($order_expressions) {
+			$result = 0;
+			foreach($order_expressions as $exp){
+				$val_a = $this->evaluateExpression($a, $exp->expression);
+				$val_b = $this->evaluateExpression($b, $exp->expression);
+				if($val_a==$val_b){/* GO ON */ }
+				else {
+					if($exp->order=="asc")
+						$result = ($val_a<$val_b) ? -1 : 1;
+					elseif($exp->order=="desc")
+						$result = ($val_a>$val_b) ? -1 : 1;
+					break;
+				}
+			}
+			return $result;
+		};
+	}
 }

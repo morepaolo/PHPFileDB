@@ -1,6 +1,6 @@
 <?php
-	include ("phpfdb/PHPFDB.php");
-	include ("phpfdb/PHPFDB_Exceptions.php");
+	include ("phpfdb/phpfdb.php");
+	include ("phpfdb/phpfdb_exceptions.php");
 	$db = new PHPFDB("./data/");
 	
 	// CREATE TABLE impiegati
@@ -22,61 +22,32 @@
 	$result = $db->query($sql);
 	
 	// INSERISCO I DIPARTIMENTI
-	$sql = "INSERT INTO dipartimenti (id_dept, deptname) VALUES (1, 'Ricerca')";
-	$result = $db->query($sql);
-	
-	$sql = "INSERT INTO dipartimenti (id_dept, deptname) VALUES (2, 'Sviluppo')";
-	$result = $db->query($sql);
-	
-	$sql = "INSERT INTO dipartimenti (id_dept, deptname) VALUES (3, 'Contabilità')";
+	$sql = "INSERT INTO dipartimenti (id_dept, deptname) VALUES (1, 'Ricerca');
+			INSERT INTO dipartimenti (id_dept, deptname) VALUES (2, 'Sviluppo');
+			INSERT INTO dipartimenti (id_dept, deptname) VALUES (3, 'Contabilità')";
 	$result = $db->query($sql);
 	// FINE - INSERISCO I DIPARTIMENTI
 	
 	// INSERISCO GLI IMPIEGATI
-	$sql = "INSERT INTO impiegati (name, lastname, dept_id) VALUES ('Paolo', 'Moretti', 1)";
-	$result = $db->query($sql);
-	
-	$sql = "INSERT INTO impiegati (name, lastname, dept_id) VALUES ('Paolo', 'Prova ABCDE', 2)";
-	$result = $db->query($sql);
-	
-	$sql = "INSERT INTO impiegati (name, dept_id) VALUES ('Paolo', 1)";
-	$result = $db->query($sql);
-	
-	$sql = "INSERT INTO impiegati (lastname, dept_id) VALUES ('name = NULL', 2)";
-	$result = $db->query($sql);
-	
-	$sql = "INSERT INTO impiegati (name, lastname, dept_id) VALUES ('Test', 'id=NULL!!', 1)";
-	$result = $db->query($sql);
-	
-	$sql = "INSERT INTO impiegati (name, lastname, dept_id) VALUES ('Altro TEST', 'XXXXXXX', 2)";
-	$result = $db->query($sql);
-	
-	$sql = "INSERT INTO impiegati (name, lastname, dept_id) VALUES ('Mario', 'Rossi', 1)";
-	$result = $db->query($sql);
-	
-	$sql = "INSERT INTO impiegati (name, lastname, dept_id) VALUES ('John', 'Doe', 1)";
-	$result = $db->query($sql);
-	
-	$sql = "INSERT INTO impiegati (name, lastname, dept_id) VALUES ('Giuseppe', 'Bianchi', 1)";
-	$result = $db->query($sql);
-	
-	$sql = "INSERT INTO impiegati (name, lastname, dept_id) VALUES ('Franco', 'Verdi', 2)";
+	$sql = "INSERT INTO impiegati (name, lastname, dept_id) VALUES ('Paolo', 'Moretti', 1);
+			INSERT INTO impiegati (name, lastname, dept_id) VALUES ('Paolo', 'Prova ABCDE', 2);
+			INSERT INTO impiegati (name, dept_id) VALUES ('Paolo', 1);
+			INSERT INTO impiegati (lastname, dept_id) VALUES ('name = NULL', 2);
+			INSERT INTO impiegati (name, lastname, dept_id) VALUES ('Test', 'id=NULL!!', 1);
+			INSERT INTO impiegati (name, lastname, dept_id) VALUES ('Altro TEST', 'XXXXXXX', 2);
+			INSERT INTO impiegati (name, lastname, dept_id) VALUES ('Mario', 'Rossi', 1);
+			INSERT INTO impiegati (name, lastname, dept_id) VALUES ('John', 'Doe', 1);
+			INSERT INTO impiegati (name, lastname, dept_id) VALUES ('Giuseppe', 'Bianchi', 1);
+			INSERT INTO impiegati (name, lastname, dept_id) VALUES ('Franco', 'Verdi', 2);";
 	$result = $db->query($sql);
 	// FINE - INSERISCO GLI IMPIEGATI
 	
 	// INSERISCO I PAGAMENTI
-	$sql = "INSERT INTO pagamenti (id_impiegato, importo) values (1, 500.20)";
+	$sql = "INSERT INTO pagamenti (id_impiegato, importo) values (1, 500.20);
+			INSERT INTO pagamenti (id_impiegato, importo) values (2, 997.80);
+			INSERT INTO pagamenti (id_impiegato, importo) values (3, 1516.37945);
+			INSERT INTO pagamenti (id_impiegato, importo) values (1, 1916.5);";
 	$result = $db->query($sql);
-	
-	$sql = "INSERT INTO pagamenti (id_impiegato, importo) values (2, 997.80)";
-	$result = $db->query($sql);
-	
-	$sql = "INSERT INTO pagamenti (id_impiegato, importo) values (3, 1516.37945)";
-	$result = $db->query($sql);
-	
-	$sql = "INSERT INTO pagamenti (id_impiegato, importo) values (1, 1916.5)";
-	$result = $db->query($sql);
-	
 	// FINE - INSERISCO I PAGAMENTI
 	
 	$sql = "SELECT * FROM tables";
@@ -199,12 +170,16 @@
 	echo "Manca operazione unaria HEX(N_or_S), perchè non c'è supporto ai numeri hex<br />";
 	echo "Manca l'operazione unaria RAND, capire come gestire i valori random float 0:1 e il seed<br />";
 	echo "Finite a parte queste 3 indicate<br />";
-	echo "IN PROGRESS: Order by, Ho finito la parte di grammatica, mi manca la parte di query planner<br />";
+	
+	$sql = "select * from impiegati order by name desc, lastname asc";
+	$result = $db->query($sql);	
+	$dump = $result->HTMLDump();
+	echo $dump;
 	
 	$sql = "select * from impiegati";
 	echo "TESTING QUERY PLANNER CACHING: $sql<br />";
 	$result = $db->query($sql);	
-	$result->storePlan();
+	//$result->storePlan();
 	
 	$sql = "select * from cache";
 	$result = $db->query($sql);	

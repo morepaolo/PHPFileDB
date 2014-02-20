@@ -3,6 +3,12 @@
       //echo "PARSING COMPLETE!!";
    }
 
+statement(A) ::= query_list(B). {A=B;}
+
+query_list(A) ::= query(B) SEMI query_list(C). {A=B;A->actions=array_merge(A->actions, C->actions);}
+query_list(A) ::= query(B) optional_semi.  {A=B;}
+optional_semi ::= .
+optional_semi ::= SEMI.
 
 /* QUESTO L'HO AGGIUNTO IO, TESTARE... */
 query(A) ::= query_specification(B). {
@@ -477,16 +483,19 @@ query_specification(A) ::= SELECT set_quantifier(B) select_list(C) table_express
 				D->last_relation_id = D->actions[count(D->actions)-1]->relation_id;
 			}
 		}
+		if(isset(D->ordering)){
+			D->actions[] = new qpAction_orderRelation(D->last_relation_id, D->ordering);
+		}			
+		if(B=="DISTINCT")
+			D->actions[] = new qpAction_distinctValues(D->last_relation_id);
+		elseif(B=="ALL"){
+		}	
 		if(isset(C->columns_projection)){
 			$indexes = Array();
 			for($i=0;$i<count(C->columns_projection);$i++)
 				$indexes[] = $i;
 			D->actions[] = new qpAction_selectColumnsByIndexes(D->last_relation_id, $indexes);
-		}			
-		if(B=="DISTINCT")
-			D->actions[] = new qpAction_distinctValues(D->last_relation_id);
-		elseif(B=="ALL"){
-		}			
+		}		
 		if(isset(E))
 			D->actions[] = new qpAction_limitRows(D->last_relation_id, E->rows, E->offset);
 		A=D;
@@ -513,13 +522,15 @@ derived_column(A) ::= value_expression(B) as_clause(C). {A=B; A->alias=C;}
 as_clause(A) ::= column_name(B). {A=B->value;}
 as_clause(A) ::= AS column_name(B). {A=B->value;}
 
-table_expression(A) ::= from_clause(B) where_clause(C) group_by_clause(D) having_clause orderby_clause. {
+table_expression(A) ::= from_clause(B) where_clause(C) group_by_clause(D) having_clause orderby_clause(E). {
 		A = new stdClass();
 		A->actions = B->actions;
 		if(isset(D)&&isset(D->grouping_columns))
 			A->grouping_columns = D->grouping_columns;
 		if(isset(C)&&isset(C->filter))
 			A->filter = C->filter;
+		if(isset(E)&&isset(E->ordering))
+			A->ordering = E->ordering;
 	}
 
 limit_clause ::= .
@@ -528,13 +539,13 @@ limit_clause(A) ::= LIMIT INTNUM(B) OFFSET INTNUM(C). {A = new stdClass();A->off
 limit_clause(A) ::= LIMIT INTNUM(B) COMMA INTNUM(C). {A = new stdClass();A->offset=B->value;A->rows=C->value;}
 
 orderby_clause ::= .
-orderby_clause ::= ORDER BY orderby_expression_list.
-orderby_expression_list ::= orderby_expression.
-orderby_expression_list ::= orderby_expression_list COMMA orderby_expression.
-orderby_expression ::= value_expression ordering.
-ordering ::= .
-ordering ::= ASC.
-ordering ::= DESC.
+orderby_clause(A) ::= ORDER BY orderby_expression_list(B). {A = new stdClass();A->ordering=B;}
+orderby_expression_list(A) ::= orderby_expression(B).{A=Array();A[]=B;}
+orderby_expression_list(A) ::= orderby_expression_list(B) COMMA orderby_expression(C).{B[]=C;A=B;}
+orderby_expression(A) ::= value_expression(B) ordering(C).{A = new stdClass();A->expression=B;A->order=C;}
+ordering(A) ::= .{A='asc';}
+ordering(A) ::= ASC.{A='asc';}
+ordering(A) ::= DESC.{A='desc';}
 
 
 from_clause(A) ::= FROM table_reference(B). {

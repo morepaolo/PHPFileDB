@@ -1,11 +1,11 @@
 Input SELECT
-Shift 169
+Shift 170
 Stack: SELECT
 Input ASTERISK
 Reduce [set_quantifier ::=].
 Shift 14
 Stack: SELECT set_quantifier
-Shift 561
+Shift 565
 Stack: SELECT set_quantifier ASTERISK
 Input FROM
 Reduce [select_list ::= ASTERISK].
@@ -14,54 +14,63 @@ Stack: SELECT set_quantifier select_list
 Shift 81
 Stack: SELECT set_quantifier select_list FROM
 Input NAME
-Shift 403
+Shift 407
 Stack: SELECT set_quantifier select_list FROM NAME
 Input $
 Reduce [regular_identifier ::= NAME].
-Shift 408
+Shift 412
 Stack: SELECT set_quantifier select_list FROM regular_identifier
 Reduce [actual_identifier ::= regular_identifier].
-Shift 407
+Shift 411
 Stack: SELECT set_quantifier select_list FROM actual_identifier
 Reduce [identifier ::= actual_identifier].
-Shift 411
+Shift 415
 Stack: SELECT set_quantifier select_list FROM identifier
 Reduce [qualified_identifier ::= identifier].
-Shift 410
+Shift 414
 Stack: SELECT set_quantifier select_list FROM qualified_identifier
 Reduce [qualified_name ::= qualified_identifier].
-Shift 415
+Shift 419
 Stack: SELECT set_quantifier select_list FROM qualified_name
 Reduce [table_name ::= qualified_name].
-Shift 106
+Shift 107
 Stack: SELECT set_quantifier select_list FROM table_name
 Reduce [table_reference ::= table_name].
-Shift 126
+Shift 127
 Stack: SELECT set_quantifier select_list FROM table_reference
 Reduce [from_clause ::= FROM table_reference].
-Shift 181
+Shift 183
 Stack: SELECT set_quantifier select_list from_clause
 Reduce [where_clause ::=].
-Shift 182
+Shift 184
 Stack: SELECT set_quantifier select_list from_clause where_clause
 Reduce [group_by_clause ::=].
-Shift 183
+Shift 185
 Stack: SELECT set_quantifier select_list from_clause where_clause group_by_clause
 Reduce [having_clause ::=].
-Shift 184
+Shift 186
 Stack: SELECT set_quantifier select_list from_clause where_clause group_by_clause having_clause
 Reduce [orderby_clause ::=].
-Shift 552
+Shift 556
 Stack: SELECT set_quantifier select_list from_clause where_clause group_by_clause having_clause orderby_clause
 Reduce [table_expression ::= from_clause where_clause group_by_clause having_clause orderby_clause].
-Shift 180
+Shift 182
 Stack: SELECT set_quantifier select_list table_expression
 Reduce [limit_clause ::=].
-Shift 544
+Shift 548
 Stack: SELECT set_quantifier select_list table_expression limit_clause
 Reduce [query_specification ::= SELECT set_quantifier select_list table_expression limit_clause].
-Shift 398
+Shift 402
 Stack: query_specification
 Reduce [query ::= query_specification].
+Shift 181
+Stack: query
+Reduce [optional_semi ::=].
+Shift 701
+Stack: query optional_semi
+Reduce [query_list ::= query optional_semi].
+Shift 400
+Stack: query_list
+Reduce [statement ::= query_list].
 Accept!
 Popping $

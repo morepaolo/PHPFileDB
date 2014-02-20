@@ -2,10 +2,20 @@
 	$global_relation_id_counter=0;
 	class qpAction {
 		public $action_name;
+		public $action_codes = Array(
+					"LOAD_TABLE" => 1,
+					"RETURN_RELATION" => 2
+		);
 		public function getNewRelationId(){
 			global $global_relation_id_counter;
 			$global_relation_id_counter+=1;
 			return($global_relation_id_counter);
+		}
+		public function getActionCode(){
+			if(isset($this->action_codes[$this->action_name]))
+				return $this->action_codes[$this->action_name];
+			else
+				return 0;
 		}
 	}
 	
@@ -34,6 +44,16 @@
 			$this->relation_id=$this->getNewRelationId();
 			$this->columns=$columns;
 			$this->projection=$projection;
+		}
+	}
+
+	class qpAction_orderRelation extends qpAction{
+		public $target_relation_id;
+		public $columns;
+		public function __construct($relation_id, $columns){
+			$this->action_name = "ORDER_RELATION";
+			$this->target_relation_id=$relation_id;
+			$this->columns=$columns;
 		}
 	}
 

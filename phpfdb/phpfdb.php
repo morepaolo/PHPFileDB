@@ -115,6 +115,13 @@ class PHPFDB{
 						}
 					}
 					break;
+				case "ORDER_RELATION":
+					foreach($parsequery->raw_execution_plan as $inner_instruction){
+						if(isset($inner_instruction->relation_id)&&$inner_instruction->relation_id==$instruction->target_relation_id){
+							$inner_instruction->data->sort($instruction->columns);
+						}
+					}
+					break;
 				case "RETURN_RELATION":
 					foreach($parsequery->raw_execution_plan as $inner_instruction){
 						if(isset($inner_instruction->relation_id)&&$inner_instruction->relation_id==$instruction->target_relation_id){

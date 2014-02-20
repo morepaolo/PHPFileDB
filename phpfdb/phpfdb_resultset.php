@@ -68,16 +68,26 @@ class PHPFDB_resultset{
 	}
 	
 	public function storePlan(){
-		$cache_table = new PHPFDB_Relation($this->db, $this->db->tables["cache"], "cache");
-		$cache_table->loadMetadata();
-		$cache_table->bulkLoad();
-		
-		$values_to_add = Array();
-		$values_to_add['hash'] = md5($this->query);
-		$values_to_add['original_query'] = $this->query;
-		$values_to_add['plan'] = "OKTEST";
-		$cache_table->addRow($values_to_add);
-		
+		$can_store_plan=true;
+		$serialized_plan="";
+		foreach($this->plan as $instruction){
+			$action_code = $instruction->getActionCode();
+			if($action_code==0){
+				$can_store_plan = false;
+				break;
+			}
+			$serialized_plan.=$instruction->action_name;
+		}
+		if($can_store_plan){
+			$cache_table = new PHPFDB_Relation($this->db, $this->db->tables["cache"], "cache");
+			$cache_table->loadMetadata();
+			$cache_table->bulkLoad();
+			$values_to_add = Array();
+			$values_to_add['hash'] = md5($this->query);
+			$values_to_add['original_query'] = $this->query;
+			$values_to_add['plan'] = $serialized_plan;
+			$cache_table->addRow($values_to_add);
+		}
 	}
 	
 }
