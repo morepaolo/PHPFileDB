@@ -532,11 +532,12 @@ class PHPFDB_relation{
 	}
 	
 	public function createCompareFunction($order_expressions){
-		return function ($a, $b) use ($order_expressions) {
+		$obj=$this;
+		return function ($a, $b) use ($obj, $order_expressions) {
 			$result = 0;
 			foreach($order_expressions as $exp){
-				$val_a = $this->evaluateExpression($a, $exp->expression);
-				$val_b = $this->evaluateExpression($b, $exp->expression);
+				$val_a = $obj->evaluateExpression($a, $exp->expression);
+				$val_b = $obj->evaluateExpression($b, $exp->expression);
 				if($val_a==$val_b){/* GO ON */ }
 				else {
 					if($exp->order=="asc")

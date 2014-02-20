@@ -22,31 +22,31 @@
 	$result = $db->query($sql);
 	
 	// INSERISCO I DIPARTIMENTI
-	$sql = "INSERT INTO dipartimenti (id_dept, deptname) VALUES (1, 'Ricerca');
-			INSERT INTO dipartimenti (id_dept, deptname) VALUES (2, 'Sviluppo');
-			INSERT INTO dipartimenti (id_dept, deptname) VALUES (3, 'Contabilità')";
+	$sql = "INSERT INTO dipartimenti (id_dept, deptname) VALUES (1, 'Ricerca');".
+			"INSERT INTO dipartimenti (id_dept, deptname) VALUES (2, 'Sviluppo');".
+			"INSERT INTO dipartimenti (id_dept, deptname) VALUES (3, 'Contabilità')";
 	$result = $db->query($sql);
 	// FINE - INSERISCO I DIPARTIMENTI
 	
 	// INSERISCO GLI IMPIEGATI
-	$sql = "INSERT INTO impiegati (name, lastname, dept_id) VALUES ('Paolo', 'Moretti', 1);
-			INSERT INTO impiegati (name, lastname, dept_id) VALUES ('Paolo', 'Prova ABCDE', 2);
-			INSERT INTO impiegati (name, dept_id) VALUES ('Paolo', 1);
-			INSERT INTO impiegati (lastname, dept_id) VALUES ('name = NULL', 2);
-			INSERT INTO impiegati (name, lastname, dept_id) VALUES ('Test', 'id=NULL!!', 1);
-			INSERT INTO impiegati (name, lastname, dept_id) VALUES ('Altro TEST', 'XXXXXXX', 2);
-			INSERT INTO impiegati (name, lastname, dept_id) VALUES ('Mario', 'Rossi', 1);
-			INSERT INTO impiegati (name, lastname, dept_id) VALUES ('John', 'Doe', 1);
-			INSERT INTO impiegati (name, lastname, dept_id) VALUES ('Giuseppe', 'Bianchi', 1);
-			INSERT INTO impiegati (name, lastname, dept_id) VALUES ('Franco', 'Verdi', 2);";
+	$sql = "INSERT INTO impiegati (name, lastname, dept_id) VALUES ('Paolo', 'Moretti', 1);".
+			"INSERT INTO impiegati (name, lastname, dept_id) VALUES ('Paolo', 'Prova ABCDE', 2);".
+			"INSERT INTO impiegati (name, dept_id) VALUES ('Paolo', 1);".
+			"INSERT INTO impiegati (lastname, dept_id) VALUES ('name = NULL', 2);".
+			"INSERT INTO impiegati (name, lastname, dept_id) VALUES ('Test', 'id=NULL!!', 1);".
+			"INSERT INTO impiegati (name, lastname, dept_id) VALUES ('Altro TEST', 'XXXXXXX', 2);".
+			"INSERT INTO impiegati (name, lastname, dept_id) VALUES ('Mario', 'Rossi', 1);".
+			"INSERT INTO impiegati (name, lastname, dept_id) VALUES ('John', 'Doe', 1);".
+			"INSERT INTO impiegati (name, lastname, dept_id) VALUES ('Giuseppe', 'Bianchi', 1);".
+			"INSERT INTO impiegati (name, lastname, dept_id) VALUES ('Franco', 'Verdi', 2);";
 	$result = $db->query($sql);
 	// FINE - INSERISCO GLI IMPIEGATI
 	
 	// INSERISCO I PAGAMENTI
-	$sql = "INSERT INTO pagamenti (id_impiegato, importo) values (1, 500.20);
-			INSERT INTO pagamenti (id_impiegato, importo) values (2, 997.80);
-			INSERT INTO pagamenti (id_impiegato, importo) values (3, 1516.37945);
-			INSERT INTO pagamenti (id_impiegato, importo) values (1, 1916.5);";
+	$sql = "INSERT INTO pagamenti (id_impiegato, importo) values (1, 500.20);".
+			"INSERT INTO pagamenti (id_impiegato, importo) values (2, 997.80);".
+			"INSERT INTO pagamenti (id_impiegato, importo) values (3, 1516.37945);".
+			"INSERT INTO pagamenti (id_impiegato, importo) values (1, 1916.5);";
 	$result = $db->query($sql);
 	// FINE - INSERISCO I PAGAMENTI
 	
