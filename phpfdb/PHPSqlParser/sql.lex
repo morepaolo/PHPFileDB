@@ -30,6 +30,7 @@ include 'jlex.php';
 <YYINITIAL>CREATE		{ return $this->createToken("TK_".strtoupper($this->yytext())); }
 <YYINITIAL>CURRENT		{ return $this->createToken("TK_".strtoupper($this->yytext())); }
 <YYINITIAL>CURSOR		{ return $this->createToken("TK_".strtoupper($this->yytext())); }
+<YYINITIAL>DATE			{ return $this->createToken("TK_".strtoupper($this->yytext())); }
 <YYINITIAL>DECIMAL		{ return $this->createToken("TK_".strtoupper($this->yytext())); }
 <YYINITIAL>DECLARE		{ return $this->createToken("TK_".strtoupper($this->yytext())); }
 <YYINITIAL>DEFAULT		{ return $this->createToken("TK_".strtoupper($this->yytext())); }
@@ -132,6 +133,10 @@ include 'jlex.php';
 <YYINITIAL>SQRT			{ return $this->createToken("TK_".strtoupper($this->yytext())); }
 <YYINITIAL>TAN			{ return $this->createToken("TK_".strtoupper($this->yytext())); }
 <YYINITIAL>TRUNCATE		{ return $this->createToken("TK_".strtoupper($this->yytext())); }
+
+<YYINITIAL>DAY			{ return $this->createToken("TK_".strtoupper($this->yytext())); }
+<YYINITIAL>MONTH		{ return $this->createToken("TK_".strtoupper($this->yytext())); }
+<YYINITIAL>YEAR			{ return $this->createToken("TK_".strtoupper($this->yytext())); }
 
 
 <YYINITIAL>[*]			{ return $this->createToken("TK_ASTERISK");}

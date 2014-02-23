@@ -1,1 +1,1 @@
-select * from cache
+delete from cache

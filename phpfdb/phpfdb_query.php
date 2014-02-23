@@ -2,12 +2,6 @@
 class PHPFDB_query{
 	public $raw_execution_plan;
 	public function __construct($sql){
-		
-		require_once('PHPSqlParser/sql.lex.php');
-		require_once('PHPSqlParser/sql.php');
-		require_once('PHPSqlParser/query-planner.php');
-		require_once('PHPSqlParser/filter-framework.php');
-		
 		$P = new ParseParser();
 		$fh = fopen("temp/test_query.sql", "w");
 		fwrite($fh, $sql);

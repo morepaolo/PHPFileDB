@@ -55,6 +55,11 @@ class PHPFDB_relation{
 						$column->table = $this->tablename;
 						$temp_cols[] = $column; 
 						break;
+					case "DATE":
+						$column = new PHPFDB_date(trim($temp[0]), intval(trim($temp[3])), trim($temp[4]), intval(trim($temp[6])));
+						$column->table = $this->tablename;
+						$temp_cols[] = $column; 
+						break;
 				}
 			}
 			$this->cols = $temp_cols;

@@ -34,7 +34,6 @@ class PHPFDB_row{
 				} else 
 					$value_to_write = $this->values[$key];
 			}
-			
 			if($cur_col->is_unique && $check_uniqueness){ //CHECKING FOR UNIQUENESS
 				$uniqueness = $relation->check_uniqueness($cur_col->name, $value_to_write);
 				if($uniqueness)

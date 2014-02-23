@@ -18,8 +18,10 @@
 	// CREATE TABLE pagamenti
 	$sql = "drop table pagamenti";
 	$result = $db->query($sql);
-	$sql = "create table pagamenti(id int auto_increment, id_impiegato int, importo float)";
+	$sql = "create table pagamenti(id int auto_increment, id_impiegato int, importo float, data_inserimento date)";
 	$result = $db->query($sql);
+	
+	echo "TABLES CREATED<br />";
 	
 	// INSERISCO I DIPARTIMENTI
 	$sql = "INSERT INTO dipartimenti (id_dept, deptname) VALUES (1, 'Ricerca');".
@@ -43,14 +45,24 @@
 	// FINE - INSERISCO GLI IMPIEGATI
 	
 	// INSERISCO I PAGAMENTI
-	$sql = "INSERT INTO pagamenti (id_impiegato, importo) values (1, 500.20);".
-			"INSERT INTO pagamenti (id_impiegato, importo) values (2, 997.80);".
-			"INSERT INTO pagamenti (id_impiegato, importo) values (3, 1516.37945);".
-			"INSERT INTO pagamenti (id_impiegato, importo) values (1, 1916.5);";
+	$sql = "INSERT INTO pagamenti (id_impiegato, importo, data_inserimento) values (1, 500.20, '2014-01-23');".
+			"INSERT INTO pagamenti (id_impiegato, importo, data_inserimento) values (2, 997.80, '2012-10-28');".
+			"INSERT INTO pagamenti (id_impiegato, importo, data_inserimento) values (3, 1516.37945, '2015-04-03');".
+			"INSERT INTO pagamenti (id_impiegato, importo, data_inserimento) values (1, 1916.5, '2012-09-04');";
 	$result = $db->query($sql);
 	// FINE - INSERISCO I PAGAMENTI
 	
 	$sql = "SELECT * FROM tables";
+	$result = $db->query($sql);	
+	$dump = $result->HTMLDump();
+	echo $dump;
+	
+	$sql = "SELECT * FROM pagamenti where data_inserimento>'2012-09-04' order by data_inserimento asc";
+	$result = $db->query($sql);	
+	$dump = $result->HTMLDump();
+	echo $dump;
+	
+	$sql = "SELECT * FROM impiegati AS i";
 	$result = $db->query($sql);	
 	$dump = $result->HTMLDump();
 	echo $dump;
@@ -61,6 +73,11 @@
 	echo $dump;
 	
 	$sql = "SELECT * FROM dipartimenti";
+	$result = $db->query($sql);	
+	$dump = $result->HTMLDump();
+	echo $dump;
+	
+	$sql = "SELECT * FROM pagamenti order by data_inserimento asc";
 	$result = $db->query($sql);	
 	$dump = $result->HTMLDump();
 	echo $dump;
@@ -165,26 +182,44 @@
 	$dump = $result->HTMLDump();
 	echo $dump;
 	
-	echo "TODO: Mancano le operazioni ternarie:<br />";
-	echo "CONV(N,from_base,to_base)<br />";
-	echo "Manca operazione unaria HEX(N_or_S), perchè non c'è supporto ai numeri hex<br />";
-	echo "Manca l'operazione unaria RAND, capire come gestire i valori random float 0:1 e il seed<br />";
-	echo "Finite a parte queste 3 indicate<br />";
-	
 	$sql = "select * from impiegati order by name desc, lastname asc";
 	$result = $db->query($sql);	
 	$dump = $result->HTMLDump();
 	echo $dump;
-	
+		
 	$sql = "select * from impiegati";
-	echo "TESTING QUERY PLANNER CACHING: $sql<br />";
 	$result = $db->query($sql);	
-	//$result->storePlan();
+	$dump = $result->HTMLDump();
+	echo $dump;
 	
 	$sql = "select * from cache";
 	$result = $db->query($sql);	
 	$dump = $result->HTMLDump();
 	echo $dump;
+	
+	
+	echo "TODO: Mancano le operazioni matematiche ternarie:<br />";
+	echo "CONV(N,from_base,to_base)<br />";
+	echo "Manca operazione unaria HEX(N_or_S), perchè non c'è supporto ai numeri hex<br />";
+	echo "Manca l'operazione unaria RAND, capire come gestire i valori random float 0:1 e il seed<br />";
+	echo "Finite a parte queste 3 indicate<br />";
+	
+	$sql = "select id, year(data_inserimento), day(data_inserimento), month(data_inserimento) from pagamenti";
+	$result = $db->query($sql);	
+	$dump = $result->HTMLDump();
+	echo $dump;
+	
+	echo "ALTRO TODO: IN PROGRESS, TIPO \"DATE\"<br />";
+	echo "FUNZIONI SUL TIPO DATE IMPLEMENTATE: day, month, year<br />";
+	echo "IL TIPO \"DATE\" OCCUPA 4 byte, ma dovrebbe occuparne solo 3<br />";
+	echo "LA SINTASSI ...year('2012-04-21')... NON E' ATTUALMENTE SUPPORTATA<br />";
+	echo "IL CONVERTITORE string2Datetime GESTISCE SOLO IL - COME SEPARATORE DI CAMPO, MENTRE MYSQL<br />";
+	echo "SUPPORTA QUALUNQUE CARATTERE DI PUNTEGGIATURA (COME ./@ ...)<br />";
+	echo "IN PROGRESS: QUERY PLAN CACHING, FUNZIONA IL SISTEMA GENERICO MA SOLO LE ACTION LOAD_TABLE E RETURN_RELATION SONO IMPLEMENTATE";
+	
+	
+	$sql = "delete from cache";
+	$result = $db->query($sql);
 	/*
 	echo "<pre>";
 	print_r($result->plan);

@@ -11,11 +11,25 @@
 			$global_relation_id_counter+=1;
 			return($global_relation_id_counter);
 		}
-		public function getActionCode(){
-			if(isset($this->action_codes[$this->action_name]))
-				return $this->action_codes[$this->action_name];
-			else
+		public function getActionCode($binary = false){
+			if(isset($this->action_codes[$this->action_name])){
+				if($binary)
+					return pack('n', $this->action_codes[$this->action_name]);
+				else
+					return $this->action_codes[$this->action_name];
+			} else
 				return 0;
+		}
+		public static function byActionCode($action_code){
+			$temp = new qpAction();
+			foreach($temp->action_codes as $action_name => $code){
+				if($code==$action_code){
+					if($action_name=="LOAD_TABLE")
+						return new qpAction_loadTable();
+					elseif($action_name=="RETURN_RELATION")
+						return new qpAction_returnRelation();
+				}
+			}			
 		}
 	}
 	
@@ -29,6 +43,50 @@
 			$this->relation_id=$this->getNewRelationId();
 			$this->alias = $alias;
 			$this->relation_name = $table_name;
+		}
+		public function serialize(){			
+			$temp = "";
+			$serialized_instruction=$this->getActionCode(true);
+			$temp.=pack("N", $this->relation_id);
+			$temp.=pack("N", strlen($this->relation_name));
+			$temp.=$this->relation_name;
+			$temp.=pack("N", strlen($this->alias));
+			$temp.=$this->alias;
+			$instruction_length=pack("N", strlen($temp));
+			$serialized_instruction .= $instruction_length.$temp;
+			return($serialized_instruction);
+		}
+		public function deserialize($serialized_instruction){
+			$relation_id = substr($serialized_instruction, 0, 4);
+			$relation_id = unpack("N", $relation_id);
+			$this->relation_id = $relation_id[1];
+			$relation_name_length = substr($serialized_instruction, 4, 4);
+			$relation_name_length = unpack("N", $relation_name_length);
+			$this->relation_name = substr($serialized_instruction, 8, $relation_name_length[1]);
+			$alias_length = substr($serialized_instruction, 8+$relation_name_length[1], 4);
+			$alias_length = unpack("N", $alias_length);
+			$this->alias = substr($serialized_instruction, 12+$relation_name_length[1], $alias_length[1]);
+		}
+	}
+
+	class qpAction_returnRelation extends qpAction{
+		public $target_relation_id;
+		public function __construct($relation_id=NULL){
+			$this->action_name = "RETURN_RELATION";
+			$this->target_relation_id = $relation_id;
+		}
+		public function serialize(){
+			$temp = "";
+			$serialized_instruction=$this->getActionCode(true);
+			$temp.=pack("N", $this->target_relation_id);
+			$instruction_length=pack("N", strlen($temp));
+			$serialized_instruction .= $instruction_length.$temp;
+			return($serialized_instruction);
+		}
+		public function deserialize($serialized_instruction){
+			$target_relation_id = substr($serialized_instruction, 0, 4);
+			$target_relation_id = unpack("N", $target_relation_id);
+			$this->target_relation_id = $target_relation_id[1];
 		}
 	}
 
@@ -140,14 +198,6 @@
 			$this->target_relation_id = $relation_id;
 			$this->rows = $rows;
 			$this->offset = $offset;
-		}
-	}
-
-	class qpAction_returnRelation extends qpAction{
-		public $target_relation_id;
-		public function __construct($relation_id){
-			$this->action_name = "RETURN_RELATION";
-			$this->target_relation_id = $relation_id;
 		}
 	}
 

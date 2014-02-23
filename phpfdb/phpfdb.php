@@ -6,11 +6,16 @@ class PHPFDB{
 	
 	public function __construct($db_folder=NULL){
 		//echo "Initializing DB...";
+		include ("phpfdb_converters.php");
 		include ("phpfdb_query.php");
 		include ("phpfdb_types.php");
 		include ("phpfdb_row.php");
 		include ("phpfdb_relation.php");
 		include ("phpfdb_resultset.php");
+		require_once('PHPSqlParser/sql.lex.php');
+		require_once('PHPSqlParser/sql.php');
+		require_once('PHPSqlParser/query-planner.php');
+		require_once('PHPSqlParser/filter-framework.php');
 		$this->db_folder = $db_folder;
 		$this->tables["cache"] = "cache";
 		$this->tables["tables"] = "tables";
@@ -74,67 +79,56 @@ class PHPFDB{
 	public function query($sql){
 		$result = new PHPFDB_resultset($this, $sql);
 		$start_planning = microtime(true);
-		$parsequery = new PHPFDB_Query($sql);
+		$execution_plan = $result->retrievePlan();
+		$loaded_relations = Array();
+		if(isset($execution_plan)){
+			$result->from_cache=true;
+		} else {
+			$parsequery = new PHPFDB_Query($sql);
+			$execution_plan = $parsequery->raw_execution_plan;
+			$result->plan = $execution_plan;
+			$result->storePlan();
+		}
 		$end_planning = microtime(true);
-		foreach($parsequery->raw_execution_plan as $instruction){
+		foreach($execution_plan as $instruction){
 			switch($instruction->action_name){
 				case "LOAD_TABLE":
 					if(array_key_exists($instruction->relation_name, $this->tables)){
 						$instruction->data = new PHPFDB_Relation($this, $this->tables[$instruction->relation_name], $instruction->relation_name);
 						$instruction->data->loadMetadata();
 						$instruction->data->bulkLoad();
+						$loaded_relations[$instruction->relation_id] = $instruction->data;
 						break;
 					} else {
 						throw new PHPFDB_InvalidTableName_Exception();
 					}
 				case "DISTINCT_VALUES":
-					foreach($parsequery->raw_execution_plan as $inner_instruction){
-						if(isset($inner_instruction->relation_id)&&$inner_instruction->relation_id==$instruction->target_relation_id){
-							$inner_instruction->data->filterDistinct();
-						}
-					}
+					if(isset($loaded_relations[$instruction->target_relation_id]))
+						$loaded_relations[$instruction->target_relation_id]->filterDistinct();
 					break;
 				case "PROJECT_COLUMNS":
-					foreach($parsequery->raw_execution_plan as $inner_instruction){
-						if(isset($inner_instruction->relation_id)&&$inner_instruction->relation_id==$instruction->target_relation_id){
-							$inner_instruction->data->filterColumns($instruction->columns);
-						}
-					}
+					if(isset($loaded_relations[$instruction->target_relation_id]))
+						$loaded_relations[$instruction->target_relation_id]->filterColumns($instruction->columns);
 					break;
 				case "SELECT_COLUMNS_BY_ID":
-					foreach($parsequery->raw_execution_plan as $inner_instruction){
-						if(isset($inner_instruction->relation_id)&&$inner_instruction->relation_id==$instruction->target_relation_id){
-							$inner_instruction->data->filterColumnsByIndexes($instruction->columns);
-						}
-					}
+					if(isset($loaded_relations[$instruction->target_relation_id]))
+						$loaded_relations[$instruction->target_relation_id]->filterColumnsByIndexes($instruction->columns);
 					break;
 				case "LIMIT_ROWS":
-					foreach($parsequery->raw_execution_plan as $inner_instruction){
-						if(isset($inner_instruction->relation_id)&&$inner_instruction->relation_id==$instruction->target_relation_id){
-							$inner_instruction->data->limitRows($instruction->rows, $instruction->offset);
-						}
-					}
+					if(isset($loaded_relations[$instruction->target_relation_id]))
+						$loaded_relations[$instruction->target_relation_id]->limitRows($instruction->rows, $instruction->offset);
 					break;
 				case "ORDER_RELATION":
-					foreach($parsequery->raw_execution_plan as $inner_instruction){
-						if(isset($inner_instruction->relation_id)&&$inner_instruction->relation_id==$instruction->target_relation_id){
-							$inner_instruction->data->sort($instruction->columns);
-						}
-					}
+					if(isset($loaded_relations[$instruction->target_relation_id]))
+						$loaded_relations[$instruction->target_relation_id]->sort($instruction->columns);
 					break;
 				case "RETURN_RELATION":
-					foreach($parsequery->raw_execution_plan as $inner_instruction){
-						if(isset($inner_instruction->relation_id)&&$inner_instruction->relation_id==$instruction->target_relation_id){
-							$result->data=$inner_instruction->data;
-						}
-					}
+					if(isset($loaded_relations[$instruction->target_relation_id]))
+						$result->data=$loaded_relations[$instruction->target_relation_id];
 					break;
 				case "FILTER_RESULTS":
-					foreach($parsequery->raw_execution_plan as $inner_instruction){
-						if(isset($inner_instruction->relation_id)&&$inner_instruction->relation_id==$instruction->target_relation_id){
-							$inner_instruction->data->filter($instruction->filter);
-						}
-					}
+					if(isset($loaded_relations[$instruction->target_relation_id]))
+						$loaded_relations[$instruction->target_relation_id]->filter($instruction->filter);
 					break;
 				case "CREATE_TABLE":
 					$this->addTable($instruction->relation_name, $instruction->columns);
@@ -147,33 +141,19 @@ class PHPFDB{
 					$rel->bulkDelete();
 					break;
 				case "ADDRESSED_DELETE":
-					foreach($parsequery->raw_execution_plan as $inner_instruction){
-						if(isset($inner_instruction->relation_id)&&$inner_instruction->relation_id==$instruction->target_relation_id){
-							$inner_instruction->data->addressedDelete();
-						}
-					}
+					if(isset($loaded_relations[$instruction->target_relation_id]))
+						$loaded_relations[$instruction->target_relation_id]->addressedDelete();
 					break;
 				case "UPDATE_ROW":
-					foreach($parsequery->raw_execution_plan as $inner_instruction){
-						if(isset($inner_instruction->relation_id)&&$inner_instruction->relation_id==$instruction->target_relation_id){
-							$inner_instruction->data->updateRows($instruction->new_values_list);
-						}
-					}
+					if(isset($loaded_relations[$instruction->target_relation_id]))
+						$loaded_relations[$instruction->target_relation_id]->updateRows($instruction->new_values_list);
 					break;
 				case "LEFT_JOIN":
-					foreach($parsequery->raw_execution_plan as $inner_instruction){
-						if(isset($inner_instruction->relation_id)&&$inner_instruction->relation_id==$instruction->in_relation_1){
-							$relation_1 = $inner_instruction->data;
-						}
-					}
-					foreach($parsequery->raw_execution_plan as $inner_instruction){
-						if(isset($inner_instruction->relation_id)&&$inner_instruction->relation_id==$instruction->in_relation_2){
-							$relation_2 = $inner_instruction->data;
-						}
-					}
+					$relation_1 = $loaded_relations[$instruction->in_relation_1];
+					$relation_2 = $loaded_relations[$instruction->in_relation_2];
 					$temp = new PHPFDB_Relation($this, "", "");
 					$temp->leftJoin($relation_1, $relation_2, $instruction->join_condition);
-					$instruction->data = $temp;
+					$loaded_relations[$instruction->relation_id]=$temp;
 					break;
 				case "INSERT_ROW":
 					$temp_table = new PHPFDB_Relation($this, $this->tables[$instruction->relation_name], $instruction->relation_name);
@@ -186,61 +166,59 @@ class PHPFDB{
 					break;
 					
 				case "GROUP_TABLE":
-					foreach($parsequery->raw_execution_plan as $inner_instruction){
-						if(isset($inner_instruction->relation_id)&&$inner_instruction->relation_id==$instruction->target_relation_id){
-							$instruction->data = new PHPFDB_Relation($this, "", "");
-							$instruction->data->cols=$inner_instruction->data->cols;
-							$new_rows = Array();
-							$grouping_attribute_indexes = Array();
-							foreach($instruction->columns as $grouping_column){
-								$grouping_attribute_indexes[] = $instruction->data->getColIndex($grouping_column->name);
-								//echo $grouping_column->value." - ".$instruction->data->getColIndex($grouping_column->value)."<br />";
-							}
-							foreach($inner_instruction->data->rows as $cur_row){
-								$same_group=false;
-								foreach($instruction->data->rows as $row_index => $new_row){
-									if($instruction->data->sameGroupRows($new_row, $cur_row, $grouping_attribute_indexes)){
-										$same_group=true;
-										break;
-									}
-								}
-								if($same_group){ // VALUTO LA SET FUNCTION
-									foreach($instruction->projection as $key => $column){
-										if($column->is_set_function){
-											if($column->type=="count_asterisk"){
-												$new_row->values[$key] = $new_row->values[$key]+1;
-											} elseif($column->type=="max"){
-												$value = $instruction->data->evaluateExpression($cur_row, $column->expression);
-												if($new_row->values[$key]<$value)
-													$new_row->values[$key] = $value;
-											} elseif($column->type=="min"){
-												$value = $instruction->data->evaluateExpression($cur_row, $column->expression);
-												if($new_row->values[$key]>$value)
-													$new_row->values[$key] = $value;
-											}
-										}
-									}
-								} else { // AGGIUNGO LA ROW
-									foreach($instruction->projection as $key => $column){
-										if($column->is_set_function){
-											if($column->type=="count_asterisk")
-												$cur_row->values[$key]=1;
-											elseif($column->type=="max")
-												$cur_row->values[$key]=$instruction->data->evaluateExpression($cur_row, $column->expression);
-											elseif($column->type=="min")
-												$cur_row->values[$key]=$instruction->data->evaluateExpression($cur_row, $column->expression);
-										}
-									}
-									$instruction->data->rows[] = $cur_row;
-								}
-							}
-							break;
+					if(isset($loaded_relations[$instruction->target_relation_id])){
+						$instruction->data = new PHPFDB_Relation($this, "", "");
+						$instruction->data->cols=$loaded_relations[$instruction->target_relation_id]->cols;
+						$new_rows = Array();
+						$grouping_attribute_indexes = Array();
+						foreach($instruction->columns as $grouping_column){
+							$grouping_attribute_indexes[] = $instruction->data->getColIndex($grouping_column->name);
+							//echo $grouping_column->value." - ".$instruction->data->getColIndex($grouping_column->value)."<br />";
 						}
+						foreach($loaded_relations[$instruction->target_relation_id]->rows as $cur_row){
+							$same_group=false;
+							foreach($instruction->data->rows as $row_index => $new_row){
+								if($instruction->data->sameGroupRows($new_row, $cur_row, $grouping_attribute_indexes)){
+									$same_group=true;
+									break;
+								}
+							}
+							if($same_group){ // VALUTO LA SET FUNCTION
+								foreach($instruction->projection as $key => $column){
+									if($column->is_set_function){
+										if($column->type=="count_asterisk"){
+											$new_row->values[$key] = $new_row->values[$key]+1;
+										} elseif($column->type=="max"){
+											$value = $instruction->data->evaluateExpression($cur_row, $column->expression);
+											if($new_row->values[$key]<$value)
+												$new_row->values[$key] = $value;
+										} elseif($column->type=="min"){
+											$value = $instruction->data->evaluateExpression($cur_row, $column->expression);
+											if($new_row->values[$key]>$value)
+												$new_row->values[$key] = $value;
+										}
+									}
+								}
+							} else { // AGGIUNGO LA ROW
+								foreach($instruction->projection as $key => $column){
+									if($column->is_set_function){
+										if($column->type=="count_asterisk")
+											$cur_row->values[$key]=1;
+										elseif($column->type=="max")
+											$cur_row->values[$key]=$instruction->data->evaluateExpression($cur_row, $column->expression);
+										elseif($column->type=="min")
+											$cur_row->values[$key]=$instruction->data->evaluateExpression($cur_row, $column->expression);
+									}
+								}
+								$instruction->data->rows[] = $cur_row;
+							}
+						}
+						$loaded_relations[$instruction->relation_id] = $instruction->data;
 					}
+					break;
 			}
 		}
 		$end_execution = microtime(true);
-		$result->plan = $parsequery->raw_execution_plan;
 		$result->planning_duration = $end_planning-$start_planning;
 		$result->execution_duration = $end_execution-$end_planning;
 		return($result);

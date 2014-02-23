@@ -150,7 +150,7 @@ approximate_numeric_type ::= FLOAT LPAR precision RPAR.
 approximate_numeric_type ::= REAL.
 approximate_numeric_type ::= DOUBLE PRECISION.
 
-datetime_type ::= DATE.
+datetime_type(A) ::= DATE. {A = new PHPFDB_date();}
 datetime_type ::= TIME with_time_zone.
 datetime_type ::= TIME LPAR time_precision RPAR with_time_zone.
 datetime_type ::= TIMESTAMP with_time_zone.
@@ -330,6 +330,7 @@ value_expression(A) ::= numeric_value_expression(B). {A=B;}
 
 numeric_value_expression(A) ::= term(B). {A=B;}
 numeric_value_expression(A) ::= math_numeric_value_expression(B). {A=B;} /* DEFINED IN MATH OPERATIONS */
+numeric_value_expression(A) ::= date_value_expression(B). {A=B;} /* DEFINED IN DATE OPERATIONS */
 numeric_value_expression(B) ::= numeric_value_expression(B) sign(C) term(D). { ECHO "TODOTODOTODOTODO";}
 
 term(A) ::= factor(B). {A=B;}
@@ -1171,7 +1172,7 @@ update_statement_where_search(A) ::= WHERE search_condition(B). {A=B;}
 
 
 /************************************/
-/* MATH OPERATIONS */
+/* MATH OPERATIONS                  */
 /************************************/
 
 math_numeric_value_expression(A) ::= ABS LPAR numeric_value_expression(B) RPAR. {A = new filter_UnaryMathFunction("abs");A->expression=B;}
@@ -1204,3 +1205,12 @@ math_numeric_value_expression(A) ::= SIN LPAR numeric_value_expression(B) RPAR. 
 math_numeric_value_expression(A) ::= SQRT LPAR numeric_value_expression(B) RPAR. {A = new filter_UnaryMathFunction("sqrt");A->expression=B;}
 math_numeric_value_expression(A) ::= TAN LPAR numeric_value_expression(B) RPAR. {A = new filter_UnaryMathFunction("tan");A->expression=B;}
 math_numeric_value_expression(A) ::= TRUNCATE LPAR numeric_value_expression(B) COMMA numeric_value_expression(C) RPAR. {A = new filter_BinaryMathFunction("truncate");A->expression1=B;A->expression2=C;}
+
+
+/************************************/
+/* DATE OPERATIONS                  */
+/************************************/
+
+date_value_expression(A) ::= DAY LPAR numeric_value_expression(B) RPAR. {A = new filter_UnaryDateFunction("day");A->expression=B;}
+date_value_expression(A) ::= MONTH LPAR numeric_value_expression(B) RPAR. {A = new filter_UnaryDateFunction("month");A->expression=B;}
+date_value_expression(A) ::= YEAR LPAR numeric_value_expression(B) RPAR. {A = new filter_UnaryDateFunction("year");A->expression=B;}

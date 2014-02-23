@@ -211,6 +211,31 @@ class filter_BinaryMathFunction extends unary_filter{
 		return array_merge($temp1, $temp2);
 	}
 }
+
+class filter_UnaryDateFunction extends unary_filter{
+	public $type;
+	public $alias;
+	public $expression;
+	public $is_math_function = true;
+
+	public function __construct($type, $alias=NULL){
+		$this->type=$type;
+		$this->alias=$alias;
+	}
+	public function check($filtered_values){
+		$value = $this->expression->check($filtered_values);
+		if($this->type=="year")
+			return intval($value->format("Y"));
+		if($this->type=="month")
+			return intval($value->format("m"));
+		if($this->type=="day")
+			return intval($value->format("d"));
+		return(0);
+	}
+	public function getFilterColumnReferences(){
+		return $this->expression->getFilterColumnReferences();
+	}
+}
 class filter_StaticIntnum extends unary_filter{
 	public $value;
 	
@@ -314,11 +339,22 @@ class filter_COMP extends binary_filter{
 		$this->comp_operator = $comp_operator;
 		$this->op1 = $in_op1;
 		$this->op2 = $in_op2;
+		//echo get_class($in_op1);
+		//echo get_class($in_op2);
 	}
-
+	
 	public function check($filtered_values){
 		$op1_value = $this->op1->check($filtered_values);
 		$op2_value = $this->op2->check($filtered_values);
+		
+		if((is_object($op1_value)&&get_class($op1_value)=="DateTime")||(is_object($op2_value)&&get_class($op2_value)=="DateTime")){
+			if(!(is_object($op1_value)&&get_class($op1_value)=="DateTime"))
+				$op1_value = PHPFDB_converters::string2Date($op1_value);
+			if(!(is_object($op2_value)&&get_class($op2_value)=="DateTime"))
+				$op2_value = PHPFDB_converters::string2Date($op2_value);
+			$op1_value = $op1_value->format('YmdHis');
+			$op2_value = $op2_value->format('YmdHis');
+		}
 		if($this->comp_operator=="="){
 			return($op1_value==$op2_value);
 		}elseif($this->comp_operator==">"){

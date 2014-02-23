@@ -39,6 +39,10 @@ class PHPFDB_basic_type {
 		$string .= $this->is_unique;
 		return($string);
 	}
+	
+	public function toString($value){
+		return($value);
+	}
 }
 
 class PHPFDB_int extends PHPFDB_basic_type{
@@ -252,5 +256,62 @@ class PHPFDB_blob extends PHPFDB_basic_type{
 			return(1);
 		else
 			return(strlen($value)+2);
+	}
+}
+
+class PHPFDB_date extends PHPFDB_basic_type{
+	
+	public $string_type = "DATE";
+	
+	public function __construct($name=NULL, $default="NULL", $allow_null=0, $is_unique=0){
+		$this->name = $name;
+		$this->length=5;
+		if($default=="NULL")
+			$this->default = NULL;
+		else
+			$this->default = $default;
+		$this->allow_null = $allow_null;
+		$this->autoinc = 0;
+		$this->is_unique = $is_unique;
+	}
+	
+	public function serialize($value){
+		if(is_null($value)){
+			$isnull=1;
+			$serialized_value="";
+		} else {
+			$isnull=0;
+			$temp = PHPFDB_converters::string2Date($value);
+			$year = intval($temp->format('Y'));
+			$month = intval($temp->format('m'));
+			$day = intval($temp->format('d'));
+			$value = $year*16*32+$month*32+$day;
+			$serialized_value = pack('N', $value);
+		}
+		$serialized_isnull=	pack('C', $isnull);
+		return($serialized_isnull.$serialized_value);
+	}
+	
+	public function unserialize($data_file_handler){	
+		$temp = unpack('C', fread($data_file_handler, 1));
+		$unserialized_isnull=$temp[1];
+		if($unserialized_isnull==1){
+			return(NULL);
+		}else {
+			$unserialized_value =  unpack('N', fread($data_file_handler, 4));
+			$unserialized_value = intval($unserialized_value[1]);
+			$year = intval($unserialized_value/(16*32));
+			$unserialized_value = $unserialized_value-($year*16*32);
+			$month = intval($unserialized_value/32);
+			$unserialized_value = $unserialized_value-($month*32);
+			$day = intval($unserialized_value);
+			return(new DateTime("$month/$day/$year"));
+		}
+	}
+	
+	public function toString($value){
+		if(isset($value))
+			return($value->format('Y-m-d'));
+		return NULL;
 	}
 }
