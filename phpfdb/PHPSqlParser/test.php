@@ -1,7 +1,7 @@
 <?php
 include "sql.lex.php";
 include "sql.php";
-include "copy_phpfdb_types.php";
+include "../phpfdb_types.php";
 include "query-planner.php";
 include "filter-framework.php";
 

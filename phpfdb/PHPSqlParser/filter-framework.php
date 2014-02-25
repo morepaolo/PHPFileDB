@@ -224,12 +224,26 @@ class filter_UnaryDateFunction extends unary_filter{
 	}
 	public function check($filtered_values){
 		$value = $this->expression->check($filtered_values);
-		if($this->type=="year")
-			return intval($value->format("Y"));
-		if($this->type=="month")
-			return intval($value->format("m"));
+		if(!(is_object($value)))
+			$value = PHPFDB_converters::string2Date($value);
+		if(!(isset($value)))
+			return NULL;
 		if($this->type=="day")
 			return intval($value->format("d"));
+		if($this->type=="hour")
+			return intval($value->format("H"));
+		if($this->type=="minute")
+			return intval($value->format("i"));
+		if($this->type=="month")
+			return intval($value->format("m"));
+		if($this->type=="second")
+			return intval($value->format("s"));
+		if($this->type=="weekday")
+			return intval($value->format("w"))-1; // -1 because Sunday = 0 for PHP, but Monday = 0 for MySQL
+		if($this->type=="weekofyear")
+			return intval($value->format("W"));
+		if($this->type=="year")
+			return intval($value->format("Y"));
 		return(0);
 	}
 	public function getFilterColumnReferences(){

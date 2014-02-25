@@ -31,6 +31,7 @@ include 'jlex.php';
 <YYINITIAL>CURRENT		{ return $this->createToken("TK_".strtoupper($this->yytext())); }
 <YYINITIAL>CURSOR		{ return $this->createToken("TK_".strtoupper($this->yytext())); }
 <YYINITIAL>DATE			{ return $this->createToken("TK_".strtoupper($this->yytext())); }
+<YYINITIAL>DATETIME		{ return $this->createToken("TK_".strtoupper($this->yytext())); }
 <YYINITIAL>DECIMAL		{ return $this->createToken("TK_".strtoupper($this->yytext())); }
 <YYINITIAL>DECLARE		{ return $this->createToken("TK_".strtoupper($this->yytext())); }
 <YYINITIAL>DEFAULT		{ return $this->createToken("TK_".strtoupper($this->yytext())); }
@@ -135,7 +136,12 @@ include 'jlex.php';
 <YYINITIAL>TRUNCATE		{ return $this->createToken("TK_".strtoupper($this->yytext())); }
 
 <YYINITIAL>DAY			{ return $this->createToken("TK_".strtoupper($this->yytext())); }
+<YYINITIAL>HOUR			{ return $this->createToken("TK_".strtoupper($this->yytext())); }
+<YYINITIAL>MINUTE		{ return $this->createToken("TK_".strtoupper($this->yytext())); }
 <YYINITIAL>MONTH		{ return $this->createToken("TK_".strtoupper($this->yytext())); }
+<YYINITIAL>SECOND		{ return $this->createToken("TK_".strtoupper($this->yytext())); }
+<YYINITIAL>WEEKDAY		{ return $this->createToken("TK_".strtoupper($this->yytext())); }
+<YYINITIAL>WEEKOFYEAR	{ return $this->createToken("TK_".strtoupper($this->yytext())); }
 <YYINITIAL>YEAR			{ return $this->createToken("TK_".strtoupper($this->yytext())); }
 
 

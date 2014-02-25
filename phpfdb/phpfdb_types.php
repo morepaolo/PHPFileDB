@@ -315,3 +315,72 @@ class PHPFDB_date extends PHPFDB_basic_type{
 		return NULL;
 	}
 }
+
+class PHPFDB_datetime extends PHPFDB_basic_type{
+	
+	public $string_type = "DATETIME";
+	
+	public function __construct($name=NULL, $default="NULL", $allow_null=0, $is_unique=0){
+		$this->name = $name;
+		$this->length=9;
+		if($default=="NULL")
+			$this->default = NULL;
+		else
+			$this->default = $default;
+		$this->allow_null = $allow_null;
+		$this->autoinc = 0;
+		$this->is_unique = $is_unique;
+	}
+	
+	public function serialize($value){
+		if(is_null($value)){
+			$isnull=1;
+			$serialized_value="";
+		} else {
+			$isnull=0;
+			$temp = PHPFDB_converters::string2Date($value);
+			$year = intval($temp->format('Y'));
+			$month = intval($temp->format('m'));
+			$day = intval($temp->format('d'));
+			$hour = intval($temp->format('H'));
+			$minutes = intval($temp->format('i'));
+			$seconds = intval($temp->format('s'));
+			$first_word = $year*10000+$month*100+$day;
+			$second_word = $hour*10000+$minutes*100+$seconds;
+			$serialized_value = pack('N', $first_word).pack('N', $second_word);
+		}
+		$serialized_isnull=	pack('C', $isnull);
+		return($serialized_isnull.$serialized_value);
+	}
+	
+	public function unserialize($data_file_handler){	
+		$temp = unpack('C', fread($data_file_handler, 1));
+		$unserialized_isnull=$temp[1];
+		if($unserialized_isnull==1){
+			return(NULL);
+		}else {
+			$unserialized_first_word =  unpack('N', fread($data_file_handler, 4));
+			$unserialized_first_word = intval($unserialized_first_word[1]);
+			$year = intval($unserialized_first_word/(10000));
+			$unserialized_first_word = $unserialized_first_word-($year*10000);
+			$month = intval($unserialized_first_word/100);
+			$unserialized_first_word = $unserialized_first_word-($month*100);
+			$day = intval($unserialized_first_word);
+			
+			$unserialized_second_word =  unpack('N', fread($data_file_handler, 4));
+			$unserialized_second_word = intval($unserialized_second_word[1]);
+			$hour = intval($unserialized_second_word/(10000));
+			$unserialized_second_word = $unserialized_second_word-($hour*10000);
+			$minutes = intval($unserialized_second_word/100);
+			$unserialized_second_word = $unserialized_second_word-($minutes*100);
+			$seconds = intval($unserialized_second_word);
+			return(new DateTime("$month/$day/$year $hour:$minutes:$seconds"));
+		}
+	}
+	
+	public function toString($value){
+		if(isset($value))
+			return($value->format('Y-m-d H:i:s'));
+		return NULL;
+	}
+}

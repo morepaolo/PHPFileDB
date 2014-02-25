@@ -1,51 +1,51 @@
 Input DELETE
-Shift 400
+Shift 415
 Stack: DELETE
 Input FROM
-Shift 97
+Shift 102
 Stack: DELETE FROM
 Input NAME
-Shift 416
+Shift 431
 Stack: DELETE FROM NAME
 Input $
 Reduce [regular_identifier ::= NAME].
-Shift 421
+Shift 436
 Stack: DELETE FROM regular_identifier
 Reduce [actual_identifier ::= regular_identifier].
-Shift 420
+Shift 435
 Stack: DELETE FROM actual_identifier
 Reduce [identifier ::= actual_identifier].
-Shift 424
+Shift 439
 Stack: DELETE FROM identifier
 Reduce [qualified_identifier ::= identifier].
-Shift 423
+Shift 438
 Stack: DELETE FROM qualified_identifier
 Reduce [qualified_name ::= qualified_identifier].
-Shift 428
+Shift 443
 Stack: DELETE FROM qualified_name
 Reduce [table_name ::= qualified_name].
-Shift 226
+Shift 236
 Stack: DELETE FROM table_name
 Reduce [delete_statement_where_search ::=].
-Shift 703
+Shift 724
 Stack: DELETE FROM table_name delete_statement_where_search
 Reduce [delete_statement_searched ::= DELETE FROM table_name delete_statement_where_search].
-Shift 700
+Shift 721
 Stack: delete_statement_searched
 Reduce [sql_data_change_statement ::= delete_statement_searched].
-Shift 699
+Shift 720
 Stack: sql_data_change_statement
 Reduce [sql_data_statement ::= sql_data_change_statement].
-Shift 412
+Shift 427
 Stack: sql_data_statement
 Reduce [query ::= sql_data_statement].
-Shift 187
+Shift 197
 Stack: query
 Reduce [optional_semi ::=].
-Shift 714
+Shift 735
 Stack: query optional_semi
 Reduce [query_list ::= query optional_semi].
-Shift 409
+Shift 424
 Stack: query_list
 Reduce [statement ::= query_list].
 Accept!

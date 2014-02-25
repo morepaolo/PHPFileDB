@@ -1,18 +1,142 @@
-Input SELECT
-Shift 170
-Stack: SELECT
-Input ASTERISK
-Reduce [set_quantifier ::=].
-Shift 14
-Stack: SELECT set_quantifier
-Shift 565
-Stack: SELECT set_quantifier ASTERISK
-Input FROM
-Reduce [select_list ::= ASTERISK].
-Shift 78
-Stack: SELECT set_quantifier select_list
-Shift 81
-Stack: SELECT set_quantifier select_list FROM
+Input CREATE
+Shift 347
+Stack: CREATE
+Input TABLE
+Shift 95
+Stack: CREATE TABLE
 Input NAME
-Shift 407
-Stack: SELECT set_quantifier select_list FROM NAME
+Shift 422
+Stack: CREATE TABLE NAME
+Input LPAR
+Reduce [regular_identifier ::= NAME].
+Shift 427
+Stack: CREATE TABLE regular_identifier
+Reduce [actual_identifier ::= regular_identifier].
+Shift 426
+Stack: CREATE TABLE actual_identifier
+Reduce [identifier ::= actual_identifier].
+Shift 430
+Stack: CREATE TABLE identifier
+Reduce [qualified_identifier ::= identifier].
+Shift 429
+Stack: CREATE TABLE qualified_identifier
+Reduce [qualified_name ::= qualified_identifier].
+Shift 434
+Stack: CREATE TABLE qualified_name
+Reduce [table_name ::= qualified_name].
+Shift 348
+Stack: CREATE TABLE table_name
+Shift 96
+Stack: CREATE TABLE table_name LPAR
+Input NAME
+Shift 422
+Stack: CREATE TABLE table_name LPAR NAME
+Input INTEGER
+Reduce [regular_identifier ::= NAME].
+Shift 427
+Stack: CREATE TABLE table_name LPAR regular_identifier
+Reduce [actual_identifier ::= regular_identifier].
+Shift 426
+Stack: CREATE TABLE table_name LPAR actual_identifier
+Reduce [identifier ::= actual_identifier].
+Shift 448
+Stack: CREATE TABLE table_name LPAR identifier
+Reduce [column_name ::= identifier].
+Shift 91
+Stack: CREATE TABLE table_name LPAR column_name
+Shift 671
+Stack: CREATE TABLE table_name LPAR column_name INTEGER
+Input COMMA
+Reduce [exact_numeric_type ::= INTEGER].
+Shift 661
+Stack: CREATE TABLE table_name LPAR column_name exact_numeric_type
+Reduce [numeric_type ::= exact_numeric_type].
+Shift 644
+Stack: CREATE TABLE table_name LPAR column_name numeric_type
+Reduce [data_type ::= numeric_type].
+Shift 197
+Stack: CREATE TABLE table_name LPAR column_name data_type
+Reduce [default_clause ::=].
+Shift 124
+Stack: CREATE TABLE table_name LPAR column_name data_type default_clause
+Reduce [column_constraints ::=].
+Shift 128
+Stack: CREATE TABLE table_name LPAR column_name data_type default_clause column_constraints
+Reduce [column_definition ::= column_name data_type default_clause column_constraints].
+Shift 593
+Stack: CREATE TABLE table_name LPAR column_definition
+Reduce [table_element ::= column_definition].
+Shift 591
+Stack: CREATE TABLE table_name LPAR table_element
+Reduce [table_element_list ::= table_element].
+Shift 244
+Stack: CREATE TABLE table_name LPAR table_element_list
+Shift 102
+Stack: CREATE TABLE table_name LPAR table_element_list COMMA
+Input NAME
+Shift 422
+Stack: CREATE TABLE table_name LPAR table_element_list COMMA NAME
+Input DATETIME
+Reduce [regular_identifier ::= NAME].
+Shift 427
+Stack: CREATE TABLE table_name LPAR table_element_list COMMA regular_identifier
+Reduce [actual_identifier ::= regular_identifier].
+Shift 426
+Stack: CREATE TABLE table_name LPAR table_element_list COMMA actual_identifier
+Reduce [identifier ::= actual_identifier].
+Shift 448
+Stack: CREATE TABLE table_name LPAR table_element_list COMMA identifier
+Reduce [column_name ::= identifier].
+Shift 91
+Stack: CREATE TABLE table_name LPAR table_element_list COMMA column_name
+Shift 677
+Stack: CREATE TABLE table_name LPAR table_element_list COMMA column_name DATETIME
+Input RPAR
+Reduce [datetime_type ::= DATETIME].
+Shift 645
+Stack: CREATE TABLE table_name LPAR table_element_list COMMA column_name datetime_type
+Reduce [data_type ::= datetime_type].
+Shift 197
+Stack: CREATE TABLE table_name LPAR table_element_list COMMA column_name data_type
+Reduce [default_clause ::=].
+Shift 124
+Stack: CREATE TABLE table_name LPAR table_element_list COMMA column_name data_type default_clause
+Reduce [column_constraints ::=].
+Shift 128
+Stack: CREATE TABLE table_name LPAR table_element_list COMMA column_name data_type default_clause column_constraints
+Reduce [column_definition ::= column_name data_type default_clause column_constraints].
+Shift 593
+Stack: CREATE TABLE table_name LPAR table_element_list COMMA column_definition
+Reduce [table_element ::= column_definition].
+Shift 592
+Stack: CREATE TABLE table_name LPAR table_element_list COMMA table_element
+Reduce [table_element_list ::= table_element_list COMMA table_element].
+Shift 244
+Stack: CREATE TABLE table_name LPAR table_element_list
+Shift 700
+Stack: CREATE TABLE table_name LPAR table_element_list RPAR
+Input SEMI
+Reduce [table_definition ::= CREATE TABLE table_name LPAR table_element_list RPAR].
+Shift 590
+Stack: table_definition
+Reduce [sql_schema_definition_statement ::= table_definition].
+Shift 588
+Stack: sql_schema_definition_statement
+Reduce [sql_schema_statement ::= sql_schema_definition_statement].
+Shift 419
+Stack: sql_schema_statement
+Reduce [query ::= sql_schema_statement].
+Shift 191
+Stack: query
+Shift 89
+Stack: query SEMI
+Input $
+Reduce [optional_semi ::= SEMI].
+Shift 723
+Stack: query optional_semi
+Reduce [query_list ::= query optional_semi].
+Shift 415
+Stack: query_list
+Reduce [statement ::= query_list].
+Accept!
+Popping $
