@@ -1,9 +1,9 @@
 <?php
 
 class PHPFDB_InvalidTableName_Exception extends Exception{
-
 }
-
+class PHPFDB_DuplicateTableName_Exception extends Exception{
+}
 class PHPFDB_UniqueConstraintViolated_Exception extends Exception{
 
 }

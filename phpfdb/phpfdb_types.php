@@ -208,7 +208,7 @@ class PHPFDB_varchar extends PHPFDB_basic_type{
 			$temp =  unpack('C', fread($data_file_handler, 1));
 			$real_string_length=$temp[1];
 			$byte_string = fread($data_file_handler, $real_string_length);
-			return($byte_string);
+			return(utf8_encode($byte_string));
 		}
 	}
 	

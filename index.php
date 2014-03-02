@@ -219,7 +219,7 @@
 	echo "DONE 24-02-2014<br />";
 	echo "ADDED SUPPORT TO date_function('2014-02-24')<br />";
 	echo "ADDED SUPPORT TO WEEKDAY, WEEKOFYEAR <br />";
-	echo "ADDED SUPPORT TO DATETIME, HOUR MINUTE SECOND FUNCTION"
+	echo "ADDED SUPPORT TO DATETIME, HOUR MINUTE SECOND FUNCTION";
 	
 	$sql = "select importo, data_aggiornamento, year(data_aggiornamento) as anno, day(data_aggiornamento) as giorno, month(data_aggiornamento) as mese, weekday(data_aggiornamento), weekofyear(data_aggiornamento) as WY, hour(data_aggiornamento) as H, minute(data_aggiornamento) as MINUT, second(data_aggiornamento) as sec from pagamenti";
 	$result = $db->query($sql);	

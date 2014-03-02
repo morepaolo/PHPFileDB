@@ -2,7 +2,7 @@
 include 'jlex.php';
 
 %%
-
+%notunix
 %ignorecase
 %full
 %%
@@ -135,7 +135,7 @@ include 'jlex.php';
 <YYINITIAL>TAN			{ return $this->createToken("TK_".strtoupper($this->yytext())); }
 <YYINITIAL>TRUNCATE		{ return $this->createToken("TK_".strtoupper($this->yytext())); }
 
-<YYINITIAL>DAY			{ return $this->createToken("TK_".strtoupper($this->yytext())); }
+<YYINITIAL>DAY(OFMONTH)?	{ return $this->createToken("TK_DAY"); }
 <YYINITIAL>HOUR			{ return $this->createToken("TK_".strtoupper($this->yytext())); }
 <YYINITIAL>MINUTE		{ return $this->createToken("TK_".strtoupper($this->yytext())); }
 <YYINITIAL>MONTH		{ return $this->createToken("TK_".strtoupper($this->yytext())); }
@@ -168,7 +168,7 @@ include 'jlex.php';
 <YYINITIAL>[0-9]+[eE][+-]?[0-9]+	{ return $this->createToken("TK_APPROXNUM");}
 <YYINITIAL>[0-9]+"."[0-9]*[eE][+-]?[0-9]+	{ return $this->createToken("TK_APPROXNUM");}
 <YYINITIAL>"."[0-9]*[eE][+-]?[0-9]+	{ return $this->createToken("TK_APPROXNUM");}
-
+<YYINITIAL>"--"[ \t].* { /* return $this->createToken("TK_SINGLE_LINE_COMMENT"); */}
 <YYINITIAL>\'(\\.|[^\\\'])*\' {return $this->createToken("TK_STRING");}
 
 <YYINITIAL> [ \t\v\n\f] { }

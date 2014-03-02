@@ -1,141 +1,1137 @@
 Input CREATE
-Shift 347
+Shift 356
 Stack: CREATE
 Input TABLE
-Shift 95
+Shift 98
 Stack: CREATE TABLE
 Input NAME
-Shift 422
+Shift 431
 Stack: CREATE TABLE NAME
 Input LPAR
 Reduce [regular_identifier ::= NAME].
-Shift 427
+Shift 436
 Stack: CREATE TABLE regular_identifier
 Reduce [actual_identifier ::= regular_identifier].
-Shift 426
+Shift 435
 Stack: CREATE TABLE actual_identifier
 Reduce [identifier ::= actual_identifier].
-Shift 430
+Shift 439
 Stack: CREATE TABLE identifier
 Reduce [qualified_identifier ::= identifier].
-Shift 429
+Shift 438
 Stack: CREATE TABLE qualified_identifier
 Reduce [qualified_name ::= qualified_identifier].
-Shift 434
+Shift 443
 Stack: CREATE TABLE qualified_name
 Reduce [table_name ::= qualified_name].
-Shift 348
+Shift 357
 Stack: CREATE TABLE table_name
-Shift 96
+Shift 99
 Stack: CREATE TABLE table_name LPAR
 Input NAME
-Shift 422
+Shift 431
 Stack: CREATE TABLE table_name LPAR NAME
 Input INTEGER
 Reduce [regular_identifier ::= NAME].
-Shift 427
+Shift 436
 Stack: CREATE TABLE table_name LPAR regular_identifier
 Reduce [actual_identifier ::= regular_identifier].
-Shift 426
+Shift 435
 Stack: CREATE TABLE table_name LPAR actual_identifier
 Reduce [identifier ::= actual_identifier].
-Shift 448
+Shift 457
 Stack: CREATE TABLE table_name LPAR identifier
 Reduce [column_name ::= identifier].
-Shift 91
+Shift 94
 Stack: CREATE TABLE table_name LPAR column_name
-Shift 671
+Shift 683
 Stack: CREATE TABLE table_name LPAR column_name INTEGER
-Input COMMA
+Input AUTO_INCREMENT
 Reduce [exact_numeric_type ::= INTEGER].
-Shift 661
+Shift 673
 Stack: CREATE TABLE table_name LPAR column_name exact_numeric_type
 Reduce [numeric_type ::= exact_numeric_type].
-Shift 644
+Shift 656
 Stack: CREATE TABLE table_name LPAR column_name numeric_type
 Reduce [data_type ::= numeric_type].
-Shift 197
+Shift 203
 Stack: CREATE TABLE table_name LPAR column_name data_type
 Reduce [default_clause ::=].
-Shift 124
+Shift 127
 Stack: CREATE TABLE table_name LPAR column_name data_type default_clause
 Reduce [column_constraints ::=].
-Shift 128
+Shift 131
+Stack: CREATE TABLE table_name LPAR column_name data_type default_clause column_constraints
+Reduce [constraint_name_definition ::=].
+Shift 119
+Stack: CREATE TABLE table_name LPAR column_name data_type default_clause column_constraints constraint_name_definition
+Shift 621
+Stack: CREATE TABLE table_name LPAR column_name data_type default_clause column_constraints constraint_name_definition AUTO_INCREMENT
+Input COMMA
+Reduce [unique_specification ::= AUTO_INCREMENT].
+Shift 617
+Stack: CREATE TABLE table_name LPAR column_name data_type default_clause column_constraints constraint_name_definition unique_specification
+Reduce [column_constraint ::= unique_specification].
+Shift 132
+Stack: CREATE TABLE table_name LPAR column_name data_type default_clause column_constraints constraint_name_definition column_constraint
+Reduce [constraint_attributes ::=].
+Shift 609
+Stack: CREATE TABLE table_name LPAR column_name data_type default_clause column_constraints constraint_name_definition column_constraint constraint_attributes
+Reduce [column_constraint_definition ::= constraint_name_definition column_constraint constraint_attributes].
+Shift 608
+Stack: CREATE TABLE table_name LPAR column_name data_type default_clause column_constraints column_constraint_definition
+Reduce [column_constraints ::= column_constraints column_constraint_definition].
+Shift 131
 Stack: CREATE TABLE table_name LPAR column_name data_type default_clause column_constraints
 Reduce [column_definition ::= column_name data_type default_clause column_constraints].
-Shift 593
+Shift 605
 Stack: CREATE TABLE table_name LPAR column_definition
 Reduce [table_element ::= column_definition].
-Shift 591
+Shift 603
 Stack: CREATE TABLE table_name LPAR table_element
 Reduce [table_element_list ::= table_element].
-Shift 244
+Shift 250
 Stack: CREATE TABLE table_name LPAR table_element_list
-Shift 102
+Shift 105
 Stack: CREATE TABLE table_name LPAR table_element_list COMMA
 Input NAME
-Shift 422
+Shift 431
 Stack: CREATE TABLE table_name LPAR table_element_list COMMA NAME
-Input DATETIME
+Input VARCHAR
 Reduce [regular_identifier ::= NAME].
-Shift 427
+Shift 436
 Stack: CREATE TABLE table_name LPAR table_element_list COMMA regular_identifier
 Reduce [actual_identifier ::= regular_identifier].
-Shift 426
+Shift 435
 Stack: CREATE TABLE table_name LPAR table_element_list COMMA actual_identifier
 Reduce [identifier ::= actual_identifier].
-Shift 448
+Shift 457
 Stack: CREATE TABLE table_name LPAR table_element_list COMMA identifier
 Reduce [column_name ::= identifier].
-Shift 91
+Shift 94
 Stack: CREATE TABLE table_name LPAR table_element_list COMMA column_name
-Shift 677
-Stack: CREATE TABLE table_name LPAR table_element_list COMMA column_name DATETIME
+Shift 377
+Stack: CREATE TABLE table_name LPAR table_element_list COMMA column_name VARCHAR
+Input LPAR
+Shift 213
+Stack: CREATE TABLE table_name LPAR table_element_list COMMA column_name VARCHAR LPAR
+Input INTNUM
+Shift 660
+Stack: CREATE TABLE table_name LPAR table_element_list COMMA column_name VARCHAR LPAR INTNUM
 Input RPAR
-Reduce [datetime_type ::= DATETIME].
-Shift 645
-Stack: CREATE TABLE table_name LPAR table_element_list COMMA column_name datetime_type
-Reduce [data_type ::= datetime_type].
-Shift 197
+Reduce [length ::= INTNUM].
+Shift 378
+Stack: CREATE TABLE table_name LPAR table_element_list COMMA column_name VARCHAR LPAR length
+Shift 663
+Stack: CREATE TABLE table_name LPAR table_element_list COMMA column_name VARCHAR LPAR length RPAR
+Input COMMA
+Reduce [character_string_type ::= VARCHAR LPAR length RPAR].
+Shift 369
+Stack: CREATE TABLE table_name LPAR table_element_list COMMA column_name character_string_type
+Reduce [data_type ::= character_string_type].
+Shift 203
 Stack: CREATE TABLE table_name LPAR table_element_list COMMA column_name data_type
 Reduce [default_clause ::=].
-Shift 124
+Shift 127
 Stack: CREATE TABLE table_name LPAR table_element_list COMMA column_name data_type default_clause
 Reduce [column_constraints ::=].
-Shift 128
+Shift 131
 Stack: CREATE TABLE table_name LPAR table_element_list COMMA column_name data_type default_clause column_constraints
 Reduce [column_definition ::= column_name data_type default_clause column_constraints].
-Shift 593
+Shift 605
 Stack: CREATE TABLE table_name LPAR table_element_list COMMA column_definition
 Reduce [table_element ::= column_definition].
-Shift 592
+Shift 604
 Stack: CREATE TABLE table_name LPAR table_element_list COMMA table_element
 Reduce [table_element_list ::= table_element_list COMMA table_element].
-Shift 244
+Shift 250
 Stack: CREATE TABLE table_name LPAR table_element_list
-Shift 700
+Shift 105
+Stack: CREATE TABLE table_name LPAR table_element_list COMMA
+Input NAME
+Shift 431
+Stack: CREATE TABLE table_name LPAR table_element_list COMMA NAME
+Input VARCHAR
+Reduce [regular_identifier ::= NAME].
+Shift 436
+Stack: CREATE TABLE table_name LPAR table_element_list COMMA regular_identifier
+Reduce [actual_identifier ::= regular_identifier].
+Shift 435
+Stack: CREATE TABLE table_name LPAR table_element_list COMMA actual_identifier
+Reduce [identifier ::= actual_identifier].
+Shift 457
+Stack: CREATE TABLE table_name LPAR table_element_list COMMA identifier
+Reduce [column_name ::= identifier].
+Shift 94
+Stack: CREATE TABLE table_name LPAR table_element_list COMMA column_name
+Shift 377
+Stack: CREATE TABLE table_name LPAR table_element_list COMMA column_name VARCHAR
+Input LPAR
+Shift 213
+Stack: CREATE TABLE table_name LPAR table_element_list COMMA column_name VARCHAR LPAR
+Input INTNUM
+Shift 660
+Stack: CREATE TABLE table_name LPAR table_element_list COMMA column_name VARCHAR LPAR INTNUM
+Input RPAR
+Reduce [length ::= INTNUM].
+Shift 378
+Stack: CREATE TABLE table_name LPAR table_element_list COMMA column_name VARCHAR LPAR length
+Shift 663
+Stack: CREATE TABLE table_name LPAR table_element_list COMMA column_name VARCHAR LPAR length RPAR
+Input COMMA
+Reduce [character_string_type ::= VARCHAR LPAR length RPAR].
+Shift 369
+Stack: CREATE TABLE table_name LPAR table_element_list COMMA column_name character_string_type
+Reduce [data_type ::= character_string_type].
+Shift 203
+Stack: CREATE TABLE table_name LPAR table_element_list COMMA column_name data_type
+Reduce [default_clause ::=].
+Shift 127
+Stack: CREATE TABLE table_name LPAR table_element_list COMMA column_name data_type default_clause
+Reduce [column_constraints ::=].
+Shift 131
+Stack: CREATE TABLE table_name LPAR table_element_list COMMA column_name data_type default_clause column_constraints
+Reduce [column_definition ::= column_name data_type default_clause column_constraints].
+Shift 605
+Stack: CREATE TABLE table_name LPAR table_element_list COMMA column_definition
+Reduce [table_element ::= column_definition].
+Shift 604
+Stack: CREATE TABLE table_name LPAR table_element_list COMMA table_element
+Reduce [table_element_list ::= table_element_list COMMA table_element].
+Shift 250
+Stack: CREATE TABLE table_name LPAR table_element_list
+Shift 105
+Stack: CREATE TABLE table_name LPAR table_element_list COMMA
+Input NAME
+Shift 431
+Stack: CREATE TABLE table_name LPAR table_element_list COMMA NAME
+Input INTEGER
+Reduce [regular_identifier ::= NAME].
+Shift 436
+Stack: CREATE TABLE table_name LPAR table_element_list COMMA regular_identifier
+Reduce [actual_identifier ::= regular_identifier].
+Shift 435
+Stack: CREATE TABLE table_name LPAR table_element_list COMMA actual_identifier
+Reduce [identifier ::= actual_identifier].
+Shift 457
+Stack: CREATE TABLE table_name LPAR table_element_list COMMA identifier
+Reduce [column_name ::= identifier].
+Shift 94
+Stack: CREATE TABLE table_name LPAR table_element_list COMMA column_name
+Shift 683
+Stack: CREATE TABLE table_name LPAR table_element_list COMMA column_name INTEGER
+Input RPAR
+Reduce [exact_numeric_type ::= INTEGER].
+Shift 673
+Stack: CREATE TABLE table_name LPAR table_element_list COMMA column_name exact_numeric_type
+Reduce [numeric_type ::= exact_numeric_type].
+Shift 656
+Stack: CREATE TABLE table_name LPAR table_element_list COMMA column_name numeric_type
+Reduce [data_type ::= numeric_type].
+Shift 203
+Stack: CREATE TABLE table_name LPAR table_element_list COMMA column_name data_type
+Reduce [default_clause ::=].
+Shift 127
+Stack: CREATE TABLE table_name LPAR table_element_list COMMA column_name data_type default_clause
+Reduce [column_constraints ::=].
+Shift 131
+Stack: CREATE TABLE table_name LPAR table_element_list COMMA column_name data_type default_clause column_constraints
+Reduce [column_definition ::= column_name data_type default_clause column_constraints].
+Shift 605
+Stack: CREATE TABLE table_name LPAR table_element_list COMMA column_definition
+Reduce [table_element ::= column_definition].
+Shift 604
+Stack: CREATE TABLE table_name LPAR table_element_list COMMA table_element
+Reduce [table_element_list ::= table_element_list COMMA table_element].
+Shift 250
+Stack: CREATE TABLE table_name LPAR table_element_list
+Shift 712
 Stack: CREATE TABLE table_name LPAR table_element_list RPAR
 Input SEMI
 Reduce [table_definition ::= CREATE TABLE table_name LPAR table_element_list RPAR].
-Shift 590
+Shift 602
 Stack: table_definition
 Reduce [sql_schema_definition_statement ::= table_definition].
-Shift 588
+Shift 600
 Stack: sql_schema_definition_statement
 Reduce [sql_schema_statement ::= sql_schema_definition_statement].
-Shift 419
+Shift 428
 Stack: sql_schema_statement
 Reduce [query ::= sql_schema_statement].
-Shift 191
+Shift 197
 Stack: query
-Shift 89
+Shift 92
 Stack: query SEMI
+Input CREATE
+Shift 356
+Stack: query SEMI CREATE
+Input TABLE
+Shift 98
+Stack: query SEMI CREATE TABLE
+Input NAME
+Shift 431
+Stack: query SEMI CREATE TABLE NAME
+Input LPAR
+Reduce [regular_identifier ::= NAME].
+Shift 436
+Stack: query SEMI CREATE TABLE regular_identifier
+Reduce [actual_identifier ::= regular_identifier].
+Shift 435
+Stack: query SEMI CREATE TABLE actual_identifier
+Reduce [identifier ::= actual_identifier].
+Shift 439
+Stack: query SEMI CREATE TABLE identifier
+Reduce [qualified_identifier ::= identifier].
+Shift 438
+Stack: query SEMI CREATE TABLE qualified_identifier
+Reduce [qualified_name ::= qualified_identifier].
+Shift 443
+Stack: query SEMI CREATE TABLE qualified_name
+Reduce [table_name ::= qualified_name].
+Shift 357
+Stack: query SEMI CREATE TABLE table_name
+Shift 99
+Stack: query SEMI CREATE TABLE table_name LPAR
+Input NAME
+Shift 431
+Stack: query SEMI CREATE TABLE table_name LPAR NAME
+Input INTEGER
+Reduce [regular_identifier ::= NAME].
+Shift 436
+Stack: query SEMI CREATE TABLE table_name LPAR regular_identifier
+Reduce [actual_identifier ::= regular_identifier].
+Shift 435
+Stack: query SEMI CREATE TABLE table_name LPAR actual_identifier
+Reduce [identifier ::= actual_identifier].
+Shift 457
+Stack: query SEMI CREATE TABLE table_name LPAR identifier
+Reduce [column_name ::= identifier].
+Shift 94
+Stack: query SEMI CREATE TABLE table_name LPAR column_name
+Shift 683
+Stack: query SEMI CREATE TABLE table_name LPAR column_name INTEGER
+Input AUTO_INCREMENT
+Reduce [exact_numeric_type ::= INTEGER].
+Shift 673
+Stack: query SEMI CREATE TABLE table_name LPAR column_name exact_numeric_type
+Reduce [numeric_type ::= exact_numeric_type].
+Shift 656
+Stack: query SEMI CREATE TABLE table_name LPAR column_name numeric_type
+Reduce [data_type ::= numeric_type].
+Shift 203
+Stack: query SEMI CREATE TABLE table_name LPAR column_name data_type
+Reduce [default_clause ::=].
+Shift 127
+Stack: query SEMI CREATE TABLE table_name LPAR column_name data_type default_clause
+Reduce [column_constraints ::=].
+Shift 131
+Stack: query SEMI CREATE TABLE table_name LPAR column_name data_type default_clause column_constraints
+Reduce [constraint_name_definition ::=].
+Shift 119
+Stack: query SEMI CREATE TABLE table_name LPAR column_name data_type default_clause column_constraints constraint_name_definition
+Shift 621
+Stack: query SEMI CREATE TABLE table_name LPAR column_name data_type default_clause column_constraints constraint_name_definition AUTO_INCREMENT
+Input COMMA
+Reduce [unique_specification ::= AUTO_INCREMENT].
+Shift 617
+Stack: query SEMI CREATE TABLE table_name LPAR column_name data_type default_clause column_constraints constraint_name_definition unique_specification
+Reduce [column_constraint ::= unique_specification].
+Shift 132
+Stack: query SEMI CREATE TABLE table_name LPAR column_name data_type default_clause column_constraints constraint_name_definition column_constraint
+Reduce [constraint_attributes ::=].
+Shift 609
+Stack: query SEMI CREATE TABLE table_name LPAR column_name data_type default_clause column_constraints constraint_name_definition column_constraint constraint_attributes
+Reduce [column_constraint_definition ::= constraint_name_definition column_constraint constraint_attributes].
+Shift 608
+Stack: query SEMI CREATE TABLE table_name LPAR column_name data_type default_clause column_constraints column_constraint_definition
+Reduce [column_constraints ::= column_constraints column_constraint_definition].
+Shift 131
+Stack: query SEMI CREATE TABLE table_name LPAR column_name data_type default_clause column_constraints
+Reduce [column_definition ::= column_name data_type default_clause column_constraints].
+Shift 605
+Stack: query SEMI CREATE TABLE table_name LPAR column_definition
+Reduce [table_element ::= column_definition].
+Shift 603
+Stack: query SEMI CREATE TABLE table_name LPAR table_element
+Reduce [table_element_list ::= table_element].
+Shift 250
+Stack: query SEMI CREATE TABLE table_name LPAR table_element_list
+Shift 105
+Stack: query SEMI CREATE TABLE table_name LPAR table_element_list COMMA
+Input NAME
+Shift 431
+Stack: query SEMI CREATE TABLE table_name LPAR table_element_list COMMA NAME
+Input VARCHAR
+Reduce [regular_identifier ::= NAME].
+Shift 436
+Stack: query SEMI CREATE TABLE table_name LPAR table_element_list COMMA regular_identifier
+Reduce [actual_identifier ::= regular_identifier].
+Shift 435
+Stack: query SEMI CREATE TABLE table_name LPAR table_element_list COMMA actual_identifier
+Reduce [identifier ::= actual_identifier].
+Shift 457
+Stack: query SEMI CREATE TABLE table_name LPAR table_element_list COMMA identifier
+Reduce [column_name ::= identifier].
+Shift 94
+Stack: query SEMI CREATE TABLE table_name LPAR table_element_list COMMA column_name
+Shift 377
+Stack: query SEMI CREATE TABLE table_name LPAR table_element_list COMMA column_name VARCHAR
+Input LPAR
+Shift 213
+Stack: query SEMI CREATE TABLE table_name LPAR table_element_list COMMA column_name VARCHAR LPAR
+Input INTNUM
+Shift 660
+Stack: query SEMI CREATE TABLE table_name LPAR table_element_list COMMA column_name VARCHAR LPAR INTNUM
+Input RPAR
+Reduce [length ::= INTNUM].
+Shift 378
+Stack: query SEMI CREATE TABLE table_name LPAR table_element_list COMMA column_name VARCHAR LPAR length
+Shift 663
+Stack: query SEMI CREATE TABLE table_name LPAR table_element_list COMMA column_name VARCHAR LPAR length RPAR
+Input RPAR
+Reduce [character_string_type ::= VARCHAR LPAR length RPAR].
+Shift 369
+Stack: query SEMI CREATE TABLE table_name LPAR table_element_list COMMA column_name character_string_type
+Reduce [data_type ::= character_string_type].
+Shift 203
+Stack: query SEMI CREATE TABLE table_name LPAR table_element_list COMMA column_name data_type
+Reduce [default_clause ::=].
+Shift 127
+Stack: query SEMI CREATE TABLE table_name LPAR table_element_list COMMA column_name data_type default_clause
+Reduce [column_constraints ::=].
+Shift 131
+Stack: query SEMI CREATE TABLE table_name LPAR table_element_list COMMA column_name data_type default_clause column_constraints
+Reduce [column_definition ::= column_name data_type default_clause column_constraints].
+Shift 605
+Stack: query SEMI CREATE TABLE table_name LPAR table_element_list COMMA column_definition
+Reduce [table_element ::= column_definition].
+Shift 604
+Stack: query SEMI CREATE TABLE table_name LPAR table_element_list COMMA table_element
+Reduce [table_element_list ::= table_element_list COMMA table_element].
+Shift 250
+Stack: query SEMI CREATE TABLE table_name LPAR table_element_list
+Shift 712
+Stack: query SEMI CREATE TABLE table_name LPAR table_element_list RPAR
+Input SEMI
+Reduce [table_definition ::= CREATE TABLE table_name LPAR table_element_list RPAR].
+Shift 602
+Stack: query SEMI table_definition
+Reduce [sql_schema_definition_statement ::= table_definition].
+Shift 600
+Stack: query SEMI sql_schema_definition_statement
+Reduce [sql_schema_statement ::= sql_schema_definition_statement].
+Shift 428
+Stack: query SEMI sql_schema_statement
+Reduce [query ::= sql_schema_statement].
+Shift 197
+Stack: query SEMI query
+Shift 92
+Stack: query SEMI query SEMI
+Input CREATE
+Shift 356
+Stack: query SEMI query SEMI CREATE
+Input TABLE
+Shift 98
+Stack: query SEMI query SEMI CREATE TABLE
+Input NAME
+Shift 431
+Stack: query SEMI query SEMI CREATE TABLE NAME
+Input LPAR
+Reduce [regular_identifier ::= NAME].
+Shift 436
+Stack: query SEMI query SEMI CREATE TABLE regular_identifier
+Reduce [actual_identifier ::= regular_identifier].
+Shift 435
+Stack: query SEMI query SEMI CREATE TABLE actual_identifier
+Reduce [identifier ::= actual_identifier].
+Shift 439
+Stack: query SEMI query SEMI CREATE TABLE identifier
+Reduce [qualified_identifier ::= identifier].
+Shift 438
+Stack: query SEMI query SEMI CREATE TABLE qualified_identifier
+Reduce [qualified_name ::= qualified_identifier].
+Shift 443
+Stack: query SEMI query SEMI CREATE TABLE qualified_name
+Reduce [table_name ::= qualified_name].
+Shift 357
+Stack: query SEMI query SEMI CREATE TABLE table_name
+Shift 99
+Stack: query SEMI query SEMI CREATE TABLE table_name LPAR
+Input NAME
+Shift 431
+Stack: query SEMI query SEMI CREATE TABLE table_name LPAR NAME
+Input INTEGER
+Reduce [regular_identifier ::= NAME].
+Shift 436
+Stack: query SEMI query SEMI CREATE TABLE table_name LPAR regular_identifier
+Reduce [actual_identifier ::= regular_identifier].
+Shift 435
+Stack: query SEMI query SEMI CREATE TABLE table_name LPAR actual_identifier
+Reduce [identifier ::= actual_identifier].
+Shift 457
+Stack: query SEMI query SEMI CREATE TABLE table_name LPAR identifier
+Reduce [column_name ::= identifier].
+Shift 94
+Stack: query SEMI query SEMI CREATE TABLE table_name LPAR column_name
+Shift 683
+Stack: query SEMI query SEMI CREATE TABLE table_name LPAR column_name INTEGER
+Input AUTO_INCREMENT
+Reduce [exact_numeric_type ::= INTEGER].
+Shift 673
+Stack: query SEMI query SEMI CREATE TABLE table_name LPAR column_name exact_numeric_type
+Reduce [numeric_type ::= exact_numeric_type].
+Shift 656
+Stack: query SEMI query SEMI CREATE TABLE table_name LPAR column_name numeric_type
+Reduce [data_type ::= numeric_type].
+Shift 203
+Stack: query SEMI query SEMI CREATE TABLE table_name LPAR column_name data_type
+Reduce [default_clause ::=].
+Shift 127
+Stack: query SEMI query SEMI CREATE TABLE table_name LPAR column_name data_type default_clause
+Reduce [column_constraints ::=].
+Shift 131
+Stack: query SEMI query SEMI CREATE TABLE table_name LPAR column_name data_type default_clause column_constraints
+Reduce [constraint_name_definition ::=].
+Shift 119
+Stack: query SEMI query SEMI CREATE TABLE table_name LPAR column_name data_type default_clause column_constraints constraint_name_definition
+Shift 621
+Stack: query SEMI query SEMI CREATE TABLE table_name LPAR column_name data_type default_clause column_constraints constraint_name_definition AUTO_INCREMENT
+Input COMMA
+Reduce [unique_specification ::= AUTO_INCREMENT].
+Shift 617
+Stack: query SEMI query SEMI CREATE TABLE table_name LPAR column_name data_type default_clause column_constraints constraint_name_definition unique_specification
+Reduce [column_constraint ::= unique_specification].
+Shift 132
+Stack: query SEMI query SEMI CREATE TABLE table_name LPAR column_name data_type default_clause column_constraints constraint_name_definition column_constraint
+Reduce [constraint_attributes ::=].
+Shift 609
+Stack: query SEMI query SEMI CREATE TABLE table_name LPAR column_name data_type default_clause column_constraints constraint_name_definition column_constraint constraint_attributes
+Reduce [column_constraint_definition ::= constraint_name_definition column_constraint constraint_attributes].
+Shift 608
+Stack: query SEMI query SEMI CREATE TABLE table_name LPAR column_name data_type default_clause column_constraints column_constraint_definition
+Reduce [column_constraints ::= column_constraints column_constraint_definition].
+Shift 131
+Stack: query SEMI query SEMI CREATE TABLE table_name LPAR column_name data_type default_clause column_constraints
+Reduce [column_definition ::= column_name data_type default_clause column_constraints].
+Shift 605
+Stack: query SEMI query SEMI CREATE TABLE table_name LPAR column_definition
+Reduce [table_element ::= column_definition].
+Shift 603
+Stack: query SEMI query SEMI CREATE TABLE table_name LPAR table_element
+Reduce [table_element_list ::= table_element].
+Shift 250
+Stack: query SEMI query SEMI CREATE TABLE table_name LPAR table_element_list
+Shift 105
+Stack: query SEMI query SEMI CREATE TABLE table_name LPAR table_element_list COMMA
+Input NAME
+Shift 431
+Stack: query SEMI query SEMI CREATE TABLE table_name LPAR table_element_list COMMA NAME
+Input INTEGER
+Reduce [regular_identifier ::= NAME].
+Shift 436
+Stack: query SEMI query SEMI CREATE TABLE table_name LPAR table_element_list COMMA regular_identifier
+Reduce [actual_identifier ::= regular_identifier].
+Shift 435
+Stack: query SEMI query SEMI CREATE TABLE table_name LPAR table_element_list COMMA actual_identifier
+Reduce [identifier ::= actual_identifier].
+Shift 457
+Stack: query SEMI query SEMI CREATE TABLE table_name LPAR table_element_list COMMA identifier
+Reduce [column_name ::= identifier].
+Shift 94
+Stack: query SEMI query SEMI CREATE TABLE table_name LPAR table_element_list COMMA column_name
+Shift 683
+Stack: query SEMI query SEMI CREATE TABLE table_name LPAR table_element_list COMMA column_name INTEGER
+Input COMMA
+Reduce [exact_numeric_type ::= INTEGER].
+Shift 673
+Stack: query SEMI query SEMI CREATE TABLE table_name LPAR table_element_list COMMA column_name exact_numeric_type
+Reduce [numeric_type ::= exact_numeric_type].
+Shift 656
+Stack: query SEMI query SEMI CREATE TABLE table_name LPAR table_element_list COMMA column_name numeric_type
+Reduce [data_type ::= numeric_type].
+Shift 203
+Stack: query SEMI query SEMI CREATE TABLE table_name LPAR table_element_list COMMA column_name data_type
+Reduce [default_clause ::=].
+Shift 127
+Stack: query SEMI query SEMI CREATE TABLE table_name LPAR table_element_list COMMA column_name data_type default_clause
+Reduce [column_constraints ::=].
+Shift 131
+Stack: query SEMI query SEMI CREATE TABLE table_name LPAR table_element_list COMMA column_name data_type default_clause column_constraints
+Reduce [column_definition ::= column_name data_type default_clause column_constraints].
+Shift 605
+Stack: query SEMI query SEMI CREATE TABLE table_name LPAR table_element_list COMMA column_definition
+Reduce [table_element ::= column_definition].
+Shift 604
+Stack: query SEMI query SEMI CREATE TABLE table_name LPAR table_element_list COMMA table_element
+Reduce [table_element_list ::= table_element_list COMMA table_element].
+Shift 250
+Stack: query SEMI query SEMI CREATE TABLE table_name LPAR table_element_list
+Shift 105
+Stack: query SEMI query SEMI CREATE TABLE table_name LPAR table_element_list COMMA
+Input NAME
+Shift 431
+Stack: query SEMI query SEMI CREATE TABLE table_name LPAR table_element_list COMMA NAME
+Input FLOAT
+Reduce [regular_identifier ::= NAME].
+Shift 436
+Stack: query SEMI query SEMI CREATE TABLE table_name LPAR table_element_list COMMA regular_identifier
+Reduce [actual_identifier ::= regular_identifier].
+Shift 435
+Stack: query SEMI query SEMI CREATE TABLE table_name LPAR table_element_list COMMA actual_identifier
+Reduce [identifier ::= actual_identifier].
+Shift 457
+Stack: query SEMI query SEMI CREATE TABLE table_name LPAR table_element_list COMMA identifier
+Reduce [column_name ::= identifier].
+Shift 94
+Stack: query SEMI query SEMI CREATE TABLE table_name LPAR table_element_list COMMA column_name
+Shift 397
+Stack: query SEMI query SEMI CREATE TABLE table_name LPAR table_element_list COMMA column_name FLOAT
+Input COMMA
+Reduce [approximate_numeric_type ::= FLOAT].
+Shift 674
+Stack: query SEMI query SEMI CREATE TABLE table_name LPAR table_element_list COMMA column_name approximate_numeric_type
+Reduce [numeric_type ::= approximate_numeric_type].
+Shift 656
+Stack: query SEMI query SEMI CREATE TABLE table_name LPAR table_element_list COMMA column_name numeric_type
+Reduce [data_type ::= numeric_type].
+Shift 203
+Stack: query SEMI query SEMI CREATE TABLE table_name LPAR table_element_list COMMA column_name data_type
+Reduce [default_clause ::=].
+Shift 127
+Stack: query SEMI query SEMI CREATE TABLE table_name LPAR table_element_list COMMA column_name data_type default_clause
+Reduce [column_constraints ::=].
+Shift 131
+Stack: query SEMI query SEMI CREATE TABLE table_name LPAR table_element_list COMMA column_name data_type default_clause column_constraints
+Reduce [column_definition ::= column_name data_type default_clause column_constraints].
+Shift 605
+Stack: query SEMI query SEMI CREATE TABLE table_name LPAR table_element_list COMMA column_definition
+Reduce [table_element ::= column_definition].
+Shift 604
+Stack: query SEMI query SEMI CREATE TABLE table_name LPAR table_element_list COMMA table_element
+Reduce [table_element_list ::= table_element_list COMMA table_element].
+Shift 250
+Stack: query SEMI query SEMI CREATE TABLE table_name LPAR table_element_list
+Shift 105
+Stack: query SEMI query SEMI CREATE TABLE table_name LPAR table_element_list COMMA
+Input NAME
+Shift 431
+Stack: query SEMI query SEMI CREATE TABLE table_name LPAR table_element_list COMMA NAME
+Input DATE
+Reduce [regular_identifier ::= NAME].
+Shift 436
+Stack: query SEMI query SEMI CREATE TABLE table_name LPAR table_element_list COMMA regular_identifier
+Reduce [actual_identifier ::= regular_identifier].
+Shift 435
+Stack: query SEMI query SEMI CREATE TABLE table_name LPAR table_element_list COMMA actual_identifier
+Reduce [identifier ::= actual_identifier].
+Shift 457
+Stack: query SEMI query SEMI CREATE TABLE table_name LPAR table_element_list COMMA identifier
+Reduce [column_name ::= identifier].
+Shift 94
+Stack: query SEMI query SEMI CREATE TABLE table_name LPAR table_element_list COMMA column_name
+Shift 688
+Stack: query SEMI query SEMI CREATE TABLE table_name LPAR table_element_list COMMA column_name DATE
+Input COMMA
+Reduce [datetime_type ::= DATE].
+Shift 657
+Stack: query SEMI query SEMI CREATE TABLE table_name LPAR table_element_list COMMA column_name datetime_type
+Reduce [data_type ::= datetime_type].
+Shift 203
+Stack: query SEMI query SEMI CREATE TABLE table_name LPAR table_element_list COMMA column_name data_type
+Reduce [default_clause ::=].
+Shift 127
+Stack: query SEMI query SEMI CREATE TABLE table_name LPAR table_element_list COMMA column_name data_type default_clause
+Reduce [column_constraints ::=].
+Shift 131
+Stack: query SEMI query SEMI CREATE TABLE table_name LPAR table_element_list COMMA column_name data_type default_clause column_constraints
+Reduce [column_definition ::= column_name data_type default_clause column_constraints].
+Shift 605
+Stack: query SEMI query SEMI CREATE TABLE table_name LPAR table_element_list COMMA column_definition
+Reduce [table_element ::= column_definition].
+Shift 604
+Stack: query SEMI query SEMI CREATE TABLE table_name LPAR table_element_list COMMA table_element
+Reduce [table_element_list ::= table_element_list COMMA table_element].
+Shift 250
+Stack: query SEMI query SEMI CREATE TABLE table_name LPAR table_element_list
+Shift 105
+Stack: query SEMI query SEMI CREATE TABLE table_name LPAR table_element_list COMMA
+Input NAME
+Shift 431
+Stack: query SEMI query SEMI CREATE TABLE table_name LPAR table_element_list COMMA NAME
+Input DATETIME
+Reduce [regular_identifier ::= NAME].
+Shift 436
+Stack: query SEMI query SEMI CREATE TABLE table_name LPAR table_element_list COMMA regular_identifier
+Reduce [actual_identifier ::= regular_identifier].
+Shift 435
+Stack: query SEMI query SEMI CREATE TABLE table_name LPAR table_element_list COMMA actual_identifier
+Reduce [identifier ::= actual_identifier].
+Shift 457
+Stack: query SEMI query SEMI CREATE TABLE table_name LPAR table_element_list COMMA identifier
+Reduce [column_name ::= identifier].
+Shift 94
+Stack: query SEMI query SEMI CREATE TABLE table_name LPAR table_element_list COMMA column_name
+Shift 689
+Stack: query SEMI query SEMI CREATE TABLE table_name LPAR table_element_list COMMA column_name DATETIME
+Input RPAR
+Reduce [datetime_type ::= DATETIME].
+Shift 657
+Stack: query SEMI query SEMI CREATE TABLE table_name LPAR table_element_list COMMA column_name datetime_type
+Reduce [data_type ::= datetime_type].
+Shift 203
+Stack: query SEMI query SEMI CREATE TABLE table_name LPAR table_element_list COMMA column_name data_type
+Reduce [default_clause ::=].
+Shift 127
+Stack: query SEMI query SEMI CREATE TABLE table_name LPAR table_element_list COMMA column_name data_type default_clause
+Reduce [column_constraints ::=].
+Shift 131
+Stack: query SEMI query SEMI CREATE TABLE table_name LPAR table_element_list COMMA column_name data_type default_clause column_constraints
+Reduce [column_definition ::= column_name data_type default_clause column_constraints].
+Shift 605
+Stack: query SEMI query SEMI CREATE TABLE table_name LPAR table_element_list COMMA column_definition
+Reduce [table_element ::= column_definition].
+Shift 604
+Stack: query SEMI query SEMI CREATE TABLE table_name LPAR table_element_list COMMA table_element
+Reduce [table_element_list ::= table_element_list COMMA table_element].
+Shift 250
+Stack: query SEMI query SEMI CREATE TABLE table_name LPAR table_element_list
+Shift 712
+Stack: query SEMI query SEMI CREATE TABLE table_name LPAR table_element_list RPAR
+Input SEMI
+Reduce [table_definition ::= CREATE TABLE table_name LPAR table_element_list RPAR].
+Shift 602
+Stack: query SEMI query SEMI table_definition
+Reduce [sql_schema_definition_statement ::= table_definition].
+Shift 600
+Stack: query SEMI query SEMI sql_schema_definition_statement
+Reduce [sql_schema_statement ::= sql_schema_definition_statement].
+Shift 428
+Stack: query SEMI query SEMI sql_schema_statement
+Reduce [query ::= sql_schema_statement].
+Shift 197
+Stack: query SEMI query SEMI query
+Shift 92
+Stack: query SEMI query SEMI query SEMI
+Input INSERT
+Shift 417
+Stack: query SEMI query SEMI query SEMI INSERT
+Input INTO
+Shift 103
+Stack: query SEMI query SEMI query SEMI INSERT INTO
+Input NAME
+Shift 431
+Stack: query SEMI query SEMI query SEMI INSERT INTO NAME
+Input LPAR
+Reduce [regular_identifier ::= NAME].
+Shift 436
+Stack: query SEMI query SEMI query SEMI INSERT INTO regular_identifier
+Reduce [actual_identifier ::= regular_identifier].
+Shift 435
+Stack: query SEMI query SEMI query SEMI INSERT INTO actual_identifier
+Reduce [identifier ::= actual_identifier].
+Shift 439
+Stack: query SEMI query SEMI query SEMI INSERT INTO identifier
+Reduce [qualified_identifier ::= identifier].
+Shift 438
+Stack: query SEMI query SEMI query SEMI INSERT INTO qualified_identifier
+Reduce [qualified_name ::= qualified_identifier].
+Shift 443
+Stack: query SEMI query SEMI query SEMI INSERT INTO qualified_name
+Reduce [table_name ::= qualified_name].
+Shift 68
+Stack: query SEMI query SEMI query SEMI INSERT INTO table_name
+Shift 64
+Stack: query SEMI query SEMI query SEMI INSERT INTO table_name LPAR
+Input NAME
+Shift 431
+Stack: query SEMI query SEMI query SEMI INSERT INTO table_name LPAR NAME
+Input COMMA
+Reduce [regular_identifier ::= NAME].
+Shift 436
+Stack: query SEMI query SEMI query SEMI INSERT INTO table_name LPAR regular_identifier
+Reduce [actual_identifier ::= regular_identifier].
+Shift 435
+Stack: query SEMI query SEMI query SEMI INSERT INTO table_name LPAR actual_identifier
+Reduce [identifier ::= actual_identifier].
+Shift 267
+Stack: query SEMI query SEMI query SEMI INSERT INTO table_name LPAR identifier
+Reduce [column_name ::= identifier].
+Shift 477
+Stack: query SEMI query SEMI query SEMI INSERT INTO table_name LPAR column_name
+Reduce [column_name_list ::= column_name].
+Shift 418
+Stack: query SEMI query SEMI query SEMI INSERT INTO table_name LPAR column_name_list
+Shift 124
+Stack: query SEMI query SEMI query SEMI INSERT INTO table_name LPAR column_name_list COMMA
+Input NAME
+Shift 431
+Stack: query SEMI query SEMI query SEMI INSERT INTO table_name LPAR column_name_list COMMA NAME
+Input RPAR
+Reduce [regular_identifier ::= NAME].
+Shift 436
+Stack: query SEMI query SEMI query SEMI INSERT INTO table_name LPAR column_name_list COMMA regular_identifier
+Reduce [actual_identifier ::= regular_identifier].
+Shift 435
+Stack: query SEMI query SEMI query SEMI INSERT INTO table_name LPAR column_name_list COMMA actual_identifier
+Reduce [identifier ::= actual_identifier].
+Shift 457
+Stack: query SEMI query SEMI query SEMI INSERT INTO table_name LPAR column_name_list COMMA identifier
+Reduce [column_name ::= identifier].
+Shift 478
+Stack: query SEMI query SEMI query SEMI INSERT INTO table_name LPAR column_name_list COMMA column_name
+Reduce [column_name_list ::= column_name_list COMMA column_name].
+Shift 418
+Stack: query SEMI query SEMI query SEMI INSERT INTO table_name LPAR column_name_list
+Reduce [insert_column_list ::= column_name_list].
+Shift 419
+Stack: query SEMI query SEMI query SEMI INSERT INTO table_name LPAR insert_column_list
+Shift 72
+Stack: query SEMI query SEMI query SEMI INSERT INTO table_name LPAR insert_column_list RPAR
+Input VALUES
+Shift 13
+Stack: query SEMI query SEMI query SEMI INSERT INTO table_name LPAR insert_column_list RPAR VALUES
+Input LPAR
+Shift 3
+Stack: query SEMI query SEMI query SEMI INSERT INTO table_name LPAR insert_column_list RPAR VALUES LPAR
+Input INTNUM
+Shift 432
+Stack: query SEMI query SEMI query SEMI INSERT INTO table_name LPAR insert_column_list RPAR VALUES LPAR INTNUM
+Input COMMA
+Reduce [unsigned_numeric_literal ::= INTNUM].
+Shift 453
+Stack: query SEMI query SEMI query SEMI INSERT INTO table_name LPAR insert_column_list RPAR VALUES LPAR unsigned_numeric_literal
+Reduce [unsigned_literal ::= unsigned_numeric_literal].
+Shift 452
+Stack: query SEMI query SEMI query SEMI INSERT INTO table_name LPAR insert_column_list RPAR VALUES LPAR unsigned_literal
+Reduce [unsigned_value_specification ::= unsigned_literal].
+Shift 448
+Stack: query SEMI query SEMI query SEMI INSERT INTO table_name LPAR insert_column_list RPAR VALUES LPAR unsigned_value_specification
+Reduce [value_expression_primary ::= unsigned_value_specification].
+Shift 447
+Stack: query SEMI query SEMI query SEMI INSERT INTO table_name LPAR insert_column_list RPAR VALUES LPAR value_expression_primary
+Reduce [numeric_primary ::= value_expression_primary].
+Shift 445
+Stack: query SEMI query SEMI query SEMI INSERT INTO table_name LPAR insert_column_list RPAR VALUES LPAR numeric_primary
+Reduce [factor ::= numeric_primary].
+Shift 494
+Stack: query SEMI query SEMI query SEMI INSERT INTO table_name LPAR insert_column_list RPAR VALUES LPAR factor
+Reduce [term ::= factor].
+Shift 243
+Stack: query SEMI query SEMI query SEMI INSERT INTO table_name LPAR insert_column_list RPAR VALUES LPAR term
+Reduce [numeric_value_expression ::= term].
+Shift 187
+Stack: query SEMI query SEMI query SEMI INSERT INTO table_name LPAR insert_column_list RPAR VALUES LPAR numeric_value_expression
+Reduce [value_expression ::= numeric_value_expression].
+Shift 491
+Stack: query SEMI query SEMI query SEMI INSERT INTO table_name LPAR insert_column_list RPAR VALUES LPAR value_expression
+Reduce [row_value_constructor_element ::= value_expression].
+Shift 535
+Stack: query SEMI query SEMI query SEMI INSERT INTO table_name LPAR insert_column_list RPAR VALUES LPAR row_value_constructor_element
+Reduce [row_value_constructor_list ::= row_value_constructor_element].
+Shift 244
+Stack: query SEMI query SEMI query SEMI INSERT INTO table_name LPAR insert_column_list RPAR VALUES LPAR row_value_constructor_list
+Shift 19
+Stack: query SEMI query SEMI query SEMI INSERT INTO table_name LPAR insert_column_list RPAR VALUES LPAR row_value_constructor_list COMMA
+Input STRING
+Shift 455
+Stack: query SEMI query SEMI query SEMI INSERT INTO table_name LPAR insert_column_list RPAR VALUES LPAR row_value_constructor_list COMMA STRING
+Input RPAR
+Reduce [general_literal ::= STRING].
+Shift 454
+Stack: query SEMI query SEMI query SEMI INSERT INTO table_name LPAR insert_column_list RPAR VALUES LPAR row_value_constructor_list COMMA general_literal
+Reduce [unsigned_literal ::= general_literal].
+Shift 452
+Stack: query SEMI query SEMI query SEMI INSERT INTO table_name LPAR insert_column_list RPAR VALUES LPAR row_value_constructor_list COMMA unsigned_literal
+Reduce [unsigned_value_specification ::= unsigned_literal].
+Shift 448
+Stack: query SEMI query SEMI query SEMI INSERT INTO table_name LPAR insert_column_list RPAR VALUES LPAR row_value_constructor_list COMMA unsigned_value_specification
+Reduce [value_expression_primary ::= unsigned_value_specification].
+Shift 447
+Stack: query SEMI query SEMI query SEMI INSERT INTO table_name LPAR insert_column_list RPAR VALUES LPAR row_value_constructor_list COMMA value_expression_primary
+Reduce [numeric_primary ::= value_expression_primary].
+Shift 445
+Stack: query SEMI query SEMI query SEMI INSERT INTO table_name LPAR insert_column_list RPAR VALUES LPAR row_value_constructor_list COMMA numeric_primary
+Reduce [factor ::= numeric_primary].
+Shift 494
+Stack: query SEMI query SEMI query SEMI INSERT INTO table_name LPAR insert_column_list RPAR VALUES LPAR row_value_constructor_list COMMA factor
+Reduce [term ::= factor].
+Shift 243
+Stack: query SEMI query SEMI query SEMI INSERT INTO table_name LPAR insert_column_list RPAR VALUES LPAR row_value_constructor_list COMMA term
+Reduce [numeric_value_expression ::= term].
+Shift 187
+Stack: query SEMI query SEMI query SEMI INSERT INTO table_name LPAR insert_column_list RPAR VALUES LPAR row_value_constructor_list COMMA numeric_value_expression
+Reduce [value_expression ::= numeric_value_expression].
+Shift 491
+Stack: query SEMI query SEMI query SEMI INSERT INTO table_name LPAR insert_column_list RPAR VALUES LPAR row_value_constructor_list COMMA value_expression
+Reduce [row_value_constructor_element ::= value_expression].
+Shift 495
+Stack: query SEMI query SEMI query SEMI INSERT INTO table_name LPAR insert_column_list RPAR VALUES LPAR row_value_constructor_list COMMA row_value_constructor_element
+Reduce [row_value_constructor_list ::= row_value_constructor_list COMMA row_value_constructor_element].
+Shift 244
+Stack: query SEMI query SEMI query SEMI INSERT INTO table_name LPAR insert_column_list RPAR VALUES LPAR row_value_constructor_list
+Shift 490
+Stack: query SEMI query SEMI query SEMI INSERT INTO table_name LPAR insert_column_list RPAR VALUES LPAR row_value_constructor_list RPAR
+Input SEMI
+Reduce [row_value_constructor ::= LPAR row_value_constructor_list RPAR].
+Shift 538
+Stack: query SEMI query SEMI query SEMI INSERT INTO table_name LPAR insert_column_list RPAR VALUES row_value_constructor
+Reduce [table_value_constructor_list ::= row_value_constructor].
+Shift 537
+Stack: query SEMI query SEMI query SEMI INSERT INTO table_name LPAR insert_column_list RPAR VALUES table_value_constructor_list
+Reduce [table_value_constructor ::= VALUES table_value_constructor_list].
+Shift 473
+Stack: query SEMI query SEMI query SEMI INSERT INTO table_name LPAR insert_column_list RPAR table_value_constructor
+Reduce [simple_table ::= table_value_constructor].
+Shift 471
+Stack: query SEMI query SEMI query SEMI INSERT INTO table_name LPAR insert_column_list RPAR simple_table
+Reduce [non_join_query_primary ::= simple_table].
+Shift 488
+Stack: query SEMI query SEMI query SEMI INSERT INTO table_name LPAR insert_column_list RPAR non_join_query_primary
+Reduce [non_join_query_term ::= non_join_query_primary].
+Shift 284
+Stack: query SEMI query SEMI query SEMI INSERT INTO table_name LPAR insert_column_list RPAR non_join_query_term
+Reduce [non_join_query_expression ::= non_join_query_term].
+Shift 486
+Stack: query SEMI query SEMI query SEMI INSERT INTO table_name LPAR insert_column_list RPAR non_join_query_expression
+Reduce [query_expression ::= non_join_query_expression].
+Shift 268
+Stack: query SEMI query SEMI query SEMI INSERT INTO table_name LPAR insert_column_list RPAR query_expression
+Reduce [insert_columns_and_source ::= LPAR insert_column_list RPAR query_expression].
+Shift 725
+Stack: query SEMI query SEMI query SEMI INSERT INTO table_name insert_columns_and_source
+Reduce [insert_statement ::= INSERT INTO table_name insert_columns_and_source].
+Shift 722
+Stack: query SEMI query SEMI query SEMI insert_statement
+Reduce [sql_data_change_statement ::= insert_statement].
+Shift 720
+Stack: query SEMI query SEMI query SEMI sql_data_change_statement
+Reduce [sql_data_statement ::= sql_data_change_statement].
+Shift 427
+Stack: query SEMI query SEMI query SEMI sql_data_statement
+Reduce [query ::= sql_data_statement].
+Shift 197
+Stack: query SEMI query SEMI query SEMI query
+Shift 92
+Stack: query SEMI query SEMI query SEMI query SEMI
+Input INSERT
+Shift 417
+Stack: query SEMI query SEMI query SEMI query SEMI INSERT
+Input INTO
+Shift 103
+Stack: query SEMI query SEMI query SEMI query SEMI INSERT INTO
+Input NAME
+Shift 431
+Stack: query SEMI query SEMI query SEMI query SEMI INSERT INTO NAME
+Input LPAR
+Reduce [regular_identifier ::= NAME].
+Shift 436
+Stack: query SEMI query SEMI query SEMI query SEMI INSERT INTO regular_identifier
+Reduce [actual_identifier ::= regular_identifier].
+Shift 435
+Stack: query SEMI query SEMI query SEMI query SEMI INSERT INTO actual_identifier
+Reduce [identifier ::= actual_identifier].
+Shift 439
+Stack: query SEMI query SEMI query SEMI query SEMI INSERT INTO identifier
+Reduce [qualified_identifier ::= identifier].
+Shift 438
+Stack: query SEMI query SEMI query SEMI query SEMI INSERT INTO qualified_identifier
+Reduce [qualified_name ::= qualified_identifier].
+Shift 443
+Stack: query SEMI query SEMI query SEMI query SEMI INSERT INTO qualified_name
+Reduce [table_name ::= qualified_name].
+Shift 68
+Stack: query SEMI query SEMI query SEMI query SEMI INSERT INTO table_name
+Shift 64
+Stack: query SEMI query SEMI query SEMI query SEMI INSERT INTO table_name LPAR
+Input NAME
+Shift 431
+Stack: query SEMI query SEMI query SEMI query SEMI INSERT INTO table_name LPAR NAME
+Input COMMA
+Reduce [regular_identifier ::= NAME].
+Shift 436
+Stack: query SEMI query SEMI query SEMI query SEMI INSERT INTO table_name LPAR regular_identifier
+Reduce [actual_identifier ::= regular_identifier].
+Shift 435
+Stack: query SEMI query SEMI query SEMI query SEMI INSERT INTO table_name LPAR actual_identifier
+Reduce [identifier ::= actual_identifier].
+Shift 267
+Stack: query SEMI query SEMI query SEMI query SEMI INSERT INTO table_name LPAR identifier
+Reduce [column_name ::= identifier].
+Shift 477
+Stack: query SEMI query SEMI query SEMI query SEMI INSERT INTO table_name LPAR column_name
+Reduce [column_name_list ::= column_name].
+Shift 418
+Stack: query SEMI query SEMI query SEMI query SEMI INSERT INTO table_name LPAR column_name_list
+Shift 124
+Stack: query SEMI query SEMI query SEMI query SEMI INSERT INTO table_name LPAR column_name_list COMMA
+Input NAME
+Shift 431
+Stack: query SEMI query SEMI query SEMI query SEMI INSERT INTO table_name LPAR column_name_list COMMA NAME
+Input RPAR
+Reduce [regular_identifier ::= NAME].
+Shift 436
+Stack: query SEMI query SEMI query SEMI query SEMI INSERT INTO table_name LPAR column_name_list COMMA regular_identifier
+Reduce [actual_identifier ::= regular_identifier].
+Shift 435
+Stack: query SEMI query SEMI query SEMI query SEMI INSERT INTO table_name LPAR column_name_list COMMA actual_identifier
+Reduce [identifier ::= actual_identifier].
+Shift 457
+Stack: query SEMI query SEMI query SEMI query SEMI INSERT INTO table_name LPAR column_name_list COMMA identifier
+Reduce [column_name ::= identifier].
+Shift 478
+Stack: query SEMI query SEMI query SEMI query SEMI INSERT INTO table_name LPAR column_name_list COMMA column_name
+Reduce [column_name_list ::= column_name_list COMMA column_name].
+Shift 418
+Stack: query SEMI query SEMI query SEMI query SEMI INSERT INTO table_name LPAR column_name_list
+Reduce [insert_column_list ::= column_name_list].
+Shift 419
+Stack: query SEMI query SEMI query SEMI query SEMI INSERT INTO table_name LPAR insert_column_list
+Shift 72
+Stack: query SEMI query SEMI query SEMI query SEMI INSERT INTO table_name LPAR insert_column_list RPAR
+Input VALUES
+Shift 13
+Stack: query SEMI query SEMI query SEMI query SEMI INSERT INTO table_name LPAR insert_column_list RPAR VALUES
+Input LPAR
+Shift 3
+Stack: query SEMI query SEMI query SEMI query SEMI INSERT INTO table_name LPAR insert_column_list RPAR VALUES LPAR
+Input INTNUM
+Shift 432
+Stack: query SEMI query SEMI query SEMI query SEMI INSERT INTO table_name LPAR insert_column_list RPAR VALUES LPAR INTNUM
+Input COMMA
+Reduce [unsigned_numeric_literal ::= INTNUM].
+Shift 453
+Stack: query SEMI query SEMI query SEMI query SEMI INSERT INTO table_name LPAR insert_column_list RPAR VALUES LPAR unsigned_numeric_literal
+Reduce [unsigned_literal ::= unsigned_numeric_literal].
+Shift 452
+Stack: query SEMI query SEMI query SEMI query SEMI INSERT INTO table_name LPAR insert_column_list RPAR VALUES LPAR unsigned_literal
+Reduce [unsigned_value_specification ::= unsigned_literal].
+Shift 448
+Stack: query SEMI query SEMI query SEMI query SEMI INSERT INTO table_name LPAR insert_column_list RPAR VALUES LPAR unsigned_value_specification
+Reduce [value_expression_primary ::= unsigned_value_specification].
+Shift 447
+Stack: query SEMI query SEMI query SEMI query SEMI INSERT INTO table_name LPAR insert_column_list RPAR VALUES LPAR value_expression_primary
+Reduce [numeric_primary ::= value_expression_primary].
+Shift 445
+Stack: query SEMI query SEMI query SEMI query SEMI INSERT INTO table_name LPAR insert_column_list RPAR VALUES LPAR numeric_primary
+Reduce [factor ::= numeric_primary].
+Shift 494
+Stack: query SEMI query SEMI query SEMI query SEMI INSERT INTO table_name LPAR insert_column_list RPAR VALUES LPAR factor
+Reduce [term ::= factor].
+Shift 243
+Stack: query SEMI query SEMI query SEMI query SEMI INSERT INTO table_name LPAR insert_column_list RPAR VALUES LPAR term
+Reduce [numeric_value_expression ::= term].
+Shift 187
+Stack: query SEMI query SEMI query SEMI query SEMI INSERT INTO table_name LPAR insert_column_list RPAR VALUES LPAR numeric_value_expression
+Reduce [value_expression ::= numeric_value_expression].
+Shift 491
+Stack: query SEMI query SEMI query SEMI query SEMI INSERT INTO table_name LPAR insert_column_list RPAR VALUES LPAR value_expression
+Reduce [row_value_constructor_element ::= value_expression].
+Shift 535
+Stack: query SEMI query SEMI query SEMI query SEMI INSERT INTO table_name LPAR insert_column_list RPAR VALUES LPAR row_value_constructor_element
+Reduce [row_value_constructor_list ::= row_value_constructor_element].
+Shift 244
+Stack: query SEMI query SEMI query SEMI query SEMI INSERT INTO table_name LPAR insert_column_list RPAR VALUES LPAR row_value_constructor_list
+Shift 19
+Stack: query SEMI query SEMI query SEMI query SEMI INSERT INTO table_name LPAR insert_column_list RPAR VALUES LPAR row_value_constructor_list COMMA
+Input STRING
+Shift 455
+Stack: query SEMI query SEMI query SEMI query SEMI INSERT INTO table_name LPAR insert_column_list RPAR VALUES LPAR row_value_constructor_list COMMA STRING
+Input RPAR
+Reduce [general_literal ::= STRING].
+Shift 454
+Stack: query SEMI query SEMI query SEMI query SEMI INSERT INTO table_name LPAR insert_column_list RPAR VALUES LPAR row_value_constructor_list COMMA general_literal
+Reduce [unsigned_literal ::= general_literal].
+Shift 452
+Stack: query SEMI query SEMI query SEMI query SEMI INSERT INTO table_name LPAR insert_column_list RPAR VALUES LPAR row_value_constructor_list COMMA unsigned_literal
+Reduce [unsigned_value_specification ::= unsigned_literal].
+Shift 448
+Stack: query SEMI query SEMI query SEMI query SEMI INSERT INTO table_name LPAR insert_column_list RPAR VALUES LPAR row_value_constructor_list COMMA unsigned_value_specification
+Reduce [value_expression_primary ::= unsigned_value_specification].
+Shift 447
+Stack: query SEMI query SEMI query SEMI query SEMI INSERT INTO table_name LPAR insert_column_list RPAR VALUES LPAR row_value_constructor_list COMMA value_expression_primary
+Reduce [numeric_primary ::= value_expression_primary].
+Shift 445
+Stack: query SEMI query SEMI query SEMI query SEMI INSERT INTO table_name LPAR insert_column_list RPAR VALUES LPAR row_value_constructor_list COMMA numeric_primary
+Reduce [factor ::= numeric_primary].
+Shift 494
+Stack: query SEMI query SEMI query SEMI query SEMI INSERT INTO table_name LPAR insert_column_list RPAR VALUES LPAR row_value_constructor_list COMMA factor
+Reduce [term ::= factor].
+Shift 243
+Stack: query SEMI query SEMI query SEMI query SEMI INSERT INTO table_name LPAR insert_column_list RPAR VALUES LPAR row_value_constructor_list COMMA term
+Reduce [numeric_value_expression ::= term].
+Shift 187
+Stack: query SEMI query SEMI query SEMI query SEMI INSERT INTO table_name LPAR insert_column_list RPAR VALUES LPAR row_value_constructor_list COMMA numeric_value_expression
+Reduce [value_expression ::= numeric_value_expression].
+Shift 491
+Stack: query SEMI query SEMI query SEMI query SEMI INSERT INTO table_name LPAR insert_column_list RPAR VALUES LPAR row_value_constructor_list COMMA value_expression
+Reduce [row_value_constructor_element ::= value_expression].
+Shift 495
+Stack: query SEMI query SEMI query SEMI query SEMI INSERT INTO table_name LPAR insert_column_list RPAR VALUES LPAR row_value_constructor_list COMMA row_value_constructor_element
+Reduce [row_value_constructor_list ::= row_value_constructor_list COMMA row_value_constructor_element].
+Shift 244
+Stack: query SEMI query SEMI query SEMI query SEMI INSERT INTO table_name LPAR insert_column_list RPAR VALUES LPAR row_value_constructor_list
+Shift 490
+Stack: query SEMI query SEMI query SEMI query SEMI INSERT INTO table_name LPAR insert_column_list RPAR VALUES LPAR row_value_constructor_list RPAR
+Input SEMI
+Reduce [row_value_constructor ::= LPAR row_value_constructor_list RPAR].
+Shift 538
+Stack: query SEMI query SEMI query SEMI query SEMI INSERT INTO table_name LPAR insert_column_list RPAR VALUES row_value_constructor
+Reduce [table_value_constructor_list ::= row_value_constructor].
+Shift 537
+Stack: query SEMI query SEMI query SEMI query SEMI INSERT INTO table_name LPAR insert_column_list RPAR VALUES table_value_constructor_list
+Reduce [table_value_constructor ::= VALUES table_value_constructor_list].
+Shift 473
+Stack: query SEMI query SEMI query SEMI query SEMI INSERT INTO table_name LPAR insert_column_list RPAR table_value_constructor
+Reduce [simple_table ::= table_value_constructor].
+Shift 471
+Stack: query SEMI query SEMI query SEMI query SEMI INSERT INTO table_name LPAR insert_column_list RPAR simple_table
+Reduce [non_join_query_primary ::= simple_table].
+Shift 488
+Stack: query SEMI query SEMI query SEMI query SEMI INSERT INTO table_name LPAR insert_column_list RPAR non_join_query_primary
+Reduce [non_join_query_term ::= non_join_query_primary].
+Shift 284
+Stack: query SEMI query SEMI query SEMI query SEMI INSERT INTO table_name LPAR insert_column_list RPAR non_join_query_term
+Reduce [non_join_query_expression ::= non_join_query_term].
+Shift 486
+Stack: query SEMI query SEMI query SEMI query SEMI INSERT INTO table_name LPAR insert_column_list RPAR non_join_query_expression
+Reduce [query_expression ::= non_join_query_expression].
+Shift 268
+Stack: query SEMI query SEMI query SEMI query SEMI INSERT INTO table_name LPAR insert_column_list RPAR query_expression
+Reduce [insert_columns_and_source ::= LPAR insert_column_list RPAR query_expression].
+Shift 725
+Stack: query SEMI query SEMI query SEMI query SEMI INSERT INTO table_name insert_columns_and_source
+Reduce [insert_statement ::= INSERT INTO table_name insert_columns_and_source].
+Shift 722
+Stack: query SEMI query SEMI query SEMI query SEMI insert_statement
+Reduce [sql_data_change_statement ::= insert_statement].
+Shift 720
+Stack: query SEMI query SEMI query SEMI query SEMI sql_data_change_statement
+Reduce [sql_data_statement ::= sql_data_change_statement].
+Shift 427
+Stack: query SEMI query SEMI query SEMI query SEMI sql_data_statement
+Reduce [query ::= sql_data_statement].
+Shift 197
+Stack: query SEMI query SEMI query SEMI query SEMI query
+Shift 92
+Stack: query SEMI query SEMI query SEMI query SEMI query SEMI
 Input $
 Reduce [optional_semi ::= SEMI].
-Shift 723
-Stack: query optional_semi
+Shift 735
+Stack: query SEMI query SEMI query SEMI query SEMI query optional_semi
 Reduce [query_list ::= query optional_semi].
-Shift 415
+Shift 425
+Stack: query SEMI query SEMI query SEMI query SEMI query_list
+Reduce [query_list ::= query SEMI query_list].
+Shift 425
+Stack: query SEMI query SEMI query SEMI query_list
+Reduce [query_list ::= query SEMI query_list].
+Shift 425
+Stack: query SEMI query SEMI query_list
+Reduce [query_list ::= query SEMI query_list].
+Shift 425
+Stack: query SEMI query_list
+Reduce [query_list ::= query SEMI query_list].
+Shift 424
 Stack: query_list
 Reduce [statement ::= query_list].
 Accept!

@@ -5,7 +5,7 @@
 
 statement(A) ::= query_list(B). {A=B;}
 
-query_list(A) ::= query(B) SEMI query_list(C). {A=B;A->actions=array_merge(A->actions, C->actions);}
+query_list(A) ::= query(B) SEMI query_list(C). {A=B;if(!(is_array(B->actions))) echo "b is not an array!!\n";if(!(is_array(C->actions))) echo "c is not an array!!\n";A->actions=array_merge(B->actions, C->actions);}
 query_list(A) ::= query(B) optional_semi.  {A=B;}
 optional_semi ::= .
 optional_semi ::= SEMI.
@@ -15,7 +15,7 @@ query(A) ::= query_specification(B). {
 		B->actions[] = new qpAction_returnRelation(B->last_relation_id);		
 		A=B;
 	}
-query(A) ::= sql_data_statement(B). {A=B;}
+query(A) ::= sql_data_statement(B). {A = new stdClass();A->actions=B->actions;}
 query(A) ::= sql_schema_statement(B). {A=B;}
 
 
@@ -738,7 +738,7 @@ sql_schema_statement(A) ::= sql_schema_manipulation_statement(B). {A=B;}
 
 sql_schema_definition_statement(A) ::= table_definition(B). {
 		A = new stdClass();
-		A->actions=B;
+		A->actions[]=B;
 	}
 /*
 		<schema definition>
@@ -785,8 +785,7 @@ sql_schema_definition_statement(A) ::= table_definition(B). {
 
 
 table_definition(A) ::= CREATE TABLE table_name(B) LPAR table_element_list(C) RPAR. {
-		A = new stdClass();
-		A->action = new qpAction_createTable(B->value, C);
+		A = new qpAction_createTable(B->value, C);
 	}
 
 /*
