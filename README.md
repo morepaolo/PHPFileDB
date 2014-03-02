@@ -6,6 +6,11 @@ It's an ongoing project, whose intent is to offer a valid embeddable database wh
 
 This project doesn't aim at replacing sqlite, as we know that we cannot reach the same performances with a library written entirely in PHP. The most interesting characteristic of PHPFileDB will be its complete compatibility with MySQL based websites, as we know how tedious can be to rewrite queries to support different databases. Obviously, this kind of compatibility can be reached only by using a third party database abstraction layer, such as ADODB PHP. So, everything will work fine unless you have written explicit calls to mysql_* functions in your code.
 
+DEMO
+====
+A working example of PHPFileDB can be tried at http://162.248.163.89/demo.php
+Databases are not shared between demo testers, so you're welcome to stress-test it, try every possible odd-looking query, and maybe notify me when something is not working the way you expected. This will help me fixing bugs and improve the project. Soon, I'll add the capability to notify bugged queries directly from the demo interface
+
 USAGE
 =====
 
