@@ -1,5 +1,7 @@
 <?php
 
+class PHPFDB_InvalidColumnName_Exception extends Exception{
+}
 class PHPFDB_InvalidTableName_Exception extends Exception{
 }
 class PHPFDB_DuplicateTableName_Exception extends Exception{

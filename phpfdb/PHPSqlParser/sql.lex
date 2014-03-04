@@ -29,6 +29,7 @@ include 'jlex.php';
 <YYINITIAL>CONTINUE		{ return $this->createToken("TK_".strtoupper($this->yytext())); }
 <YYINITIAL>CREATE		{ return $this->createToken("TK_".strtoupper($this->yytext())); }
 <YYINITIAL>CURRENT		{ return $this->createToken("TK_".strtoupper($this->yytext())); }
+<YYINITIAL>CURRENT_TIMESTAMP		{ return $this->createToken("TK_".strtoupper($this->yytext())); }
 <YYINITIAL>CURSOR		{ return $this->createToken("TK_".strtoupper($this->yytext())); }
 <YYINITIAL>DATE			{ return $this->createToken("TK_".strtoupper($this->yytext())); }
 <YYINITIAL>DATETIME		{ return $this->createToken("TK_".strtoupper($this->yytext())); }
@@ -63,9 +64,10 @@ include 'jlex.php';
 <YYINITIAL>KEY			{ return $this->createToken("TK_".strtoupper($this->yytext())); }
 <YYINITIAL>LANGUAGE		{ return $this->createToken("TK_".strtoupper($this->yytext())); }
 <YYINITIAL>LEFT			{ return $this->createToken("TK_".strtoupper($this->yytext())); }
-<YYINITIAL>LIKE			{ return $this->createToken("TK_".strtoupper($this->yytext())); }
+<YYINITIAL>LIKE			{ return $this->createToken("TK_OP_LIKE"); }
 <YYINITIAL>LIMIT		{ return $this->createToken("TK_".strtoupper($this->yytext())); }
 <YYINITIAL>NOT			{ return $this->createToken("TK_".strtoupper($this->yytext())); }
+<YYINITIAL>NOW			{ return $this->createToken("TK_".strtoupper($this->yytext())); }
 <YYINITIAL>"NULL"		{ return $this->createToken("TK_NULLX"); }
 <YYINITIAL>NUMERIC		{ return $this->createToken("TK_".strtoupper($this->yytext())); }
 <YYINITIAL>OF			{ return $this->createToken("TK_".strtoupper($this->yytext())); }
@@ -92,6 +94,7 @@ include 'jlex.php';
 <YYINITIAL>SOME			{ return $this->createToken("TK_".strtoupper($this->yytext())); }
 <YYINITIAL>YYINITIALCODE	{ return $this->createToken("TK_".strtoupper($this->yytext())); }
 <YYINITIAL>TABLE		{ return $this->createToken("TK_".strtoupper($this->yytext())); }
+<YYINITIAL>TIMESTAMP	{ return $this->createToken("TK_".strtoupper($this->yytext())); }
 <YYINITIAL>TO			{ return $this->createToken("TK_".strtoupper($this->yytext())); }
 <YYINITIAL>UNION		{ return $this->createToken("TK_".strtoupper($this->yytext())); }
 <YYINITIAL>UNIQUE		{ return $this->createToken("TK_".strtoupper($this->yytext())); }
@@ -104,7 +107,7 @@ include 'jlex.php';
 <YYINITIAL>WHERE		{ return $this->createToken("TK_".strtoupper($this->yytext())); }
 <YYINITIAL>WITH			{ return $this->createToken("TK_".strtoupper($this->yytext())); }
 <YYINITIAL>WORK			{ return $this->createToken("TK_".strtoupper($this->yytext())); }
-<YYINITIAL>DEADTOKEN		{ return $this->createToken("TK_".strtoupper($this->yytext())); }
+<YYINITIAL>DEADTOKEN	{ return $this->createToken("TK_".strtoupper($this->yytext())); }
 
 
 <YYINITIAL>ABS			{ return $this->createToken("TK_".strtoupper($this->yytext())); }
@@ -112,7 +115,7 @@ include 'jlex.php';
 <YYINITIAL>ASIN			{ return $this->createToken("TK_".strtoupper($this->yytext())); }
 <YYINITIAL>ATAN			{ return $this->createToken("TK_".strtoupper($this->yytext())); }
 <YYINITIAL>ATAN2		{ return $this->createToken("TK_".strtoupper($this->yytext())); }
-<YYINITIAL>CEIL(ING)?		{ return $this->createToken("TK_CEIL"); }
+<YYINITIAL>CEIL(ING)?	{ return $this->createToken("TK_CEIL"); }
 <YYINITIAL>COS			{ return $this->createToken("TK_".strtoupper($this->yytext())); }
 <YYINITIAL>COT			{ return $this->createToken("TK_".strtoupper($this->yytext())); }
 <YYINITIAL>CRC32		{ return $this->createToken("TK_".strtoupper($this->yytext())); }
@@ -136,6 +139,8 @@ include 'jlex.php';
 <YYINITIAL>TRUNCATE		{ return $this->createToken("TK_".strtoupper($this->yytext())); }
 
 <YYINITIAL>DAY(OFMONTH)?	{ return $this->createToken("TK_DAY"); }
+<YYINITIAL>DAYOFWEEK	{ return $this->createToken("TK_".strtoupper($this->yytext())); }
+<YYINITIAL>DAYOFYEAR	{ return $this->createToken("TK_".strtoupper($this->yytext())); }
 <YYINITIAL>HOUR			{ return $this->createToken("TK_".strtoupper($this->yytext())); }
 <YYINITIAL>MINUTE		{ return $this->createToken("TK_".strtoupper($this->yytext())); }
 <YYINITIAL>MONTH		{ return $this->createToken("TK_".strtoupper($this->yytext())); }

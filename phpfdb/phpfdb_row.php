@@ -29,7 +29,7 @@ class PHPFDB_row{
 						$check_uniqueness = true;
 					}
 				} elseif(!(isset($this->address))){ // If address is set, we are updating a row (on INSERT, address is null)
-					$value_to_write = $cur_col->default;
+					$value_to_write = $cur_col->getDefaultValue();
 					$check_uniqueness = true;
 				} else 
 					$value_to_write = $this->values[$key];

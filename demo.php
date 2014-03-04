@@ -15,73 +15,29 @@
 		}
 		$_SESSION['cur_DB'] = $string;
 		$db = new PHPFDB("./databases/".$_SESSION['cur_DB']."/");
-		$sql = "create table impiegati(id int auto_increment, name varchar(20), lastname varchar(20), dept_id int);";
-		$sql .= "create table dipartimenti(id_dept int auto_increment, deptname varchar(20));";
-		$sql .= "create table pagamenti(id int auto_increment, id_impiegato int, importo float, data_inserimento date, data_aggiornamento datetime);";
-		// INSERTING DEPARTMENTS
-		$sql .= "INSERT INTO dipartimenti (id_dept, deptname) VALUES (1, 'Ricerca');".
-				"INSERT INTO dipartimenti (id_dept, deptname) VALUES (2, 'Sviluppo');".
-				"INSERT INTO dipartimenti (id_dept, deptname) VALUES (3, 'Contabilità');";
-		// INSERTING EMPLOYEES
-		$sql .= "INSERT INTO impiegati (name, lastname, dept_id) VALUES ('Paolo', 'Moretti', 1);".
-				"INSERT INTO impiegati (name, lastname, dept_id) VALUES ('Paolo', 'Prova ABCDE', 2);".
-				"INSERT INTO impiegati (name, dept_id) VALUES ('Paolo', 1);".
-				"INSERT INTO impiegati (lastname, dept_id) VALUES ('name = NULL', 2);".
-				"INSERT INTO impiegati (name, lastname, dept_id) VALUES ('Test', 'id=NULL!!', 1);".
-				"INSERT INTO impiegati (name, lastname, dept_id) VALUES ('Altro TEST', 'XXXXXXX', 2);".
-				"INSERT INTO impiegati (name, lastname, dept_id) VALUES ('Mario', 'Rossi', 1);".
-				"INSERT INTO impiegati (name, lastname, dept_id) VALUES ('John', 'Doe', 1);".
-				"INSERT INTO impiegati (name, lastname, dept_id) VALUES ('Giuseppe', 'Bianchi', 1);".
-				"INSERT INTO impiegati (name, lastname, dept_id) VALUES ('Franco', 'Verdi', 2);";
-		// INSERTING PAYMENTS
-		$sql .= "INSERT INTO pagamenti (id_impiegato, importo, data_inserimento, data_aggiornamento) values (1, 500.20, '2014-01-23', '2014/01/24 06:12:58');".
-				"INSERT INTO pagamenti (id_impiegato, importo, data_inserimento) values (2, 997.80, '2012-10-28');".
-				"INSERT INTO pagamenti (id_impiegato, importo, data_inserimento) values (3, 1516.37945, '2015-04-03');".
-				"INSERT INTO pagamenti (id_impiegato, importo, data_inserimento) values (1, 1916.5, '2012-09-04');";
-		$result = $db->query($sql);
+		resetDB($db);
 	}
 	switch (@$_POST['action']){
+		case "reset":
+			resetDB($db);
+			break;
 		case "query":
 			if(isset($_POST['query'])){
 				$sql = $_POST['query'];
+				$fh = fopen("./temp/query.log", "a");
+				fwrite($fh, date("Y-m-d H:i:s")."\t".$sql."\n");
+				fclose($fh);
 				$result = $db->query($sql);
-				if($result->error){
-					$html = $result->error_message;
-				} else {
-					$html = "<table cellpadding='4' cellspacing='0' style='border-collapse:collapse;margin-bottom:20px;'>";
-					if(isset($result->data->cols))
-						$colspan=count($result->data->cols);
-					else
-						$colspan=2;
-					if(isset($result->data->cols)){
-						$html .= "<tr>";
-						foreach($result->data->cols as $cur_column){
-							$html .= "<th style='border:1px solid black;'>".$cur_column->name."</th>";
-						}
-						$html .= "</tr>";
-					}
-					if(isset($result->data->cols)){
-						foreach($result->data->rows as $cur_row){
-							$html .= "<tr>";
-							for($i=0;$i<count($result->data->cols);$i++)
-								$html .= "<td style='border:1px solid black;'>".$result->data->cols[$i]->toString($cur_row->values[$i])."</td>";
-							$html .= "</tr>";
-						}
-						$col_1_span = floor((count($result->data->cols))/2);
-						$col_2_span = (count($result->data->cols)) - $col_1_span;
-					} else {
-						$col_1_span = 1;
-						$col_2_span = 1;	
-					}
-					$html .= "<tr>";
-					$html .= "<td colspan='".$col_1_span."' style='background-color:#FFBBFF;border-right:1px solid black;font-weight:bold;'>plan: ".(round($result->planning_duration,3)*1000)." msec";
-					if($result->from_cache) $html .= " <sub>(cache)</sub>";
-					$html .= "</td>";
-					$html .= "<td colspan='".$col_2_span."' style='background-color:#FFBBFF;text-align:right;font-weight:bold;'>exec: ".(round($result->execution_duration,3)*1000)." msec</td>";
-					$html .= "</tr>";
-					$html .= "</table>";
-				}
-				echo $html;
+				echo dumpTable($result);
+			}
+			break;
+		case "plan":
+			if(isset($_POST['query'])){
+				$sql = $_POST['query'];
+				$plan = $db->simulate($sql);
+				echo "<pre>";
+				print_r($plan->plan);
+				echo "</pre>";
 			}
 			break;
 		default: /* GENERATE PAGE'S HTML */ ?>
@@ -119,7 +75,27 @@
 					executeQuery(doc.getValue());
 				});
 				$("#execute_selected").click(function(){
-					executeQuery(doc.getValue());
+					executeQuery(doc.getSelection());
+				});
+				$("#show_plan").click(function(){
+					$.ajax({
+						url:"demo.php",
+						method:"POST",
+						data: "action=plan&query="+doc.getValue(),
+						success: function(response){$("#result").html(response);},
+						failure: function(response){$("#result").html("ERROR FROM SERVER");}
+					});
+				});
+				$("#reset_db").click(function(){
+					if(confirm("Are you sure?")){
+						$.ajax({
+							url:"demo.php",
+							method:"POST",
+							data: "action=reset",
+							success: function(response){window.location.reload()},
+							failure: function(response){$("#result").html("ERROR FROM SERVER");}
+						});
+					}
 				});
 			};
 			function executeQuery(query){
@@ -142,7 +118,7 @@
 		</div>
 		<div style="width:200px;float:left;font-size:14px;font-weight:bold;color:#ffffff;">
 			<div style="background-color:#1e90ff;padding:4px;">
-				TABLES àèìòù
+				TABLES
 			</div>
 			<ul style="list-style:none;padding:4px;color:#000000;">
 				<?php 
@@ -156,6 +132,8 @@
 		<div style="margin-left:210px;">
 			<input type="button" name="execute_selected" id="execute_selected" value="EXECUTE SELECTED" />
 			<input type="button" name="execute_all" id="execute_all" value="EXECUTE ALL" />
+			<input type="button" name="show_plan" id="show_plan" value="SHOW PLAN" />
+			<input type="button" name="reset_db" id="reset_db" value="RESET DATABASE" />
             <textarea id="query" name="query">-- INSERT HERE YOUR QUERY
 select * from tables;</textarea>
 			<div style="background-color:#1e90ff;padding:4px;">
@@ -168,4 +146,77 @@ select * from tables;</textarea>
 </html>
 			<?php break;
 		}
+		
+function dumpTable($result){
+	if($result->error){
+		$html = $result->error_message;
+	} else {
+		$html = "<table cellpadding='4' cellspacing='0' style='border-collapse:collapse;margin-bottom:20px;'>";
+		if(isset($result->data->cols))
+			$colspan=count($result->data->cols);
+		else
+			$colspan=2;
+		if(isset($result->data->cols)){
+			$html .= "<tr>";
+			foreach($result->data->cols as $cur_column){
+				$html .= "<th style='border:1px solid black;'>".$cur_column->name."</th>";
+			}
+			$html .= "</tr>";
+		}
+		if(isset($result->data->cols)){
+			foreach($result->data->rows as $cur_row){
+				$html .= "<tr>";
+				for($i=0;$i<count($result->data->cols);$i++)
+					$html .= "<td style='border:1px solid black;'>".$result->data->cols[$i]->toString($cur_row->values[$i])."</td>";
+				$html .= "</tr>";
+			}
+			$col_1_span = floor((count($result->data->cols))/2);
+			$col_2_span = (count($result->data->cols)) - $col_1_span;
+		} else {
+			$col_1_span = 1;
+			$col_2_span = 1;	
+		}
+		$html .= "<tr>";
+		$html .= "<td colspan='".$col_1_span."' style='background-color:#FFBBFF;border-right:1px solid black;font-weight:bold;'>plan: ".(round($result->planning_duration,3)*1000)." msec";
+		if($result->from_cache) $html .= " <sub>(cache)</sub>";
+		$html .= "</td>";
+		$html .= "<td colspan='".$col_2_span."' style='background-color:#FFBBFF;text-align:right;font-weight:bold;'>exec: ".(round($result->execution_duration,3)*1000)." msec</td>";
+		$html .= "</tr>";
+		$html .= "</table>";
+	}
+	return $html;
+}
+
+function resetDB($db){
+	$sql = "delete from cache;";
+	
+	foreach($db->tables as $key => $filename){
+		if($key!="tables"&&$key!="cache")
+			$sql .= "drop table $key;";
+	}
+	$sql .= "create table impiegati(id int auto_increment, name varchar(20), lastname varchar(20), dept_id int);";
+	$sql .= "create table dipartimenti(id_dept int auto_increment, deptname varchar(20));";
+	$sql .= "create table pagamenti(id int auto_increment, id_impiegato int, importo float, data_inserimento date, data_aggiornamento datetime);";
+	// INSERTING DEPARTMENTS
+	$sql .= "INSERT INTO dipartimenti (id_dept, deptname) VALUES (1, 'Ricerca');".
+			"INSERT INTO dipartimenti (id_dept, deptname) VALUES (2, 'Sviluppo');".
+			"INSERT INTO dipartimenti (id_dept, deptname) VALUES (3, 'Contabilità');";
+	// INSERTING EMPLOYEES
+	$sql .= "INSERT INTO impiegati (name, lastname, dept_id) VALUES ('Paolo', 'Moretti', 1);".
+			"INSERT INTO impiegati (name, lastname, dept_id) VALUES ('Paolo', 'Prova ABCDE', 2);".
+			"INSERT INTO impiegati (name, dept_id) VALUES ('Paolo', 1);".
+			"INSERT INTO impiegati (lastname, dept_id) VALUES ('name = NULL', 2);".
+			"INSERT INTO impiegati (name, lastname, dept_id) VALUES ('Test', 'id=NULL!!', 1);".
+			"INSERT INTO impiegati (name, lastname, dept_id) VALUES ('Altro TEST', 'XXXXXXX', 2);".
+			"INSERT INTO impiegati (name, lastname, dept_id) VALUES ('Mario', 'Rossi', 1);".
+			"INSERT INTO impiegati (name, lastname, dept_id) VALUES ('John', 'Doe', 1);".
+			"INSERT INTO impiegati (name, lastname, dept_id) VALUES ('Giuseppe', 'Bianchi', 1);".
+			"INSERT INTO impiegati (name, lastname, dept_id) VALUES ('Franco', 'Verdi', 2);";
+	// INSERTING PAYMENTS
+	$sql .= "INSERT INTO pagamenti (id_impiegato, importo, data_inserimento, data_aggiornamento) values (1, 500.20, '2014-01-23', '2014/01/24 06:12:58');".
+			"INSERT INTO pagamenti (id_impiegato, importo, data_inserimento) values (2, 997.80, '2012-10-28');".
+			"INSERT INTO pagamenti (id_impiegato, importo, data_inserimento) values (3, 1516.37945, '2015-04-03');".
+			"INSERT INTO pagamenti (id_impiegato, importo, data_inserimento) values (1, 1916.5, '2012-09-04');";
+	$result = $db->query($sql);
+}
 ?>

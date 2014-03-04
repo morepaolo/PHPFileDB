@@ -113,7 +113,7 @@ class PHPFDB{
 	}
 	
 	public function simulate($sql){
-		$result = new PHPFDB_resultset($sql);
+		$result = new PHPFDB_resultset($this, $sql);
 		$start_planning = microtime(true);
 		$parsequery = new PHPFDB_Query($sql);
 		$end_planning = microtime(true);
@@ -214,6 +214,13 @@ class PHPFDB{
 			case "UPDATE_ROW":
 				if(isset($loaded_relations[$instruction->target_relation_id]))
 					$loaded_relations[$instruction->target_relation_id]->updateRows($instruction->new_values_list);
+				break;
+			case "INNER_JOIN":
+				$relation_1 = $loaded_relations[$instruction->in_relation_1];
+				$relation_2 = $loaded_relations[$instruction->in_relation_2];
+				$temp = new PHPFDB_Relation($this, "", "");
+				$temp->join($relation_1, $relation_2, $instruction->join_condition);
+				$loaded_relations[$instruction->relation_id]=$temp;
 				break;
 			case "LEFT_JOIN":
 				$relation_1 = $loaded_relations[$instruction->in_relation_1];

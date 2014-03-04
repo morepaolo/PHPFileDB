@@ -58,8 +58,11 @@ table_element ::= table_constraint_definition.
 
 table_constraint_definition ::= DEADTOKEN.
 
-column_definition(A) ::= column_name(B) data_type(C) default_clause column_constraints(E). {
+column_definition(A) ::= column_name(B) data_type(C) default_clause(D) column_constraints(E). {
 		C->name = B->value;
+		if(isset(D)){
+			C->default = D;
+		}
 		if(isset(E)){
 			foreach(E as $constraint){
 				if(strtoupper($constraint)=="AUTO_INCREMENT")
@@ -154,8 +157,7 @@ datetime_type(A) ::= DATE. {A = new PHPFDB_date();}
 datetime_type(A) ::= DATETIME. {A = new PHPFDB_datetime();}
 datetime_type ::= TIME with_time_zone.
 datetime_type ::= TIME LPAR time_precision RPAR with_time_zone.
-datetime_type ::= TIMESTAMP with_time_zone.
-datetime_type ::= TIMESTAMP LPAR timestamp_precision RPAR with_time_zone.
+datetime_type(A) ::= TIMESTAMP. {A = new PHPFDB_timestamp();}
 
 with_time_zone ::= .
 with_time_zone ::= WITH TIME ZONE.
@@ -163,8 +165,6 @@ with_time_zone ::= WITH TIME ZONE.
 time_precision ::= time_fractional_seconds_precision.
 
 time_fractional_seconds_precision ::= INTNUM.
-
-timestamp_precision ::= time_fractional_seconds_precision.
 
 interval_type ::= INTERVAL interval_qualifier.
 
@@ -200,10 +200,10 @@ qualified_name(A) ::= qualified_identifier(B). {A=B;}
 qualified_name ::= schema_name PERIOD qualified_identifier.
 
 default_clause ::= .
-default_clause ::= DEFAULT default_option.
+default_clause(A) ::= DEFAULT default_option(B).{A=B;}
 
 default_option ::= literal.
-/*default_option ::= <datetime value function>*/
+default_option(A) ::= datetime_value_function(B).{A=B;}
 default_option ::= USER.
 default_option ::= CURRENT_USER.
 default_option ::= SESSION_USER.
@@ -212,7 +212,9 @@ default_option ::= NULL.
 
 
 
+/************/
 /* Literals */
+/************/
 
 literal ::= signed_numeric_literal.
 literal ::= general_literal.
@@ -222,6 +224,20 @@ signed_numeric_literal ::= sign unsigned_numeric_literal.
 
 sign(A) ::= PLUS_SIGN. {A="plus_sign";}
 sign(A) ::= MINUS_SIGN. {A="minus_sign";}
+
+datetime_value_function(A) ::= current_timestamp_value_function(B).{A=B;}
+
+/*
+		<current date value function>
+	|	<current time value function>
+	|	<current timestamp value function>
+
+<current date value function> ::= CURRENT_DATE
+
+<current time value function> ::= CURRENT_TIME [ <left paren> <time precision> <right paren> ]
+*/
+
+current_timestamp_value_function(A) ::= CURRENT_TIMESTAMP(B). {A=strtoupper(B->value);}
 
 /***************/
 /* Constraints */
@@ -581,25 +597,27 @@ cross_join ::= table_reference CROSS JOIN table_reference.
 
 qualified_join(A) ::= table_reference(B) natural_join join_type(D) JOIN table_reference(E) join_specification(F). {
 	A = new stdClass();
-	A->join_type = D;
 	$b_last_relation = B->actions[count(B->actions)-1];
 	$e_last_relation = E->actions[count(E->actions)-1];
 	A->actions = array_merge(B->actions, E->actions);
-	A->actions[] = new qpAction_joinRelationsLeft($b_last_relation->relation_id, $e_last_relation->relation_id, F->filter);
+	if(D=="LEFT")
+		A->actions[] = new qpAction_joinRelationsLeft($b_last_relation->relation_id, $e_last_relation->relation_id, F->filter);
+	elseif(D=="INNER")
+		A->actions[] = new qpAction_joinRelations($b_last_relation->relation_id, $e_last_relation->relation_id, F->filter);
 }
 
 natural_join ::= .
 natural_join ::= NATURAL.
 
-join_type ::= .
-join_type ::= INNER.
+join_type(A) ::= . {A="INNER";}
+join_type(A) ::= INNER. {A="INNER";}
 join_type(A) ::= outer_join_type(B). {A=B;}
-join_type ::= outer_join_type OUTER.
+join_type(A) ::= outer_join_type(B) OUTER. {A=B;}
 join_type ::= UNION.
 
-outer_join_type(A) ::= LEFT(B). {A=B->value;}
-outer_join_type(A) ::= RIGHT(B). {A=B->value;}
-outer_join_type(A) ::= FULL(B). {A=B->value;}
+outer_join_type(A) ::= LEFT(B). {A=strtoupper(B->value);}
+outer_join_type(A) ::= RIGHT(B). {A=strtoupper(B->value);}
+outer_join_type(A) ::= FULL(B). {A=strtoupper(B->value);}
 
 join_specification ::= .
 join_specification(A) ::= join_condition(B). {A = new stdClass();A->filter=B;}
@@ -686,6 +704,7 @@ comp_op(A) ::= OP_LT(B). {A=B;}
 comp_op(A) ::= OP_GT(B). {A=B;}
 comp_op(A) ::= OP_LTEQ(B). {A=B;}
 comp_op(A) ::= OP_GTEQ(B). {A=B;}
+comp_op(A) ::= OP_LIKE(B). {A=B;A->value=strtoupper(A->value);}
 
 null_predicate(A) ::= column_reference(B) IS NULLX. {
 		A = new filter_IsNullColumn(B);
@@ -1211,10 +1230,15 @@ math_numeric_value_expression(A) ::= TRUNCATE LPAR numeric_value_expression(B) C
 /* DATE OPERATIONS                  */
 /************************************/
 
+date_value_expression(A) ::= CURRENT_TIMESTAMP LPAR RPAR. {A = new filter_UnaryDateFunction("now");A->expression=new filter_EmptyExpression();}
+date_value_expression(A) ::= CURRENT_TIMESTAMP. {A = new filter_UnaryDateFunction("now");A->expression=new filter_EmptyExpression();}
 date_value_expression(A) ::= DAY LPAR numeric_value_expression(B) RPAR. {A = new filter_UnaryDateFunction("day");A->expression=B;}
+date_value_expression(A) ::= DAYOFWEEK LPAR numeric_value_expression(B) RPAR. {A = new filter_UnaryDateFunction("dayofweek");A->expression=B;}
+date_value_expression(A) ::= DAYOFYEAR LPAR numeric_value_expression(B) RPAR. {A = new filter_UnaryDateFunction("dayofyear");A->expression=B;}
 date_value_expression(A) ::= HOUR LPAR numeric_value_expression(B) RPAR. {A = new filter_UnaryDateFunction("hour");A->expression=B;}
 date_value_expression(A) ::= MINUTE LPAR numeric_value_expression(B) RPAR. {A = new filter_UnaryDateFunction("minute");A->expression=B;}
 date_value_expression(A) ::= MONTH LPAR numeric_value_expression(B) RPAR. {A = new filter_UnaryDateFunction("month");A->expression=B;}
+date_value_expression(A) ::= NOW LPAR RPAR. {A = new filter_UnaryDateFunction("now");A->expression=new filter_EmptyExpression();}
 date_value_expression(A) ::= SECOND LPAR numeric_value_expression(B) RPAR. {A = new filter_UnaryDateFunction("second");A->expression=B;}
 date_value_expression(A) ::= WEEKDAY LPAR numeric_value_expression(B) RPAR. {A = new filter_UnaryDateFunction("weekday");A->expression=B;}
 date_value_expression(A) ::= WEEKOFYEAR LPAR numeric_value_expression(B) RPAR. {A = new filter_UnaryDateFunction("weekofyear");A->expression=B;}

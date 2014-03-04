@@ -43,6 +43,10 @@ class PHPFDB_basic_type {
 	public function toString($value){
 		return($value);
 	}
+	
+	public function getDefaultValue(){
+		return $this->default;
+	}
 }
 
 class PHPFDB_int extends PHPFDB_basic_type{
@@ -382,5 +386,74 @@ class PHPFDB_datetime extends PHPFDB_basic_type{
 		if(isset($value))
 			return($value->format('Y-m-d H:i:s'));
 		return NULL;
+	}
+	
+	public function getDefaultValue(){
+		if($this->default=="CURRENT_TIMESTAMP"){
+			$temp = new Datetime();
+			$temp->setTimestamp(time());
+			return $this->toString($temp);
+		}else
+			return $this->default;
+	}
+}
+
+class PHPFDB_timestamp extends PHPFDB_basic_type{
+	
+	public $string_type = "TIMESTAMP";
+	
+	public function __construct($name=NULL, $default="NULL", $allow_null=0, $is_unique=0){
+		$this->name = $name;
+		$this->length=5;
+		if($default=="NULL")
+			$this->default = NULL;
+		else
+			$this->default = $default;
+		$this->allow_null = $allow_null;
+		$this->autoinc = 0;
+		$this->is_unique = $is_unique;
+	}
+	
+	public function serialize($value){
+		if(is_null($value)){
+			$isnull=1;
+			$serialized_value="";
+		} else {
+			$isnull=0;
+			$temp = PHPFDB_converters::string2Date($value);
+			$timestamp = $temp->getTimestamp();
+			$serialized_value = pack('N', $timestamp);
+		}
+		$serialized_isnull=	pack('C', $isnull);
+		return($serialized_isnull.$serialized_value);
+	}
+	
+	public function unserialize($data_file_handler){	
+		$temp = unpack('C', fread($data_file_handler, 1));
+		$unserialized_isnull=$temp[1];
+		if($unserialized_isnull==1){
+			return(NULL);
+		}else {
+			$unserialized_timestamp =  unpack('N', fread($data_file_handler, 4));
+			$unserialized_timestamp = intval($unserialized_timestamp[1]);
+			$temp = new Datetime();
+			$temp->setTimestamp($unserialized_timestamp);
+			return($temp);
+		}
+	}
+	
+	public function toString($value){
+		if(isset($value))
+			return($value->format('Y-m-d H:i:s'));
+		return NULL;
+	}
+	
+	public function getDefaultValue(){
+		if($this->default=="CURRENT_TIMESTAMP"){
+			$temp = new Datetime();
+			$temp->setTimestamp(time());
+			return $this->toString($temp);
+		}else
+			return $this->default;
 	}
 }

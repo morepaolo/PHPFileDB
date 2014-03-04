@@ -61,7 +61,12 @@ class PHPFDB_relation{
 						$temp_cols[] = $column; 
 						break;
 					case "DATETIME":
-						$column = new PHPFDB_datetime(trim($temp[0]), intval(trim($temp[3])), trim($temp[4]), intval(trim($temp[6])));
+						$column = new PHPFDB_datetime(trim($temp[0]), trim($temp[3]), trim($temp[4]), intval(trim($temp[6])));
+						$column->table = $this->tablename;
+						$temp_cols[] = $column; 
+						break;
+					case "TIMESTAMP":
+						$column = new PHPFDB_timestamp(trim($temp[0]), trim($temp[3]), trim($temp[4]), intval(trim($temp[6])));
 						$column->table = $this->tablename;
 						$temp_cols[] = $column; 
 						break;
@@ -179,35 +184,7 @@ class PHPFDB_relation{
 		}
 		$this->rows = $new_rows;
 	}
-	
-	/* OLD VERSION
-	public function filter($filter){
-		$new_rows = Array();
-		$filtered_columns = Array();
-		$temp = $filter->getColumnReferences();
-		foreach($temp as $filtered_column){
-			$position=NULL;
-			foreach($this->cols as $key => $cur_col){
-				if($cur_col->name==$filtered_column){
-					$position=$key;
-					break;
-				}
-			}
-			$filtered_columns[] = Array($filtered_column, $position);
-		}
-		foreach($this->rows as $cur_row){
-			$filtered_values = Array();
-			foreach($filtered_columns as $column){
-				$filtered_values[] = Array($column[0], $cur_row->values[$column[1]]);
-			}
-			if($filter->check($filtered_values)){
-				$new_rows[] = $cur_row;
-			}
-		}
-		$this->rows = $new_rows;
-	}
-	*/
-	
+		
 	public function filterDistinct(){
 		$new_rows = Array();
 		foreach($this->rows as $cur_row){
@@ -241,7 +218,12 @@ class PHPFDB_relation{
 						$temp_cols[] = new PHPFDB_int(trim($temp[0]), intval(trim($temp[3])), intval(trim($temp[4])), intval(trim($temp[5])), intval(trim($temp[6])));
 						*/
 			} elseif($cname->is_math_function){
-				$new_cols[]=new PHPFDB_float($cname->alias, 0, 0, 0, 0);
+				if($cname->return_type=="INT")
+					$new_cols[]=new PHPFDB_int($cname->alias, 0, 0, 0, 0);
+				elseif($cname->return_type=="FLOAT")
+					$new_cols[]=new PHPFDB_float($cname->alias, 0, 0, 0, 0);
+				elseif($cname->return_type=="DATETIME")
+					$new_cols[]=new PHPFDB_datetime($cname->alias, 0, 0, 0, 0);
 				$keep_indexes[]=-1;
 			} else {
 				foreach($this->cols as $key => $cur_col){
@@ -427,6 +409,23 @@ class PHPFDB_relation{
 		return($same_group);
 	}
 	
+	public function join($relation_1, $relation_2, $join_condition){
+		$this->cols = array_merge($relation_1->cols, $relation_2->cols);
+		$empty_row_2 = Array();
+		foreach($relation_2->cols as $cur_row)
+			$empty_row_2[] = NULL;
+		foreach($relation_1->rows as $cur_row_1){
+			$temp = $cur_row_1;
+			foreach($relation_2->rows as $cur_row_2){
+				if($this->evaluateJoinCondition($join_condition, $relation_1->cols, $temp->values, $relation_2->cols, $cur_row_2->values)){
+					$row = new PHPFDB_row();
+					$row->values=array_merge($temp->values, $cur_row_2->values);
+					$this->rows[] = $row;
+				}
+			}
+		}
+	}
+	
 	public function leftJoin($relation_1, $relation_2, $join_condition){
 		$this->cols = array_merge($relation_1->cols, $relation_2->cols);
 		$empty_row_2 = Array();
@@ -462,6 +461,11 @@ class PHPFDB_relation{
 				$found_index=$this->getColumnIndex($row_2_cols, $filtered_column);
 				if($found_index>=0){
 					$filtered_values[] = Array($filtered_column, $row_2_values[$found_index]);
+				} else {
+					if(isset($filtered_column->table))
+						throw new PHPFDB_InvalidColumnName_Exception("Exception - Invalid Column name: ".$filtered_column->table.".".$filtered_column->name);
+					else
+						throw new PHPFDB_InvalidColumnName_Exception("Exception - Invalid Column name: ".$filtered_column->name);
 				}
 			}
 		}

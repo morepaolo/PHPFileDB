@@ -129,6 +129,20 @@
 			$this->join_condition = $join_condition;
 		}
 	}
+	class qpAction_joinRelations extends qpAction{
+		public $in_relation_1;
+		public $in_relation_2;
+		public $join_condition;
+		public $relation_id;
+		public $data;
+		public function __construct($in_relation_1, $in_relation_2, $join_condition){
+			$this->action_name = "INNER_JOIN";
+			$this->relation_id=$this->getNewRelationId();
+			$this->in_relation_1 = $in_relation_1;
+			$this->in_relation_2 = $in_relation_2;
+			$this->join_condition = $join_condition;
+		}
+	}
 	class qpAction_distinctValues extends qpAction{
 		public $target_relation_id;
 		public function __construct($relation_id){

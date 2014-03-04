@@ -96,6 +96,7 @@ class filter_UnaryMathFunction extends unary_filter{
 	public $alias;
 	public $expression;
 	public $is_math_function = true;
+	public $return_type="FLOAT";
 
 	public function __construct($type, $alias=NULL){
 		$this->type=$type;
@@ -167,6 +168,7 @@ class filter_BinaryMathFunction extends unary_filter{
 	public $expression1;
 	public $expression2;
 	public $is_math_function = true;
+	public $return_type="FLOAT";
 
 	public function __construct($type, $alias=NULL){
 		$this->type=$type;
@@ -217,19 +219,31 @@ class filter_UnaryDateFunction extends unary_filter{
 	public $alias;
 	public $expression;
 	public $is_math_function = true;
+	public $return_type="INT";
 
 	public function __construct($type, $alias=NULL){
 		$this->type=$type;
 		$this->alias=$alias;
+		if($this->type=="now")
+			$this->return_type="DATETIME";
 	}
 	public function check($filtered_values){
 		$value = $this->expression->check($filtered_values);
 		if(!(is_object($value)))
 			$value = PHPFDB_converters::string2Date($value);
+		if($this->type=="now"){
+			$temp = new DateTime();
+			$temp->setTimestamp(time());
+			return $temp;
+		}
 		if(!(isset($value)))
 			return NULL;
 		if($this->type=="day")
 			return intval($value->format("d"));
+		if($this->type=="dayofweek")
+			return intval($value->format("w"))+1; // ODBC Standard
+		if($this->type=="dayofyear")
+			return intval($value->format("z"))+1; // Days go from 1 to 366 in MySQL
 		if($this->type=="hour")
 			return intval($value->format("H"));
 		if($this->type=="minute")
@@ -357,6 +371,38 @@ class filter_COMP extends binary_filter{
 		//echo get_class($in_op2);
 	}
 	
+	private function like ($string, $pattern, $escape= "\\"){
+		$original = $pattern;
+		$pattern = str_split($pattern);
+		$cur_state=0;
+		$final_pattern="";
+		for($i=0;$i<count($pattern);$i++){
+			if($cur_state==0){
+				if($pattern[$i]==$escape)
+					$cur_state=1;
+				elseif($pattern[$i]=="%")
+					$final_pattern.=".*";
+				elseif($pattern[$i]=="_")
+					$final_pattern.=".";
+				else
+					$final_pattern.=preg_quote($pattern[$i]);
+			} elseif($cur_state==1){
+				if($pattern[$i]=="%"||$pattern[$i]=="_"){
+					$final_pattern.=$pattern[$i];
+					$cur_state=0;
+				} elseif($pattern[$i]==$escape)
+					$final_pattern.=$escape;
+				else {
+					$final_pattern.=preg_quote($escape.$pattern[$i]);
+					$cur_state=0;
+				}
+			}
+		}
+		if(preg_match("/".$final_pattern."/i", $string))
+			return true;
+		return false;
+	}
+	
 	public function check($filtered_values){
 		$op1_value = $this->op1->check($filtered_values);
 		$op2_value = $this->op2->check($filtered_values);
@@ -381,6 +427,10 @@ class filter_COMP extends binary_filter{
 			return($op1_value<=$op2_value);
 		}elseif($this->comp_operator=="<>"){
 			return($op1_value<>$op2_value);
+		}elseif($this->comp_operator=="LIKE"){
+			//$regexp = str_replace("%", ".*", $op2_value);
+			//return(preg_match("/".$regexp."/i", $op1_value));
+			return $this->like($op1_value, $op2_value);
 		}
 	}
 }
