@@ -17,7 +17,12 @@ class PHPFDB_row{
 		$check_uniqueness=false;
 		foreach($relation->cols as $key => $cur_col){
 			if(isset($arr_values)&&array_key_exists($cur_col->name, $arr_values)){
-				$value_to_write = $arr_values[$cur_col->name];
+				if(is_object($arr_values[$cur_col->name])){
+					// PASSO NULL COME ROW... VUOL DIRE CHE NON POSSO REFERENZIARMI AD ALTRI CAMPI DELLA RIGA (PER ORA)
+					$value_to_write = $relation->evaluateExpression(NULL, $arr_values[$cur_col->name]);
+				} else {
+					$value_to_write = $arr_values[$cur_col->name];	
+				}
 				$check_uniqueness = true;
 			}else {
 				if($cur_col->autoinc){

@@ -60,6 +60,11 @@ class PHPFDB_relation{
 						$column->table = $this->tablename;
 						$temp_cols[] = $column; 
 						break;
+					case "TIME":
+						$column = new PHPFDB_time(trim($temp[0]), intval(trim($temp[3])), trim($temp[4]), intval(trim($temp[6])));
+						$column->table = $this->tablename;
+						$temp_cols[] = $column; 
+						break;
 					case "DATETIME":
 						$column = new PHPFDB_datetime(trim($temp[0]), trim($temp[3]), trim($temp[4]), intval(trim($temp[6])));
 						$column->table = $this->tablename;
@@ -222,8 +227,10 @@ class PHPFDB_relation{
 					$new_cols[]=new PHPFDB_int($cname->alias, 0, 0, 0, 0);
 				elseif($cname->return_type=="FLOAT")
 					$new_cols[]=new PHPFDB_float($cname->alias, 0, 0, 0, 0);
-				elseif($cname->return_type=="DATETIME")
-					$new_cols[]=new PHPFDB_datetime($cname->alias, 0, 0, 0, 0);
+				elseif($cname->return_type=="TIMESTAMP")
+					$new_cols[]=new PHPFDB_timestamp($cname->alias, 0, 0, 0, 0);
+				elseif($cname->return_type=="DATE")
+					$new_cols[]=new PHPFDB_date($cname->alias, 0, 0, 0, 0);
 				$keep_indexes[]=-1;
 			} else {
 				foreach($this->cols as $key => $cur_col){

@@ -51,6 +51,7 @@ class JLexBase {
   protected $YY_BOL;
   protected $YY_EOF;
 
+  protected $yy_reader;
   protected $yy_buffer;
   protected $yy_buffer_read;
   protected $yy_buffer_index;
@@ -64,11 +65,19 @@ class JLexBase {
   protected $yy_last_was_cr = false;
   protected $yy_count_lines = false;
   protected $yy_count_chars = false;
+  protected $yyfilename = null;
 
-  function __construct($query) {
+  function __construct($stream) {
+    $this->yy_reader = $stream;
+    $meta = stream_get_meta_data($stream);
+    if (!isset($meta['uri'])) {
+      $this->yyfilename = '<<input>>';
+    } else {
+      $this->yyfilename = $meta['uri'];
+    }
 
-    $this->yy_buffer = $query;
-    $this->yy_buffer_read = strlen($query);
+    $this->yy_buffer = "";
+    $this->yy_buffer_read = 0;
     $this->yy_buffer_index = 0;
     $this->yy_buffer_start = 0;
     $this->yy_buffer_end = 0;
@@ -96,9 +105,20 @@ class JLexBase {
       $this->yy_buffer_start = 0;
       $this->yy_buffer_read = $j;
       $this->yy_buffer_index = $j;
-		
-		return $this->YY_EOF;
+
+      $data = fread($this->yy_reader, 8192);
+      if ($data === false || !strlen($data)) return $this->YY_EOF;
+      $this->yy_buffer .= $data;
+      $this->yy_buffer_read += strlen($data);
     }
+
+    while ($this->yy_buffer_index >= $this->yy_buffer_read) {
+      $data = fread($this->yy_reader, 8192);
+      if ($data === false || !strlen($data)) return $this->YY_EOF;
+      $this->yy_buffer .= $data;
+      $this->yy_buffer_read += strlen($data);
+    }
+    return ord($this->yy_buffer[$this->yy_buffer_index++]);
   }
 
   protected function yy_move_end() {
@@ -182,6 +202,7 @@ class JLexBase {
     $tok->value = $this->yytext();
     $tok->col = $this->yycol;
     $tok->line = $this->yyline;
+    $tok->filename = $this->yyfilename;
   }
 }
 

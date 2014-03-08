@@ -94,6 +94,7 @@ include 'jlex.php';
 <YYINITIAL>SOME			{ return $this->createToken("TK_".strtoupper($this->yytext())); }
 <YYINITIAL>YYINITIALCODE	{ return $this->createToken("TK_".strtoupper($this->yytext())); }
 <YYINITIAL>TABLE		{ return $this->createToken("TK_".strtoupper($this->yytext())); }
+<YYINITIAL>TIME			{ return $this->createToken("TK_".strtoupper($this->yytext())); }
 <YYINITIAL>TIMESTAMP	{ return $this->createToken("TK_".strtoupper($this->yytext())); }
 <YYINITIAL>TO			{ return $this->createToken("TK_".strtoupper($this->yytext())); }
 <YYINITIAL>UNION		{ return $this->createToken("TK_".strtoupper($this->yytext())); }
@@ -145,6 +146,9 @@ include 'jlex.php';
 <YYINITIAL>MINUTE		{ return $this->createToken("TK_".strtoupper($this->yytext())); }
 <YYINITIAL>MONTH		{ return $this->createToken("TK_".strtoupper($this->yytext())); }
 <YYINITIAL>SECOND		{ return $this->createToken("TK_".strtoupper($this->yytext())); }
+<YYINITIAL>UTC_DATE		{ return $this->createToken("TK_".strtoupper($this->yytext())); }
+<YYINITIAL>UTC_TIME		{ return $this->createToken("TK_".strtoupper($this->yytext())); }
+<YYINITIAL>UTC_TIMESTAMP	{ return $this->createToken("TK_".strtoupper($this->yytext())); }
 <YYINITIAL>WEEKDAY		{ return $this->createToken("TK_".strtoupper($this->yytext())); }
 <YYINITIAL>WEEKOFYEAR	{ return $this->createToken("TK_".strtoupper($this->yytext())); }
 <YYINITIAL>YEAR			{ return $this->createToken("TK_".strtoupper($this->yytext())); }

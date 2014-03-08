@@ -20,4 +20,14 @@ class PHPFDB_converters{
 		}
 		return NULL;
 	}
+	
+	public static function string2Time($string){
+		if(strtotime($string)){
+			echo "IMHERE";
+			$temp = new DateTime($string);
+			return(Array($temp->format("H"),$temp->format("i"),$temp->format("s")));
+		}
+		$temp = explode(":", $string);
+		return $temp;
+	}
 }

@@ -224,8 +224,11 @@ class filter_UnaryDateFunction extends unary_filter{
 	public function __construct($type, $alias=NULL){
 		$this->type=$type;
 		$this->alias=$alias;
-		if($this->type=="now")
-			$this->return_type="DATETIME";
+		if($this->type=="now"||$this->type=="utc_timestamp")
+			$this->return_type="TIMESTAMP";
+		elseif($this->type=="utc_date")
+			$this->return_type="DATE";
+		//||$this->type=="utc_time"
 	}
 	public function check($filtered_values){
 		$value = $this->expression->check($filtered_values);
@@ -234,6 +237,24 @@ class filter_UnaryDateFunction extends unary_filter{
 		if($this->type=="now"){
 			$temp = new DateTime();
 			$temp->setTimestamp(time());
+			return $temp;
+		}
+		if($this->type=="utc_date"){
+			$temp = new DateTime();
+			$temp->setTimestamp(time());
+			$temp->setTimezone(new DateTimezone("UTC"));
+			return $temp;		
+		}
+		if($this->type=="utc_time"){
+			$temp = new DateTime();
+			$temp->setTimestamp(time());
+			$temp->setTimezone(new DateTimezone("UTC"));
+			return $temp;
+		}
+		if($this->type=="utc_timestamp"){
+			$temp = new DateTime();
+			$temp->setTimestamp(time());
+			$temp->setTimezone(new DateTimezone("UTC"));
 			return $temp;
 		}
 		if(!(isset($value)))

@@ -5,8 +5,10 @@ include "../phpfdb_types.php";
 include "query-planner.php";
 include "filter-framework.php";
 
+$query = "select * from utenti;";
+
 $P = new ParseParser();
-$S = new Yylex(fopen("test_query.sql", "r")); // you can get one of these using the JLexPHP package
+$S = new Yylex($query); // you can get one of these using the JLexPHP package
 $P->ParseTrace(fopen("trace", "w"), "");
 /*
 while ($t = $S->nextToken()) {

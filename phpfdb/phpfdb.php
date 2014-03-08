@@ -234,7 +234,7 @@ class PHPFDB{
 				$temp_table->loadMetadata();
 				$values_to_add = Array();
 				foreach($instruction->values as $key => $cell){
-					$values_to_add[$key] = $cell->value;
+					$values_to_add[$key] = $cell;
 				}
 				$temp_table->addRow($values_to_add);
 				break;

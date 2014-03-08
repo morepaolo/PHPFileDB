@@ -285,7 +285,10 @@ class PHPFDB_date extends PHPFDB_basic_type{
 			$serialized_value="";
 		} else {
 			$isnull=0;
-			$temp = PHPFDB_converters::string2Date($value);
+			if(!(is_object($value)&&get_class($value)=="DateTime"))
+				$temp = PHPFDB_converters::string2Date($value);
+			else
+				$temp = $value;
 			$year = intval($temp->format('Y'));
 			$month = intval($temp->format('m'));
 			$day = intval($temp->format('d'));
@@ -320,6 +323,80 @@ class PHPFDB_date extends PHPFDB_basic_type{
 	}
 }
 
+class PHPFDB_time extends PHPFDB_basic_type{
+	
+	public $string_type = "TIME";
+	
+	public function __construct($name=NULL, $default="NULL", $allow_null=0, $is_unique=0){
+		$this->name = $name;
+		$this->length=5;
+		if($default=="NULL")
+			$this->default = NULL;
+		else
+			$this->default = $default;
+		$this->allow_null = $allow_null;
+		$this->autoinc = 0;
+		$this->is_unique = $is_unique;
+	}
+	
+	public function serialize($value){
+		if(is_null($value)){
+			$isnull=1;
+			$serialized_value="";
+		} else {
+			$isnull=0;
+			if(is_object($value)&&get_class($value)=="DateTime")
+				$temp = Array($value->format("H"),$value->format("i"),$value->format("s"));
+			else
+				$temp = PHPFDB_converters::string2Time($value);
+			$hour = intval($temp[0]);
+			$minutes = intval($temp[1]);
+			$seconds = intval($temp[2]);
+			$value = $hour*3600+$minutes*60+$seconds;
+			$serialized_value = pack('l', $value);
+		}
+		$serialized_isnull=	pack('C', $isnull);
+		return($serialized_isnull.$serialized_value);
+	}
+	
+	public function unserialize($data_file_handler){	
+		$temp = unpack('C', fread($data_file_handler, 1));
+		$unserialized_isnull=$temp[1];
+		if($unserialized_isnull==1){
+			return(NULL);
+		}else {
+			$unserialized_value =  unpack('l', fread($data_file_handler, 4));
+			$unserialized_value = intval($unserialized_value[1]);
+			$hours = intval($unserialized_value/(3600));
+			$unserialized_value = $unserialized_value-($hours*3600);
+			$minutes = intval($unserialized_value/60);
+			$unserialized_value = $unserialized_value-($minutes*60);
+			$seconds = intval($unserialized_value);
+			return(Array($hours, $minutes, $seconds));
+		}
+	}
+	
+	public function toString($value){
+		if(isset($value)){
+			$temp = "";
+			if($value[0]<10)
+				$temp .= "0".$value[0];
+			else
+				$temp .= $value[0];
+			if($value[1]<10)
+				$temp .= ":0".$value[1];
+			else
+				$temp .= ":".$value[1];
+			if($value[2]<10)
+				$temp .= ":0".$value[2];
+			else
+				$temp .= ":".$value[2];
+			return($temp);
+		}
+		return NULL;
+	}
+}
+
 class PHPFDB_datetime extends PHPFDB_basic_type{
 	
 	public $string_type = "DATETIME";
@@ -342,7 +419,10 @@ class PHPFDB_datetime extends PHPFDB_basic_type{
 			$serialized_value="";
 		} else {
 			$isnull=0;
-			$temp = PHPFDB_converters::string2Date($value);
+			if(!(is_object($value)&&get_class($value)=="DateTime"))
+				$temp = PHPFDB_converters::string2Date($value);
+			else
+				$temp = $value;
 			$year = intval($temp->format('Y'));
 			$month = intval($temp->format('m'));
 			$day = intval($temp->format('d'));

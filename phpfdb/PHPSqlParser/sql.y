@@ -155,7 +155,7 @@ approximate_numeric_type ::= DOUBLE PRECISION.
 
 datetime_type(A) ::= DATE. {A = new PHPFDB_date();}
 datetime_type(A) ::= DATETIME. {A = new PHPFDB_datetime();}
-datetime_type ::= TIME with_time_zone.
+datetime_type(A) ::= TIME. {A = new PHPFDB_time();}
 datetime_type ::= TIME LPAR time_precision RPAR with_time_zone.
 datetime_type(A) ::= TIMESTAMP. {A = new PHPFDB_timestamp();}
 
@@ -1240,6 +1240,9 @@ date_value_expression(A) ::= MINUTE LPAR numeric_value_expression(B) RPAR. {A = 
 date_value_expression(A) ::= MONTH LPAR numeric_value_expression(B) RPAR. {A = new filter_UnaryDateFunction("month");A->expression=B;}
 date_value_expression(A) ::= NOW LPAR RPAR. {A = new filter_UnaryDateFunction("now");A->expression=new filter_EmptyExpression();}
 date_value_expression(A) ::= SECOND LPAR numeric_value_expression(B) RPAR. {A = new filter_UnaryDateFunction("second");A->expression=B;}
+date_value_expression(A) ::= UTC_DATE LPAR RPAR. {A = new filter_UnaryDateFunction("utc_date");A->expression=new filter_EmptyExpression();}
+date_value_expression(A) ::= UTC_TIME LPAR RPAR. {A = new filter_UnaryDateFunction("utc_time");A->expression=new filter_EmptyExpression();}
+date_value_expression(A) ::= UTC_TIMESTAMP LPAR RPAR. {A = new filter_UnaryDateFunction("utc_timestamp");A->expression=new filter_EmptyExpression();}
 date_value_expression(A) ::= WEEKDAY LPAR numeric_value_expression(B) RPAR. {A = new filter_UnaryDateFunction("weekday");A->expression=B;}
 date_value_expression(A) ::= WEEKOFYEAR LPAR numeric_value_expression(B) RPAR. {A = new filter_UnaryDateFunction("weekofyear");A->expression=B;}
 date_value_expression(A) ::= YEAR LPAR numeric_value_expression(B) RPAR. {A = new filter_UnaryDateFunction("year");A->expression=B;}
